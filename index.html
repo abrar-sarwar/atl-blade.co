@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ATL Blade Co. — Premium Handcrafted Knives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- GSAP Core + Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES & RESET
+    ============================================= */
+    :root {
+      --black:       #0a0a0a;
+      --dark:        #111111;
+      --dark-2:      #1a1a1a;
+      --dark-3:      #222222;
+      --gold:        #c9a84c;
+      --gold-light:  #e2c97e;
+      --gold-dim:    #7a5f28;
+      --gold-deep:   #a8872e;
+      --silver:      #c0c0c0;
+      --silver-light:#e8e8e8;
+      --white:       #f5f3ef;
+      --red-accent:  #8b1a1a;
+      --font-display:'Cinzel', serif;
+      --font-body:   'Cormorant Garamond', serif;
+      --font-ui:     'Raleway', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; font-size: 16px; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--gold-dim); color: var(--white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* =============================================
+       CUSTOM CURSOR
+    ============================================= */
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; z-index: 99999;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, margin 0.2s;
+    }
+    .cursor-dot.hovering {
+      width: 40px; height: 40px;
+      margin: -16px 0 0 -16px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid var(--gold);
+      mix-blend-mode: normal;
+    }
+    .cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 99998;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      margin: -14px 0 0 -14px;
+    }
+    @media (max-width: 768px) {
+      .cursor-dot, .cursor-ring { display: none; }
+    }
+
+    /* =============================================
+       NOISE OVERLAY
+    ============================================= */
+    .noise-overlay {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
+    /* =============================================
+       LOADING SCREEN
+    ============================================= */
+    .loader {
+      position: fixed; inset: 0; z-index: 100000;
+      background: var(--black);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 2rem;
+    }
+    .loader-logo {
+      width: 120px; height: 120px;
+      opacity: 0;
+    }
+    .loader-bar-track {
+      width: 200px; height: 1px;
+      background: rgba(201,168,76,0.15);
+      position: relative; overflow: hidden;
+    }
+    .loader-bar-fill {
+      position: absolute; left: 0; top: 0;
+      height: 100%; width: 0%;
+      background: var(--gold);
+    }
+    .loader-text {
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      opacity: 0;
+    }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      transition: padding 0.4s ease, background 0.4s ease;
+      transform: translateY(-100%);
+    }
+    nav.scrolled {
+      padding: 0.6rem 3rem;
+      background: rgba(10,10,10,0.95);
+      border-bottom-color: rgba(201,168,76,0.25);
+    }
+    nav.visible { transform: translateY(0); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      cursor: pointer;
+    }
+    .nav-logo img {
+      height: 44px; width: 44px; object-fit: contain;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 6px rgba(201,168,76,0.2));
+    }
+    nav.scrolled .nav-logo img { height: 36px; width: 36px; }
+    .nav-logo:hover img {
+      transform: rotate(8deg) scale(1.05);
+      filter: drop-shadow(0 0 12px rgba(201,168,76,0.4));
+    }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.2em; color: var(--gold);
+      text-transform: uppercase; line-height: 1.1;
+    }
+    .nav-logo-text span {
+      display: block; font-size: 0.55rem; font-weight: 400;
+      letter-spacing: 0.35em; color: var(--silver);
+      font-family: var(--font-ui);
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--silver); position: relative; padding-bottom: 2px;
+      transition: color 0.3s; cursor: pointer;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cart {
+      font-family: var(--font-ui); font-size: 0.75rem;
+      font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--black);
+      background: var(--gold); padding: 0.5rem 1.3rem;
+      border: none; cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .nav-cart:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--silver); transition: all 0.3s;
+    }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: var(--black);
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 45%, rgba(201,168,76,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 70% at 20% 70%, rgba(139,26,26,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 70% at 80% 70%, rgba(139,26,26,0.04) 0%, transparent 50%),
+        linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 50%, #141008 100%);
+    }
+
+    /* Floating particles container */
+    .hero-particles {
+      position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    /* Radial light rays */
+    .hero-rays {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      width: 900px; height: 900px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(201,168,76,0.03) 5deg, transparent 10deg,
+        transparent 20deg, rgba(201,168,76,0.02) 25deg, transparent 30deg,
+        transparent 40deg, rgba(201,168,76,0.03) 45deg, transparent 50deg,
+        transparent 60deg, rgba(201,168,76,0.02) 65deg, transparent 70deg,
+        transparent 80deg, rgba(201,168,76,0.03) 85deg, transparent 90deg,
+        transparent 100deg, rgba(201,168,76,0.02) 105deg, transparent 110deg,
+        transparent 120deg, rgba(201,168,76,0.03) 125deg, transparent 130deg,
+        transparent 140deg, rgba(201,168,76,0.02) 145deg, transparent 150deg,
+        transparent 160deg, rgba(201,168,76,0.03) 165deg, transparent 170deg,
+        transparent 180deg, rgba(201,168,76,0.02) 185deg, transparent 190deg,
+        transparent 200deg, rgba(201,168,76,0.03) 205deg, transparent 210deg,
+        transparent 220deg, rgba(201,168,76,0.02) 225deg, transparent 230deg,
+        transparent 240deg, rgba(201,168,76,0.03) 245deg, transparent 250deg,
+        transparent 260deg, rgba(201,168,76,0.02) 265deg, transparent 270deg,
+        transparent 280deg, rgba(201,168,76,0.03) 285deg, transparent 290deg,
+        transparent 300deg, rgba(201,168,76,0.02) 305deg, transparent 310deg,
+        transparent 320deg, rgba(201,168,76,0.03) 325deg, transparent 330deg,
+        transparent 340deg, rgba(201,168,76,0.02) 345deg, transparent 350deg,
+        transparent 360deg
+      );
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .hero-ring {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      width: 460px; height: 460px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.08);
+      opacity: 0;
+    }
+    .hero-ring-2 {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      width: 540px; height: 540px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.04);
+      opacity: 0;
+    }
+
+    .hero-line-top {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+    }
+    .hero-line-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+      transform: scaleX(0);
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      padding: 6rem 3rem 2rem;
+    }
+
+    .hero-text {
+      display: flex; flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+    }
+    .hero-title .gold-word {
+      color: var(--gold);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      font-weight: 300; font-style: italic;
+      color: var(--silver); letter-spacing: 0.05em;
+      margin-bottom: 2rem; opacity: 0;
+      line-height: 1.6;
+    }
+
+    /* Hero product image showcase */
+    .hero-showcase {
+      position: relative;
+      opacity: 0;
+    }
+    .hero-img-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.2);
+      position: relative;
+      background: var(--dark-2);
+    }
+    .hero-img-main img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .hero-img-main:hover img { transform: scale(1.04); }
+
+    /* Placeholder state for images */
+    .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      background:
+        linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 100%);
+      color: var(--gold-dim);
+      font-family: var(--font-ui);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 2rem;
+    }
+    .img-placeholder-icon {
+      width: 48px; height: 48px;
+      border: 2px dashed rgba(201,168,76,0.25);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-dim);
+      font-size: 1.4rem;
+    }
+    .img-placeholder-text {
+      max-width: 160px;
+      line-height: 1.6;
+    }
+
+    /* Corner accents on hero image */
+    .hero-img-main::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px;
+      width: 40px; height: 40px;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      z-index: 2;
+      transition: width 0.3s, height 0.3s;
+    }
+    .hero-img-main::after {
+      content: '';
+      position: absolute; bottom: -1px; right: -1px;
+      width: 40px; height: 40px;
+      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      z-index: 2;
+      transition: width 0.3s, height 0.3s;
+    }
+    .hero-img-main:hover::before,
+    .hero-img-main:hover::after { width: 60px; height: 60px; }
+
+    /* Small secondary showcase images */
+    .hero-img-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .hero-img-thumb {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.1);
+      background: var(--dark-2);
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .hero-img-thumb:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .hero-img-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* Showcase badge */
+    .hero-showcase-badge {
+      position: absolute; top: 1rem; left: 1rem; z-index: 3;
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.35rem 0.8rem;
+    }
+    /* Split text chars */
+    .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px) rotate(5deg);
+    }
+    .word { display: inline-block; white-space: pre; }
+
+    .hero-ctas {
+      display: flex; gap: 1.2rem; justify-content: flex-start;
+      flex-wrap: wrap; opacity: 0;
+    }
+
+    /* Magnetic button wrapper */
+    .magnetic-wrap {
+      display: inline-block;
+      position: relative;
+    }
+
+    .btn-primary {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--black); background: var(--gold);
+      border: none; padding: 1rem 2.5rem; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold-light);
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.65,0,0.35,1);
+    }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary:hover { box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
+
+    .btn-outline {
+      font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--silver-light); background: transparent;
+      border: 1px solid rgba(192,192,192,0.3);
+      padding: 1rem 2.5rem; cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .scroll-indicator {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      opacity: 0; cursor: pointer;
+    }
+    .scroll-indicator span {
+      font-family: var(--font-ui); font-size: 0.6rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+    .scroll-arrow {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    }
+
+    /* =============================================
+       MARQUEE
+    ============================================= */
+    .marquee-strip {
+      background: var(--gold); padding: 0.75rem 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-block;
+      will-change: transform;
+    }
+    .marquee-inner span {
+      font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--black); padding: 0 2.5rem;
+    }
+    .marquee-inner .dot { color: rgba(0,0,0,0.4); }
+
+    /* =============================================
+       SECTION SHARED
+    ============================================= */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-family: var(--font-ui); font-size: 0.68rem;
+      letter-spacing: 0.45em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 600; line-height: 1.1;
+      color: var(--white); margin-bottom: 1.2rem;
+    }
+    .section-title em { color: var(--gold); font-style: italic; font-weight: 300; }
+
+    /* Animated underline for section titles */
+    .section-divider {
+      width: 60px; height: 1px; background: var(--gold);
+      margin: 1.5rem 0;
+      transform-origin: left; transform: scaleX(0);
+    }
+    .divider-center { margin-left: auto; margin-right: auto; transform-origin: center; }
+
+    /* Reveal wrapper */
+    .reveal-up {
+      opacity: 0; transform: translateY(60px);
+    }
+    .reveal-left {
+      opacity: 0; transform: translateX(-60px);
+    }
+    .reveal-right {
+      opacity: 0; transform: translateX(60px);
+    }
+    .reveal-scale {
+      opacity: 0; transform: scale(0.9);
+    }
+
+    /* =============================================
+       FEATURED PRODUCTS
+    ============================================= */
+    .featured {
+      padding: 7rem 3rem; background: var(--dark);
+    }
+    .featured-header {
+      text-align: center; margin-bottom: 4rem;
+    }
+    .featured-header .section-divider { margin: 1.5rem auto; transform-origin: center; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem; max-width: 1200px; margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--dark-2);
+      border: 1px solid rgba(201,168,76,0.1);
+      overflow: hidden; cursor: pointer;
+      transition: border-color 0.4s, box-shadow 0.4s;
+      position: relative;
+      opacity: 0; transform: translateY(60px);
+    }
+    .product-card:hover {
+      border-color: rgba(201,168,76,0.45);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.15);
+    }
+    .product-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 30px; height: 30px;
+      border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+      opacity: 0; transition: opacity 0.4s; z-index: 2;
+    }
+    .product-card::after {
+      content: ''; position: absolute; bottom: 0; right: 0;
+      width: 30px; height: 30px;
+      border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold);
+      opacity: 0; transition: opacity 0.4s; z-index: 2;
+    }
+    .product-card:hover::before,
+    .product-card:hover::after { opacity: 1; }
+
+    .product-img-wrap {
+      overflow: hidden; height: 240px;
+      background: var(--dark-3); position: relative;
+    }
+    .product-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .product-card:hover .product-img-wrap img { transform: scale(1.1); }
+
+    .product-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      font-family: var(--font-ui); font-size: 0.6rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      background: var(--gold); color: var(--black);
+      padding: 0.3rem 0.7rem; font-weight: 600;
+    }
+    .product-info { padding: 1.5rem; }
+    .product-name {
+      font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
+      letter-spacing: 0.05em; color: var(--white); margin-bottom: 0.4rem;
+    }
+    .product-desc {
+      font-family: var(--font-body); font-size: 0.9rem;
+      font-weight: 300; color: var(--silver);
+      margin-bottom: 1rem; line-height: 1.5;
+    }
+    .product-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .product-price {
+      font-family: var(--font-display); font-size: 1.3rem;
+      font-weight: 600; color: var(--gold);
+    }
+    .btn-sm {
+      font-family: var(--font-ui); font-size: 0.65rem;
+      letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+      color: var(--black); background: var(--gold);
+      border: none; padding: 0.5rem 1.1rem; cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-sm:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* =============================================
+       ABOUT
+    ============================================= */
+    .about-section-wrap {
+      overflow: hidden;
+    }
+    .about {
+      padding: 7rem 3rem; background: var(--black);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; max-width: 1200px; margin: 0 auto;
+      align-items: center;
+    }
+    .about-visual { position: relative; }
+    .about-visual-inner {
+      width: 100%; height: 500px;
+      background: var(--dark-2);
+      border: 1px solid rgba(201,168,76,0.2);
+      overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-visual-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .about-number {
+      position: absolute; top: -1.5rem; left: -1rem;
+      font-family: var(--font-display); font-size: 5rem;
+      font-weight: 700; line-height: 1;
+      color: var(--gold); opacity: 0; pointer-events: none;
+    }
+    .about-corner-tl {
+      position: absolute; top: 0; left: 0;
+      width: 50px; height: 50px;
+      border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+      transform: scale(0); transform-origin: top left;
+    }
+    .about-corner-br {
+      position: absolute; bottom: 0; right: 0;
+      width: 50px; height: 50px;
+      border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold);
+      transform: scale(0); transform-origin: bottom right;
+    }
+    .about-img-accent {
+      position: absolute; bottom: -2rem; right: -2rem;
+      width: 45%; height: 200px;
+      background: var(--dark-3); border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+
+    .about-text .section-divider { margin-top: 1.2rem; }
+    .about-body {
+      font-family: var(--font-body); font-size: 1.05rem;
+      font-weight: 300; color: var(--silver);
+      line-height: 1.85; margin-bottom: 1.2rem;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin: 2.5rem 0;
+    }
+    .stat-item {
+      border-left: 1px solid rgba(201,168,76,0.3);
+      padding-left: 1rem;
+    }
+    .stat-number {
+      font-family: var(--font-display); font-size: 2rem;
+      font-weight: 600; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-ui); font-size: 0.65rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--silver); margin-top: 0.3rem;
+    }
+
+    /* =============================================
+       CRAFT BANNER
+    ============================================= */
+    .craft-banner {
+      position: relative; height: 420px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .craft-banner-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.6) 100%),
+        linear-gradient(to right, #1a1108, #0d0d0d);
+    }
+    .craft-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg,
+        transparent, transparent 60px,
+        rgba(201,168,76,0.02) 60px, rgba(201,168,76,0.02) 61px
+      );
+    }
+    .craft-content {
+      position: relative; z-index: 2; text-align: center; padding: 2rem;
+    }
+    .craft-logo {
+      width: 80px; height: 80px; margin: 0 auto 2rem;
+      opacity: 0; filter: grayscale(100%);
+    }
+    .craft-content blockquote {
+      font-family: var(--font-body);
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic; font-weight: 300;
+      color: var(--white); line-height: 1.5; max-width: 750px;
+      opacity: 0;
+    }
+    .craft-content blockquote::before { content: '\201C'; color: var(--gold); font-size: 3rem; line-height: 0; vertical-align: -0.5rem; margin-right: 0.3rem; }
+    .craft-content blockquote::after { content: '\201D'; color: var(--gold); font-size: 3rem; line-height: 0; vertical-align: -0.5rem; margin-left: 0.3rem; }
+    .craft-attr {
+      font-family: var(--font-ui); font-size: 0.7rem;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-top: 1.5rem; opacity: 0;
+    }
+
+    /* =============================================
+       SHOP PAGE
+    ============================================= */
+    .shop-hero {
+      padding: 10rem 3rem 4rem; text-align: center;
+      background: var(--black);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+    .shop-hero .section-divider { margin: 1.2rem auto; transform-origin: center; }
+
+    .shop-filters {
+      display: flex; justify-content: center; gap: 1rem;
+      padding: 2rem 3rem; background: var(--dark); flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--font-ui); font-size: 0.7rem;
+      letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+      color: var(--silver); background: transparent;
+      border: 1px solid rgba(192,192,192,0.2);
+      padding: 0.5rem 1.5rem; cursor: pointer; transition: all 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--gold); color: var(--black); border-color: var(--gold);
+    }
+
+    .shop-grid-section { padding: 4rem 3rem 7rem; background: var(--dark); }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 2rem; max-width: 1300px; margin: 0 auto;
+    }
+
+    /* =============================================
+       PRODUCT DETAIL
+    ============================================= */
+    .detail-page { padding-top: 6rem; min-height: 100vh; background: var(--black); }
+    .breadcrumb {
+      padding: 1.5rem 3rem;
+      font-family: var(--font-ui); font-size: 0.68rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--silver); border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .breadcrumb span { color: var(--gold); }
+    .breadcrumb a { cursor: pointer; transition: color 0.3s; }
+    .breadcrumb a:hover { color: var(--gold); }
+
+    .detail-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; padding: 4rem 3rem;
+      max-width: 1200px; margin: 0 auto; align-items: start;
+    }
+    .detail-gallery { position: sticky; top: 7rem; }
+    .detail-main-img {
+      width: 100%; height: 480px; object-fit: cover; overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.15); cursor: zoom-in; position: relative;
+    }
+    .detail-main-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .detail-main-img:hover img { transform: scale(1.08); }
+
+    .detail-thumbs { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+    .detail-thumb {
+      width: 80px; height: 70px; object-fit: cover;
+      border: 1px solid rgba(201,168,76,0.1);
+      cursor: pointer; filter: brightness(0.7);
+      transition: filter 0.3s, border-color 0.3s; overflow: hidden;
+    }
+    .detail-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .detail-thumb:hover { filter: brightness(1); border-color: var(--gold); }
+    .detail-thumb:hover img { transform: scale(1.1); }
+    .detail-thumb.active { filter: brightness(1); border-color: var(--gold); }
+
+    .detail-info { padding-top: 1rem; }
+    .detail-category { font-family: var(--font-ui); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .detail-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 600; line-height: 1.1; color: var(--white); margin-bottom: 0.5rem; }
+    .detail-price { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--gold); margin: 1rem 0; }
+    .detail-desc { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.85; margin: 1.5rem 0; }
+    .detail-specs { border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 1.5rem 0; margin: 1.5rem 0; }
+    .spec-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-family: var(--font-ui); font-size: 0.8rem; }
+    .spec-label { letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); font-weight: 500; }
+    .spec-value { color: var(--silver-light); }
+
+    .qty-add { display: flex; gap: 1rem; align-items: center; margin: 1.5rem 0; flex-wrap: wrap; }
+    .qty-control { display: flex; align-items: center; border: 1px solid rgba(201,168,76,0.3); }
+    .qty-btn { width: 40px; height: 44px; background: transparent; border: none; color: var(--gold); font-size: 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .qty-btn:hover { background: rgba(201,168,76,0.1); }
+    .qty-val { width: 44px; height: 44px; background: transparent; border: none; color: var(--white); text-align: center; font-family: var(--font-ui); font-size: 0.9rem; }
+    .btn-addcart { font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; color: var(--black); background: var(--gold); border: none; padding: 1rem 2.5rem; cursor: pointer; flex: 1; min-width: 200px; position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .btn-addcart::before { content: ''; position: absolute; inset: 0; background: var(--gold-light); transform: translateX(-101%); transition: transform 0.35s ease; }
+    .btn-addcart span { position: relative; z-index: 1; }
+    .btn-addcart:hover::before { transform: translateX(0); }
+    .btn-addcart:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
+    .btn-wishlist { width: 48px; height: 48px; background: transparent; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 1.1rem; cursor: pointer; transition: background 0.3s, border-color 0.3s; display: flex; align-items: center; justify-content: center; }
+    .btn-wishlist:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+    .guarantee-badges { display: flex; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+    .badge-item { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); }
+    .badge-item .badge-icon { color: var(--gold); font-size: 1rem; }
+
+    /* =============================================
+       CONTACT
+    ============================================= */
+    .contact-page { padding-top: 6rem; min-height: 100vh; background: var(--black); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1.3fr; gap: 5rem; padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; align-items: start; }
+    .contact-info .section-divider { margin: 1.2rem 0; }
+    .contact-body { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-link-item { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--silver); }
+    .contact-link-item .cl-icon { color: var(--gold); width: 20px; text-align: center; }
+    .contact-form { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.12); padding: 2.5rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label { display: block; font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .form-input, .form-textarea { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(192,192,192,0.15); border-radius: 0; color: var(--white); font-family: var(--font-body); font-size: 1rem; padding: 0.85rem 1rem; outline: none; transition: border-color 0.3s, background 0.3s; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.04); }
+    .form-textarea { resize: vertical; min-height: 130px; }
+    .form-submit { width: 100%; font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; color: var(--black); background: var(--gold); border: none; padding: 1rem; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .form-submit::before { content: ''; position: absolute; inset: 0; background: var(--gold-light); transform: translateX(-101%); transition: transform 0.35s ease; }
+    .form-submit span { position: relative; z-index: 1; }
+    .form-submit:hover::before { transform: translateX(0); }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.3); }
+    .form-msg { display: none; padding: 0.75rem 1rem; margin-top: 1rem; background: rgba(201,168,76,0.1); border: 1px solid var(--gold); font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--gold); text-align: center; }
+    .form-msg.show { display: block; }
+
+    /* =============================================
+       PRIVACY
+    ============================================= */
+    .privacy-page { padding-top: 6rem; min-height: 100vh; background: var(--black); }
+    .privacy-inner { max-width: 820px; margin: 0 auto; padding: 5rem 3rem; }
+    .privacy-inner .section-divider { margin: 1.2rem 0 2.5rem; }
+    .privacy-body { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.9; }
+    .privacy-body h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--white); margin: 2.5rem 0 0.75rem; }
+    .privacy-body h3::before { content: '\2014  '; color: var(--gold); }
+    .privacy-body p { margin-bottom: 1rem; }
+    .privacy-body ul { list-style: none; margin: 0.75rem 0 1rem 1rem; }
+    .privacy-body ul li::before { content: '\25B8  '; color: var(--gold); font-size: 0.75rem; }
+    .privacy-effective { font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2rem; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer { background: var(--dark-2); border-top: 1px solid rgba(201,168,76,0.15); padding: 4rem 3rem 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+    .footer-brand { display: flex; flex-direction: column; gap: 1rem; }
+    .footer-brand-logo { display: flex; align-items: center; gap: 0.75rem; }
+    .footer-brand-logo img { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(201,168,76,0.15)); }
+    .footer-brand-logo .footer-logo-text { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: 0.15em; color: var(--gold); }
+    .footer-brand p { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 260px; }
+    .footer-social { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .social-btn { width: 36px; height: 36px; background: transparent; border: 1px solid rgba(201,168,76,0.25); color: var(--silver); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s, border-color 0.3s, color 0.3s; font-family: var(--font-ui); font-weight: 600; }
+    .social-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+    .footer-col h4 { font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--silver); cursor: pointer; transition: color 0.3s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; margin-top: 3rem; border-top: 1px solid rgba(192,192,192,0.08); max-width: 1200px; margin-left: auto; margin-right: auto; }
+    .footer-copy { font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.15em; color: var(--gold-dim); }
+    .footer-legal { display: flex; gap: 1.5rem; font-family: var(--font-ui); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .footer-legal a { color: var(--gold-dim); cursor: pointer; transition: color 0.3s; }
+    .footer-legal a:hover { color: var(--gold); }
+
+    /* =============================================
+       CART TOAST
+    ============================================= */
+    .cart-toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 9000; background: var(--dark-2); border: 1px solid var(--gold); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; transform: translateY(150%); opacity: 0; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s; min-width: 280px; }
+    .cart-toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { color: var(--gold); font-size: 1.1rem; }
+    .toast-text { font-family: var(--font-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--white); flex: 1; }
+    .toast-close { background: none; border: none; color: var(--silver); cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+    .toast-close:hover { color: var(--gold); }
+
+    /* Page transition */
+    .page-transition { position: fixed; inset: 0; z-index: 9999; background: var(--black); pointer-events: none; opacity: 0; display: flex; align-items: center; justify-content: center; }
+    .page-transition.active { pointer-events: all; opacity: 1; }
+    .transition-logo { opacity: 0; }
+    .transition-logo img { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .about { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-accent { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .detail-gallery { position: relative; top: 0; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-ring, .hero-ring-2 { display: none; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-cart { display: none; }
+      .hamburger { display: flex; }
+      .nav-logo-text { font-size: 0.85rem; }
+      .nav-logo-text span { font-size: 0.5rem; }
+      .hero-content { padding: 1rem; grid-template-columns: 1fr; gap: 2rem; }
+      .hero-text { align-items: center; text-align: center; }
+      .hero-ctas { justify-content: center; }
+      .hero-showcase { max-width: 400px; margin: 0 auto; }
+      .hero-rays { width: 500px; height: 500px; }
+      .featured, .about, .shop-grid-section, .contact-inner, .privacy-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .detail-layout { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Noise overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Loading screen -->
+<div class="loader" id="loader">
+  <img src="atlbladelogo.png" alt="ATL Blade Co." class="loader-logo" id="loaderLogo">
+  <div class="loader-bar-track">
+    <div class="loader-bar-fill" id="loaderBar"></div>
+  </div>
+  <div class="loader-text" id="loaderText">Forging your experience</div>
+</div>
+
+<!-- Page transition -->
+<div class="page-transition" id="pageTransition">
+  <div class="transition-logo" id="transitionLogo">
+    <img src="atlbladelogo.png" alt="ATL Blade Co.">
+  </div>
+</div>
+
+<!-- Cart Toast -->
+<div class="cart-toast" id="cartToast">
+  <span class="toast-icon">&#10022;</span>
+  <span class="toast-text" id="toastText">Added to cart</span>
+  <button class="toast-close" onclick="closeToast()">&#10005;</button>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="goTo('home')">
+    <img src="atlbladelogo.png" alt="ATL Blade Co.">
+    <div class="nav-logo-text">
+      ATL Blade Co.
+      <span>Quality Tools &bull; Est. 2026</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a onclick="goTo('home')">Home</a>
+    <a onclick="goTo('shop')">Shop</a>
+    <a onclick="goTo('home', 'about-section')">About</a>
+    <a onclick="goTo('contact')">Contact</a>
+    <a onclick="goTo('privacy')">Privacy</a>
+  </div>
+  <button class="nav-cart" onclick="showToast('View your cart \u2014 coming soon!')">Cart (0)</button>
+  <div class="hamburger" onclick="toggleMobileNav()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile nav -->
+<div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,10,10,0.97);backdrop-filter:blur(12px);flex-direction:column;align-items:center;justify-content:center;gap:2rem;">
+  <img src="atlbladelogo.png" alt="ATL Blade Co." style="width:100px;height:100px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 0 15px rgba(201,168,76,0.3))">
+  <a onclick="goTo('home'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Home</a>
+  <a onclick="goTo('shop'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Shop</a>
+  <a onclick="goTo('contact'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Contact</a>
+  <a onclick="goTo('privacy'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Privacy</a>
+  <div onclick="closeMobileNav()" style="position:absolute;top:1.5rem;right:1.5rem;color:var(--gold);font-size:1.5rem;cursor:pointer">&#10005;</div>
+</div>
+
+<!-- =============================================
+     HOME PAGE
+============================================= -->
+<div class="page active" id="page-home">
+
+  <section class="hero" id="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-rays" id="heroRays"></div>
+    <div class="hero-ring" id="heroRing"></div>
+    <div class="hero-ring-2" id="heroRing2"></div>
+    <div class="hero-line-top" id="heroLineTop"></div>
+    <div class="hero-line-bottom" id="heroLineBot"></div>
+
+    <div class="hero-content">
+      <!-- Left: Text -->
+      <div class="hero-text">
+        <div class="hero-eyebrow" id="heroEyebrow">Atlanta, Georgia &bull; Est. 2026</div>
+        <h1 class="hero-title" id="heroTitle">
+          Premium<br><span class="gold-word">Handcrafted</span><br>Knives
+        </h1>
+        <p class="hero-tagline" id="heroTagline">Forged for the Edge. Built for the Bold. Every blade tells a story of fire, steel, and craft.</p>
+        <div class="hero-ctas" id="heroCtas">
+          <div class="magnetic-wrap" data-magnetic>
+            <button class="btn-primary" onclick="goTo('shop')"><span>Shop Collection</span></button>
+          </div>
+          <div class="magnetic-wrap" data-magnetic>
+            <button class="btn-outline" onclick="goTo('home', 'about-section')">Our Story</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Product Image Showcase -->
+      <div class="hero-showcase" id="heroShowcase">
+        <div class="hero-img-main">
+          <div class="hero-showcase-badge">Featured</div>
+          <!--
+            ============================================
+            REPLACE THIS PLACEHOLDER WITH YOUR KNIFE IMAGE:
+            <img src="images/hero-knife.jpg" alt="Featured Damascus Knife">
+            ============================================
+          -->
+          <div class="img-placeholder">
+            <div class="img-placeholder-icon">&#9876;</div>
+            <div class="img-placeholder-text">Add your featured knife photo here<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">images/hero-knife.jpg</small></div>
+          </div>
+        </div>
+        <div class="hero-img-row">
+          <div class="hero-img-thumb">
+            <!-- <img src="images/hero-thumb-1.jpg" alt="Knife detail"> -->
+            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
+              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9878;</div>
+              <span>Blade Detail</span>
+            </div>
+          </div>
+          <div class="hero-img-thumb">
+            <!-- <img src="images/hero-thumb-2.jpg" alt="Handle detail"> -->
+            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
+              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9879;</div>
+              <span>Handle Detail</span>
+            </div>
+          </div>
+          <div class="hero-img-thumb">
+            <!-- <img src="images/hero-thumb-3.jpg" alt="Sheath detail"> -->
+            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
+              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9881;</div>
+              <span>In Action</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" id="scrollIndicator">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <div class="marquee-strip">
+    <div class="marquee-inner" id="marquee">
+      <span>Damascus Steel</span><span class="dot">&#10022;</span>
+      <span>Handcrafted Blades</span><span class="dot">&#10022;</span>
+      <span>ATL Blade Co.</span><span class="dot">&#10022;</span>
+      <span>Premium Hunting Knives</span><span class="dot">&#10022;</span>
+      <span>Pocket Knives</span><span class="dot">&#10022;</span>
+      <span>Atlanta, Georgia</span><span class="dot">&#10022;</span>
+      <span>Forged for the Edge</span><span class="dot">&#10022;</span>
+      <span>Damascus Steel</span><span class="dot">&#10022;</span>
+      <span>Handcrafted Blades</span><span class="dot">&#10022;</span>
+      <span>ATL Blade Co.</span><span class="dot">&#10022;</span>
+      <span>Premium Hunting Knives</span><span class="dot">&#10022;</span>
+      <span>Pocket Knives</span><span class="dot">&#10022;</span>
+      <span>Atlanta, Georgia</span><span class="dot">&#10022;</span>
+      <span>Forged for the Edge</span><span class="dot">&#10022;</span>
+    </div>
+  </div>
+
+  <section class="featured" id="featured-section">
+    <div class="featured-header">
+      <div class="section-label reveal-up">Our Collection</div>
+      <h2 class="section-title reveal-up">Featured <em>Blades</em></h2>
+      <div class="section-divider divider-center"></div>
+      <p class="reveal-up" style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:520px;margin:0 auto">
+        Every knife is forged with intention — blending ancient Damascus techniques with modern precision craftsmanship.
+      </p>
+    </div>
+    <div class="products-grid" id="featured-grid"></div>
+    <div class="reveal-up" style="text-align:center;margin-top:3.5rem">
+      <div class="magnetic-wrap" data-magnetic>
+        <button class="btn-primary" onclick="goTo('shop')"><span>View Full Collection</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-section" class="about-section-wrap">
+    <div class="about">
+      <div class="about-visual">
+        <div class="about-number" id="aboutNum">01</div>
+        <div class="about-visual-inner">
+          <!--
+            ============================================
+            REPLACE WITH YOUR WORKSHOP/FORGE PHOTO:
+            <img src="images/about-forge.jpg" alt="ATL Blade Co. Workshop">
+            ============================================
+          -->
+          <div class="img-placeholder">
+            <div class="img-placeholder-icon" style="width:56px;height:56px;font-size:1.6rem">&#128296;</div>
+            <div class="img-placeholder-text">Workshop / Forge Photo<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">images/about-forge.jpg</small></div>
+          </div>
+          <div class="about-corner-tl" id="aboutCornerTL"></div>
+          <div class="about-corner-br" id="aboutCornerBR"></div>
+        </div>
+        <div class="about-img-accent">
+          <!--
+            REPLACE WITH A DETAIL SHOT:
+            <img src="images/about-detail.jpg" alt="Blade close-up" style="width:100%;height:100%;object-fit:cover">
+          -->
+          <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
+            <div class="img-placeholder-icon" style="width:32px;height:32px;font-size:1rem">&#9878;</div>
+            <span>Detail Shot</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="section-label reveal-right">Our Story</div>
+        <h2 class="section-title reveal-right">Born in Atlanta,<br><em>Forged in Fire</em></h2>
+        <div class="section-divider" id="aboutDivider"></div>
+        <p class="about-body reveal-right">ATL Blade Co. was founded by Atlanta craftsmen who believed that a knife should be more than a tool — it should be a work of art. Every blade we create is a testament to the ancient traditions of Damascus steel forging, reimagined for the modern world.</p>
+        <p class="about-body reveal-right">We source only the finest high-carbon and stainless steels, hand-folding each blade through hundreds of layers to create the unmistakable Damascus wave pattern. Our handles are crafted from premium stabilized wood, G10, and natural bone.</p>
+        <div class="about-stats" id="aboutStats">
+          <div class="stat-item">
+            <div class="stat-number" data-count="200" data-suffix="+">0</div>
+            <div class="stat-label">Layers per blade</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="5" data-suffix=" yr">0</div>
+            <div class="stat-label">Craftsmanship</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="100" data-suffix="%">0</div>
+            <div class="stat-label">Handmade</div>
+          </div>
+        </div>
+        <div class="magnetic-wrap reveal-right" data-magnetic>
+          <button class="btn-primary" onclick="goTo('shop')"><span>Explore Collection</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="craft-banner" id="craft-section">
+    <div class="craft-banner-bg"></div>
+    <div class="craft-content">
+      <img src="atlbladelogo.png" alt="" class="craft-logo" id="craftLogo">
+      <blockquote id="craftQuote">The knife does not know the hand that holds it — but the hand always knows the knife.</blockquote>
+      <div class="craft-attr" id="craftAttr">— ATL Blade Co. Philosophy</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <img src="atlbladelogo.png" alt="ATL Blade Co.">
+          <span class="footer-logo-text">ATL BLADE CO.</span>
+        </div>
+        <p>Premium handcrafted knives born in Atlanta, Georgia. Every blade tells a story of fire, steel, and craft.</p>
+        <div class="footer-social">
+          <div class="social-btn">IG</div><div class="social-btn">FB</div><div class="social-btn">TK</div><div class="social-btn">YT</div>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a onclick="goTo('shop')">Damascus Knives</a></li><li><a onclick="goTo('shop')">Pocket Knives</a></li><li><a onclick="goTo('shop')">Hunting Knives</a></li><li><a onclick="goTo('shop')">Gift Sets</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a onclick="goTo('home','about-section')">About Us</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a>Wholesale</a></li><li><a>Custom Orders</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a onclick="goTo('privacy')">Privacy Policy</a></li><li><a>Terms of Service</a></li><li><a>Return Policy</a></li><li><a>Shipping Info</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 ATL Blade Co. All rights reserved. Atlanta, GA.</div>
+      <div class="footer-legal"><a onclick="goTo('privacy')">Privacy</a><a>Terms</a><a onclick="goTo('contact')">Contact</a></div>
+    </div>
+  </footer>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <div class="shop-hero"><div class="section-label">The Collection</div><h1 class="section-title">Our <em>Knives</em></h1><div class="section-divider divider-center"></div><p style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:480px;margin:0 auto">Each blade is handcrafted to order. Built to last a lifetime — and beyond.</p></div>
+  <div class="shop-filters"><button class="filter-btn active" onclick="filterProducts('all',this)">All Blades</button><button class="filter-btn" onclick="filterProducts('damascus',this)">Damascus</button><button class="filter-btn" onclick="filterProducts('pocket',this)">Pocket Knives</button><button class="filter-btn" onclick="filterProducts('hunting',this)">Hunting</button><button class="filter-btn" onclick="filterProducts('gift',this)">Gift Sets</button></div>
+  <div class="shop-grid-section"><div class="shop-grid" id="shop-grid"></div></div>
+  <footer><div class="footer-grid" style="grid-template-columns:2fr 1fr"><div class="footer-brand"><div class="footer-brand-logo"><img src="atlbladelogo.png" alt="ATL Blade Co."><span class="footer-logo-text">ATL BLADE CO.</span></div><p>Premium handcrafted knives born in Atlanta, Georgia.</p><div class="footer-social"><div class="social-btn">IG</div><div class="social-btn">FB</div><div class="social-btn">TK</div></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="goTo('home')">Home</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a onclick="goTo('privacy')">Privacy Policy</a></li></ul></div></div><div class="footer-bottom" style="margin-top:2rem;padding-top:1.5rem"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div></div></footer>
+</div>
+
+<!-- PRODUCT DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="detail-page"><div class="breadcrumb"><a onclick="goTo('home')">Home</a><span> / </span><a onclick="goTo('shop')">Shop</a><span> / </span><span id="detail-breadcrumb-name">Product</span></div><div class="detail-layout"><div class="detail-gallery"><div class="detail-main-img" id="detail-main-img"><img id="detail-main-img-el" src="" alt="Product"></div><div class="detail-thumbs" id="detail-thumbs"></div></div><div class="detail-info" id="detail-info-panel"></div></div></div>
+  <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('privacy')">Privacy</a></div></div></footer>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="page-contact">
+  <div class="contact-page"><div class="contact-inner">
+    <div class="contact-info"><div class="section-label">Get In Touch</div><h1 class="section-title">Let's <em>Talk Steel</em></h1><div class="section-divider"></div><p class="contact-body">Whether you're interested in a custom order, wholesale partnership, or simply want to know more about our process — we'd love to hear from you.</p><p class="contact-body">Custom commissions are welcome. Tell us your vision and we'll bring it to life in steel.</p><div class="contact-links"><div class="contact-link-item"><span class="cl-icon">&#9993;</span><span>hello@atlbladeco.com</span></div><div class="contact-link-item"><span class="cl-icon">&#9742;</span><span>(404) 555-0182</span></div><div class="contact-link-item"><span class="cl-icon">&#8982;</span><span>Atlanta, Georgia, USA</span></div></div><div style="margin-top:3rem;opacity:0.1"><img src="atlbladelogo.png" alt="" style="width:120px;filter:grayscale(100%)"></div></div>
+    <div class="contact-form"><div style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--white);margin-bottom:0.5rem">Send a Message</div><div style="width:40px;height:1px;background:var(--gold);margin-bottom:2rem"></div><div class="form-group"><label class="form-label" for="contact-name">Full Name</label><input class="form-input" type="text" id="contact-name" placeholder="Your name"></div><div class="form-group"><label class="form-label" for="contact-email">Email Address</label><input class="form-input" type="email" id="contact-email" placeholder="your@email.com"></div><div class="form-group"><label class="form-label" for="contact-subject">Subject</label><input class="form-input" type="text" id="contact-subject" placeholder="Custom order inquiry, etc."></div><div class="form-group"><label class="form-label" for="contact-msg">Message</label><textarea class="form-textarea" id="contact-msg" placeholder="Tell us about your needs..."></textarea></div><div class="form-group" style="display:flex;align-items:center;gap:0.75rem"><input type="checkbox" id="newsletter" style="accent-color:var(--gold);width:15px;height:15px"><label for="newsletter" style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.1em;color:var(--silver);cursor:pointer">Subscribe to our newsletter for new releases &amp; offers</label></div><button class="form-submit" onclick="submitContact()"><span>Send Message &rarr;</span></button><div class="form-msg" id="contact-msg-success">&#10022; Your message has been received. We'll be in touch within 24 hours.</div></div>
+  </div></div>
+  <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('privacy')">Privacy</a></div></div></footer>
+</div>
+
+<!-- PRIVACY PAGE -->
+<div class="page" id="page-privacy">
+  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Legal</div><h1 class="section-title">Privacy <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">Effective Date: January 1, 2026</div><div class="privacy-body"><p>ATL Blade Co. ("we," "our," or "us") is committed to protecting the privacy and security of our customers. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p><h3>Information We Collect</h3><p>When you place an order or create an account with us, we may collect the following information:</p><ul><li>Full name and shipping/billing address</li><li>Email address and phone number</li><li>Payment method (processed securely — we do not store full card details)</li><li>Order history and product preferences</li><li>IP address and browser type for security and analytics</li></ul><h3>How We Use Your Information</h3><p>Your information is used exclusively to:</p><ul><li>Process and fulfill your orders</li><li>Communicate order status and shipping updates</li><li>Send marketing emails — only if you have opted in</li><li>Improve our website and customer experience</li><li>Comply with legal obligations</li></ul><h3>Email Marketing</h3><p>We may send promotional emails about new products, exclusive offers, and company news to customers who have subscribed. You may opt out at any time by clicking the "Unsubscribe" link in any email or by contacting us directly at hello@atlbladeco.com.</p><h3>Data Sharing</h3><p>ATL Blade Co. does not sell, trade, or rent your personal information to third parties. We may share data only with trusted service providers strictly to fulfill your order.</p><h3>Data Security</h3><p>We implement industry-standard security measures including SSL/TLS encryption, secure storage, regular audits, and PCI-DSS compliant payment processing.</p><h3>Cookies &amp; Tracking</h3><p>Our website uses cookies to enhance your browsing experience. You may disable cookies in your browser settings. We do not use third-party advertising trackers.</p><h3>Your Rights</h3><p>You have the right to request a copy of your data, request correction or deletion, opt out of marketing, and lodge complaints with your local data protection authority.</p><h3>Contact Us</h3><ul><li>Email: hello@atlbladeco.com</li><li>Phone: (404) 555-0182</li><li>Address: ATL Blade Co., Atlanta, Georgia, USA</li></ul></div></div></div>
+  <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('contact')">Contact</a></div></div></footer>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT — HEAVY GSAP IMPLEMENTATION
+============================================= -->
+<script>
+/* =============================================
+   PRODUCT DATA
+============================================= */
+/*
+  =============================================
+  IMAGE SETUP INSTRUCTIONS:
+  =============================================
+  1. Create an "images/" folder in your project root
+  2. Add your product photos with these filenames:
+     - images/hero-knife.jpg        (main hero showcase)
+     - images/hero-thumb-1.jpg      (blade detail)
+     - images/hero-thumb-2.jpg      (handle detail)
+     - images/hero-thumb-3.jpg      (in-action shot)
+     - images/about-forge.jpg       (workshop/forge photo)
+     - images/about-detail.jpg      (blade close-up)
+     - images/damascus-raider.jpg   (product photo)
+     - images/obsidian-folder.jpg
+     - images/forest-stalker.jpg
+     - images/serpents-wave.jpg
+     - images/gift-set.jpg
+  3. Once you add images, replace the placeholder
+     divs with <img> tags (see HTML comments)
+  =============================================
+*/
+var PRODUCTS = [
+  {id:1,name:"Damascus Raider",category:"damascus",price:349,badge:"Bestseller",
+   image:"images/damascus-raider.jpg",
+   shortDesc:"200-layer hand-folded Damascus steel with rosewood handle.",desc:"The Damascus Raider is our flagship blade \u2014 hand-forged through 200 layers of high-carbon and stainless steel, revealing the iconic flowing Damascus wave pattern unique to each knife. Full-tang construction with stabilized rosewood handle. Comes with a genuine leather sheath.",specs:{"Blade Length":"8.5 inches","Overall Length":"13.5 inches","Blade Steel":"Damascus (VG10 Core)","Handle Material":"Stabilized Rosewood","Blade Thickness":"4mm","Hardness":"60-62 HRC","Finish":"Hand-polished satin"},svgColor:"#a0522d"},
+  {id:2,name:"Obsidian Folder",category:"pocket",price:189,badge:"New",
+   image:"images/obsidian-folder.jpg",
+   shortDesc:"Premium G10 handle pocket knife with Damascus drop-point blade.",desc:"The Obsidian Folder is the everyday carry elevated to an art form. Drop-point Damascus blade with G10 composite handle. Precision ball-bearing pivot for smooth deployment.",specs:{"Blade Length":"3.75 inches","Overall Length":"8.75 inches (open)","Blade Steel":"Damascus (high-carbon)","Handle Material":"Black G10","Lock Type":"Liner Lock","Blade Style":"Drop-Point","Carry":"Reversible clip"},svgColor:"#2a2a2a"},
+  {id:3,name:"Forest Stalker",category:"hunting",price:279,badge:null,
+   image:"images/forest-stalker.jpg",
+   shortDesc:"Full-tang hunting knife, bone handle, single bevel grind.",desc:"Built for the backcountry. Clip-point blade with hollow grind. Genuine stabilized bone handle for secure grip in any conditions.",specs:{"Blade Length":"6.5 inches","Overall Length":"11.5 inches","Blade Steel":"1095 High Carbon","Handle Material":"Stabilized Bone","Blade Style":"Clip-Point","Grind":"Hollow Grind","Sheath":"Leather with snap closure"},svgColor:"#8b7355"},
+  {id:4,name:"Serpent\u2019s Wave",category:"damascus",price:425,badge:"Limited",
+   image:"images/serpents-wave.jpg",
+   shortDesc:"Artisan Damascus chef-style blade \u2014 320 layers of folded steel.",desc:"Collector-grade Damascus masterpiece. 320 layers of alternating high-carbon and nickel steels. Hand-carved stabilized maple burl handle.",specs:{"Blade Length":"9 inches","Overall Length":"14.5 inches","Blade Steel":"Damascus (320 layers)","Handle Material":"Maple Burl (stabilized)","Blade Style":"Gyuto / Chef","Hardness":"58-62 HRC","Includes":"Handmade wooden display box"},svgColor:"#6b4c2a"},
+  {id:5,name:"ATL Signature Gift Set",category:"gift",price:599,badge:"Gift Set",
+   image:"images/gift-set.jpg",
+   shortDesc:"Damascus folder + hunting knife in a handcrafted walnut box.",desc:"Pairs our Obsidian Folder with the Forest Stalker in a hand-oiled walnut display box. Certificate of authenticity and care guide included.",specs:{"Includes":"Obsidian Folder + Forest Stalker","Box Material":"Hand-oiled black walnut","Certificate":"Signed & numbered","Packaging":"Felt-lined presentation box","Custom Engraving":"Available (+$45)","Lead Time":"5\u20137 business days"},svgColor:"#3d2b1a"}
+];
+
+/* =============================================
+   KNIFE SVG GENERATOR
+============================================= */
+function makeKnifeSVG(c,t){if(t==='pocket')return'<svg viewBox="0 0 300 100" fill="none" style="width:100%;height:100%;padding:1rem"><path d="M20 50 L200 20 L260 50 L200 80Z" fill="#999" opacity="0.7"/><path d="M20 50 L200 20 L260 50" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/><rect x="5" y="38" width="22" height="24" rx="3" fill="'+c+'" opacity="0.9"/><line x1="10" y1="38" x2="10" y2="62" stroke="rgba(201,168,76,0.7)" stroke-width="1.5"/><line x1="16" y1="38" x2="16" y2="62" stroke="rgba(201,168,76,0.7)" stroke-width="1.5"/><line x1="22" y1="38" x2="22" y2="62" stroke="rgba(201,168,76,0.7)" stroke-width="1.5"/><path d="M60 38Q120 28 180 35Q220 40 240 32" stroke="rgba(201,168,76,0.3)" stroke-width="1" fill="none"/><path d="M60 47Q125 37 185 44Q225 49 245 41" stroke="rgba(201,168,76,0.2)" stroke-width="1" fill="none"/></svg>';var id='g'+Math.random().toString(36).substr(2,8);return'<svg viewBox="0 0 360 110" fill="none" style="width:100%;height:100%;padding:0.75rem"><path d="M15 55L290 15L350 55L290 95Z" fill="url(#'+id+')" opacity="0.6"/><path d="M15 55L290 15L350 55" stroke="rgba(255,255,255,0.55)" stroke-width="1.2" fill="none"/><path d="M55 40Q120 28 190 37Q250 45 285 28" stroke="rgba(201,168,76,0.3)" stroke-width="1" fill="none"/><path d="M55 50Q125 38 195 47Q255 55 288 38" stroke="rgba(201,168,76,0.22)" stroke-width="1" fill="none"/><path d="M55 60Q130 48 200 57Q258 65 290 48" stroke="rgba(201,168,76,0.16)" stroke-width="0.8" fill="none"/><rect x="3" y="42" width="55" height="26" rx="2" fill="'+c+'" opacity="0.9"/><line x1="14" y1="42" x2="14" y2="68" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/><line x1="23" y1="42" x2="23" y2="68" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/><line x1="32" y1="42" x2="32" y2="68" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/><line x1="41" y1="42" x2="41" y2="68" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/><line x1="50" y1="42" x2="50" y2="68" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/><rect x="55" y="37" width="9" height="36" fill="rgba(180,180,180,0.6)"/><circle cx="348" cy="55" r="3" fill="rgba(201,168,76,0.9)"/><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#555"/><stop offset="35%" stop-color="#e0e0e0"/><stop offset="65%" stop-color="#aaa"/><stop offset="100%" stop-color="#666"/></linearGradient></defs></svg>';}
+function makeSVGDataURL(s){return'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(s);}
+
+/* =============================================
+   RENDER CARDS
+============================================= */
+function makeProductImage(p) {
+  // Returns an <img> if the image exists, otherwise a styled placeholder
+  return '<img src="'+p.image+'" alt="'+p.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+    '<div class="img-placeholder" style="display:none;position:absolute;inset:0">' +
+      '<div class="img-placeholder-icon">&#9876;</div>' +
+      '<div class="img-placeholder-text">'+p.name+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.5rem">'+p.image+'</small></div>' +
+    '</div>';
+}
+
+function renderCard(p,c){var d=document.createElement('div');d.className='product-card';d.setAttribute('data-category',p.category);d.innerHTML='<div class="product-img-wrap" style="position:relative">'+(p.badge?'<div class="product-badge">'+p.badge+'</div>':'')+makeProductImage(p)+'</div><div class="product-info"><div class="product-name">'+p.name+'</div><div class="product-desc">'+p.shortDesc+'</div><div class="product-footer"><div class="product-price">$'+p.price+'</div><button class="btn-sm" onclick="event.stopPropagation();addToCart(\''+p.name+'\')">Add to Cart</button></div></div>';d.addEventListener('click',function(){goToDetail(p.id);});c.appendChild(d);}
+function renderFeatured(){var g=document.getElementById('featured-grid');g.innerHTML='';PRODUCTS.slice(0,3).forEach(function(p){renderCard(p,g);});}
+function renderShop(){var g=document.getElementById('shop-grid');g.innerHTML='';PRODUCTS.forEach(function(p){renderCard(p,g);});}
+
+/* =============================================
+   FILTER
+============================================= */
+function filterProducts(cat,btn){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');document.querySelectorAll('#shop-grid .product-card').forEach(function(card,i){if(cat==='all'||card.dataset.category===cat){card.style.display='';gsap.fromTo(card,{opacity:0,y:30,scale:0.95},{opacity:1,y:0,scale:1,duration:0.5,delay:i*0.08,ease:'back.out(1.4)'});}else{card.style.display='none';}});}
+
+/* =============================================
+   DETAIL PAGE
+============================================= */
+function goToDetail(id){var p=PRODUCTS.find(function(x){return x.id===id;});if(!p)return;document.getElementById('detail-breadcrumb-name').textContent=p.name;var mi=document.getElementById('detail-main-img-el');mi.src=p.image;mi.alt=p.name;mi.onerror=function(){this.style.display='none';this.parentNode.innerHTML+='<div class="img-placeholder" style="position:absolute;inset:0"><div class="img-placeholder-icon" style="width:56px;height:56px;font-size:1.6rem">&#9876;</div><div class="img-placeholder-text">'+p.name+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">'+p.image+'</small></div></div>';};var te=document.getElementById('detail-thumbs');te.innerHTML='';var thumbImgs=[p.image,p.image,p.image];thumbImgs.forEach(function(src,i){var d=document.createElement('div');d.className='detail-thumb'+(i===0?' active':'');d.innerHTML='<img src="'+src+'" alt="'+p.name+' view '+(i+1)+'" onerror="this.style.display=\'none\'">';d.addEventListener('click',function(){document.querySelectorAll('.detail-thumb').forEach(function(t){t.classList.remove('active');});d.classList.add('active');mi.src=src;gsap.fromTo('#detail-main-img-el',{opacity:0,scale:0.97},{opacity:1,scale:1,duration:0.4,ease:'power2.out'});});te.appendChild(d);});
+var sr=Object.entries(p.specs).map(function(e){return'<div class="spec-row"><span class="spec-label">'+e[0]+'</span><span class="spec-value">'+e[1]+'</span></div>';}).join('');
+document.getElementById('detail-info-panel').innerHTML='<div class="detail-category">'+p.category.charAt(0).toUpperCase()+p.category.slice(1)+' Knife</div><div class="detail-title">'+p.name+'</div><div class="detail-price">$'+p.price+'</div><p class="detail-desc">'+p.desc+'</p><div class="detail-specs">'+sr+'</div><div class="qty-add"><div class="qty-control"><button class="qty-btn" onclick="changeQty(-1)">\u2212</button><input class="qty-val" type="number" value="1" min="1" id="qty-input" readonly><button class="qty-btn" onclick="changeQty(1)">+</button></div><button class="btn-addcart" onclick="addToCart(\''+p.name+'\')"><span>Add to Cart</span></button><button class="btn-wishlist" title="Save">\u2661</button></div><div class="guarantee-badges"><div class="badge-item"><span class="badge-icon">\u2726</span> Free Shipping $200+</div><div class="badge-item"><span class="badge-icon">\u2726</span> Lifetime Warranty</div><div class="badge-item"><span class="badge-icon">\u2726</span> Handcrafted</div></div>';
+goTo('detail');}
+function changeQty(d){var i=document.getElementById('qty-input');if(!i)return;var v=parseInt(i.value)+d;if(v>=1)i.value=v;}
+
+/* =============================================
+   CART / TOAST
+============================================= */
+function addToCart(n){showToast('"'+n+'" added to cart');}
+var toastTimer;
+function showToast(m){var e=document.getElementById('cartToast');document.getElementById('toastText').textContent=m;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){e.classList.remove('show');},3200);}
+function closeToast(){document.getElementById('cartToast').classList.remove('show');}
+
+/* =============================================
+   CONTACT FORM
+============================================= */
+function submitContact(){var n=document.getElementById('contact-name').value;var e=document.getElementById('contact-email').value;var m=document.getElementById('contact-msg').value;if(!n||!e||!m){showToast('Please fill in all required fields.');return;}var s=document.getElementById('contact-msg-success');s.classList.add('show');gsap.fromTo(s,{opacity:0,y:10},{opacity:1,y:0,duration:0.5,ease:'power2.out'});document.getElementById('contact-name').value='';document.getElementById('contact-email').value='';document.getElementById('contact-subject').value='';document.getElementById('contact-msg').value='';}
+
+/* =============================================
+   NAVIGATION / PAGE ROUTING
+============================================= */
+var currentPage='home';
+var overlay=document.getElementById('pageTransition');
+var transLogo=document.getElementById('transitionLogo');
+function navigateTo(p){document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active');});document.getElementById('page-'+p).classList.add('active');window.scrollTo({top:0,behavior:'instant'});currentPage=p;setTimeout(function(){initPageGSAP();},100);}
+function goTo(p,st){if(p===currentPage&&!st)return;gsap.to(overlay,{opacity:1,duration:0.3,ease:'power2.in',onComplete:function(){overlay.classList.add('active');gsap.fromTo(transLogo,{opacity:0,scale:0.7,rotation:-10},{opacity:1,scale:1,rotation:0,duration:0.4,ease:'back.out(1.7)'});setTimeout(function(){navigateTo(p);gsap.to([overlay,transLogo],{opacity:0,duration:0.4,delay:0.1,ease:'power2.out',onComplete:function(){overlay.classList.remove('active');if(st){var el=document.getElementById(st);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}}});},400);}});}
+
+/* =============================================
+   MOBILE NAV
+============================================= */
+function toggleMobileNav(){var n=document.getElementById('mobileNav');if(n.style.display==='flex'){closeMobileNav();}else{n.style.display='flex';gsap.fromTo(n,{opacity:0},{opacity:1,duration:0.3});var links=n.querySelectorAll('a');gsap.fromTo(links,{y:20,opacity:0},{y:0,opacity:1,duration:0.4,stagger:0.08,ease:'power2.out',delay:0.1});}}
+function closeMobileNav(){var n=document.getElementById('mobileNav');gsap.to(n,{opacity:0,duration:0.2,onComplete:function(){n.style.display='none';}});}
+
+/* =============================================
+   CUSTOM CURSOR
+============================================= */
+(function(){
+  var dot=document.getElementById('cursorDot');
+  var ring=document.getElementById('cursorRing');
+  if(!dot||!ring||window.innerWidth<769)return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;gsap.to(dot,{x:mx,y:my,duration:0.1,ease:'power2.out'});});
+  gsap.ticker.add(function(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform='translate('+rx+'px,'+ry+'px)';});
+  document.querySelectorAll('a,button,.product-card,.nav-logo,.social-btn,.filter-btn').forEach(function(el){
+    el.addEventListener('mouseenter',function(){dot.classList.add('hovering');});
+    el.addEventListener('mouseleave',function(){dot.classList.remove('hovering');});
+  });
+})();
+
+/* =============================================
+   MAGNETIC BUTTONS
+============================================= */
+(function(){
+  if(window.innerWidth<769)return;
+  document.querySelectorAll('[data-magnetic]').forEach(function(wrap){
+    var btn=wrap.querySelector('button')||wrap;
+    wrap.addEventListener('mousemove',function(e){
+      var r=wrap.getBoundingClientRect();
+      var x=(e.clientX-r.left-r.width/2)*0.3;
+      var y=(e.clientY-r.top-r.height/2)*0.3;
+      gsap.to(btn,{x:x,y:y,duration:0.3,ease:'power2.out'});
+    });
+    wrap.addEventListener('mouseleave',function(){
+      gsap.to(btn,{x:0,y:0,duration:0.5,ease:'elastic.out(1,0.4)'});
+    });
+  });
+})();
+
+/* =============================================
+   SPLIT TEXT UTIL (no plugin needed)
+============================================= */
+function splitTextToChars(el){
+  var text=el.textContent;
+  el.innerHTML='';
+  el.style.opacity='1';
+  var words=text.split(' ');
+  words.forEach(function(word,wi){
+    var wordSpan=document.createElement('span');
+    wordSpan.className='word';
+    word.split('').forEach(function(ch){
+      var span=document.createElement('span');
+      span.className='char';
+      span.textContent=ch;
+      wordSpan.appendChild(span);
+    });
+    el.appendChild(wordSpan);
+    if(wi<words.length-1){
+      var space=document.createElement('span');
+      space.className='word';
+      space.innerHTML='&nbsp;';
+      el.appendChild(space);
+    }
+  });
+  return el.querySelectorAll('.char');
+}
+
+/* =============================================
+   FLOATING PARTICLES
+============================================= */
+function createParticles(){
+  var container=document.getElementById('heroParticles');
+  if(!container)return;
+  for(var i=0;i<30;i++){
+    var p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.top=Math.random()*100+'%';
+    p.style.width=(Math.random()*3+1)+'px';
+    p.style.height=p.style.width;
+    container.appendChild(p);
+    gsap.to(p,{
+      opacity:Math.random()*0.5+0.1,
+      y:-(Math.random()*200+100),
+      x:(Math.random()-0.5)*100,
+      duration:Math.random()*8+6,
+      repeat:-1,
+      delay:Math.random()*5,
+      ease:'none',
+      yoyo:true
+    });
+  }
+}
+
+/* =============================================
+   GSAP MARQUEE (replaces CSS animation)
+============================================= */
+function initMarquee(){
+  var el=document.getElementById('marquee');
+  if(!el)return;
+  var w=el.offsetWidth/2;
+  gsap.fromTo(el,{x:0},{x:-w,duration:20,ease:'none',repeat:-1});
+
+  // Speed up on scroll
+  ScrollTrigger.create({
+    trigger:'.marquee-strip',
+    start:'top bottom',
+    end:'bottom top',
+    onUpdate:function(self){
+      gsap.to(el,{timeScale:1+Math.abs(self.getVelocity())/3000,duration:0.3});
+    }
+  });
+}
+
+/* =============================================
+   LOADING SEQUENCE
+============================================= */
+function playLoader(callback){
+  var tl=gsap.timeline({onComplete:callback});
+  tl.to('#loaderLogo',{opacity:1,scale:1,duration:0.6,ease:'power2.out'})
+    .fromTo('#loaderLogo',{scale:0.85},{scale:1,duration:0.6,ease:'back.out(1.7)'},'-=0.6')
+    .to('#loaderText',{opacity:1,duration:0.3},'-=0.3')
+    .to('#loaderBar',{width:'100%',duration:1.2,ease:'power2.inOut'},'-=0.2')
+    .to('#loader',{opacity:0,duration:0.5,ease:'power2.in',delay:0.2})
+    .set('#loader',{display:'none'});
+}
+
+/* =============================================
+   HERO ANIMATION SEQUENCE
+============================================= */
+function playHero(){
+  var tl=gsap.timeline({defaults:{ease:'power3.out'}});
+
+  // Set initial states
+  gsap.set('#heroEyebrow',{y:20,opacity:0});
+  gsap.set('#heroTitle',{y:40,opacity:0});
+  gsap.set('#heroTagline',{y:30,opacity:0});
+  gsap.set('#heroCtas',{y:20,opacity:0});
+  gsap.set('#heroShowcase',{x:80,opacity:0,scale:0.95});
+  gsap.set('#heroLineTop',{scaleX:0});
+  gsap.set('#heroLineBot',{scaleX:0});
+
+  // Lines sweep in
+  tl.to('#heroLineTop',{scaleX:1,duration:1.2,ease:'power2.inOut'},0)
+    .to('#heroLineBot',{scaleX:1,duration:1.2,ease:'power2.inOut'},0.2)
+    // Rays fade in and start rotating
+    .to('#heroRays',{opacity:1,duration:2,ease:'power1.in'},0)
+    .to('#heroRays',{rotation:360,duration:60,ease:'none',repeat:-1},0)
+    // Rings
+    .to('#heroRing',{opacity:0.5,duration:1},0.4)
+    .to('#heroRing2',{opacity:0.3,duration:1},0.6)
+    .to('#heroRing',{scale:1.03,duration:2,ease:'sine.inOut',yoyo:true,repeat:-1,transformOrigin:'center center'},1)
+    .to('#heroRing2',{scale:0.97,duration:2.5,ease:'sine.inOut',yoyo:true,repeat:-1,transformOrigin:'center center'},1)
+
+    // Text side — staggered entrance
+    .to('#heroEyebrow',{opacity:1,y:0,duration:0.6},0.3)
+    .to('#heroTitle',{opacity:1,y:0,duration:1,ease:'power3.out'},0.5)
+    .to('#heroTagline',{opacity:1,y:0,duration:0.8},0.9)
+    .to('#heroCtas',{opacity:1,y:0,duration:0.7},1.2)
+
+    // Product showcase — slides in from right
+    .to('#heroShowcase',{opacity:1,x:0,scale:1,duration:1.2,ease:'power3.out'},0.6)
+
+    // Scroll indicator
+    .to('#scrollIndicator',{opacity:1,duration:0.5},1.6);
+
+  // Scroll indicator bounce
+  gsap.to('#scrollIndicator .scroll-arrow',{y:8,duration:1,ease:'sine.inOut',yoyo:true,repeat:-1,delay:2.5});
+
+  // Hero parallax on scroll
+  ScrollTrigger.create({
+    trigger:'#hero-section',
+    start:'top top',
+    end:'bottom top',
+    scrub:true,
+    onUpdate:function(self){
+      var p=self.progress;
+      gsap.set('.hero-text',{y:p*100,opacity:1-p*1.5});
+      gsap.set('#heroShowcase',{y:p*60,scale:1-p*0.1});
+      gsap.set('#scrollIndicator',{opacity:1-p*3});
+      gsap.set('#heroRays',{scale:1+p*0.5,opacity:1-p});
+    }
+  });
+}
+
+/* =============================================
+   PAGE-LEVEL GSAP INIT
+============================================= */
+function initPageGSAP(){
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.getAll().forEach(function(t){t.kill();});
+
+  if(currentPage==='home'){
+    // Reveal elements
+    document.querySelectorAll('.reveal-up').forEach(function(el){
+      gsap.fromTo(el,{opacity:0,y:60},{opacity:1,y:0,duration:0.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+    });
+    document.querySelectorAll('.reveal-right').forEach(function(el){
+      gsap.fromTo(el,{opacity:0,x:60},{opacity:1,x:0,duration:0.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%',once:true}});
+    });
+    document.querySelectorAll('.reveal-left').forEach(function(el){
+      gsap.fromTo(el,{opacity:0,x:-60},{opacity:1,x:0,duration:0.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%',once:true}});
+    });
+
+    // Section dividers animate in
+    document.querySelectorAll('.section-divider').forEach(function(el){
+      gsap.to(el,{scaleX:1,duration:0.8,ease:'power2.inOut',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+    });
+
+    // Product cards stagger
+    var cards=document.querySelectorAll('#featured-grid .product-card');
+    cards.forEach(function(card,i){
+      gsap.to(card,{opacity:1,y:0,duration:0.7,delay:i*0.15,ease:'power3.out',scrollTrigger:{trigger:'#featured-section',start:'top 75%',once:true}});
+    });
+
+    // 3D tilt on product cards
+    cards.forEach(function(card){
+      card.addEventListener('mousemove',function(e){
+        var r=card.getBoundingClientRect();
+        var x=(e.clientX-r.left)/r.width-0.5;
+        var y=(e.clientY-r.top)/r.height-0.5;
+        gsap.to(card,{rotateY:x*8,rotateX:-y*8,transformPerspective:800,duration:0.3,ease:'power2.out'});
+      });
+      card.addEventListener('mouseleave',function(){
+        gsap.to(card,{rotateY:0,rotateX:0,duration:0.5,ease:'elastic.out(1,0.5)'});
+      });
+    });
+
+    // About section
+    ScrollTrigger.create({
+      trigger:'#about-section',
+      start:'top 75%',
+      once:true,
+      onEnter:function(){
+        // About visual entrance
+        gsap.fromTo('.about-visual',{opacity:0,x:-80},{opacity:1,x:0,duration:1.2,ease:'power3.out'});
+        gsap.to('#aboutNum',{opacity:0.12,duration:1,delay:0.3,ease:'power2.out'});
+        gsap.to('#aboutCornerTL',{scale:1,duration:0.6,delay:0.5,ease:'back.out(2)'});
+        gsap.to('#aboutCornerBR',{scale:1,duration:0.6,delay:0.7,ease:'back.out(2)'});
+
+        // About image entrance
+        gsap.fromTo('.about-visual-inner img, .about-visual-inner .img-placeholder',{
+          scale:1.1,opacity:0
+        },{
+          scale:1,opacity:1,duration:1.5,delay:0.4,ease:'power2.out'
+        });
+      }
+    });
+
+    // Animated counters
+    ScrollTrigger.create({
+      trigger:'#aboutStats',
+      start:'top 85%',
+      once:true,
+      onEnter:function(){
+        document.querySelectorAll('[data-count]').forEach(function(el){
+          var target=parseInt(el.dataset.count);
+          var suffix=el.dataset.suffix||'';
+          var obj={val:0};
+          gsap.to(obj,{val:target,duration:2,ease:'power2.out',
+            onUpdate:function(){el.textContent=Math.round(obj.val)+suffix;},
+            delay:0.2
+          });
+        });
+        // Stat items stagger
+        gsap.fromTo('.stat-item',{opacity:0,y:30},{opacity:1,y:0,stagger:0.15,duration:0.6,ease:'power2.out'});
+      }
+    });
+
+    // Craft banner
+    ScrollTrigger.create({
+      trigger:'#craft-section',
+      start:'top 70%',
+      once:true,
+      onEnter:function(){
+        gsap.to('#craftLogo',{opacity:0.2,scale:1,duration:0.8,ease:'power2.out'});
+        gsap.fromTo('#craftLogo',{scale:0.7,rotation:-15},{scale:1,rotation:0,duration:0.8,ease:'back.out(1.7)'});
+        gsap.to('#craftQuote',{opacity:1,duration:1,delay:0.3,ease:'power2.out'});
+        gsap.fromTo('#craftQuote',{y:30},{y:0,duration:1,delay:0.3,ease:'power3.out'});
+        gsap.to('#craftAttr',{opacity:1,duration:0.6,delay:0.8,ease:'power2.out'});
+      }
+    });
+
+    // Craft banner parallax
+    ScrollTrigger.create({
+      trigger:'#craft-section',
+      start:'top bottom',
+      end:'bottom top',
+      scrub:true,
+      onUpdate:function(self){
+        gsap.set('.craft-banner-bg',{y:self.progress*-60});
+      }
+    });
+
+    // Footer reveal
+    ScrollTrigger.create({
+      trigger:'footer',
+      start:'top 90%',
+      once:true,
+      onEnter:function(){
+        gsap.fromTo('.footer-brand',{opacity:0,y:30},{opacity:1,y:0,duration:0.7,ease:'power2.out'});
+        gsap.fromTo('.footer-col',{opacity:0,y:30},{opacity:1,y:0,stagger:0.1,duration:0.6,delay:0.15,ease:'power2.out'});
+      }
+    });
+
+    initMarquee();
+  }
+
+  if(currentPage==='shop'){
+    // Dividers
+    document.querySelectorAll('.section-divider').forEach(function(el){
+      gsap.to(el,{scaleX:1,duration:0.8,ease:'power2.inOut'});
+    });
+    var shopCards=document.querySelectorAll('#shop-grid .product-card');
+    shopCards.forEach(function(card,i){
+      gsap.to(card,{opacity:1,y:0,duration:0.6,delay:i*0.06,ease:'power3.out'});
+    });
+    // 3D tilt
+    shopCards.forEach(function(card){
+      card.addEventListener('mousemove',function(e){
+        var r=card.getBoundingClientRect();
+        var x=(e.clientX-r.left)/r.width-0.5;
+        var y=(e.clientY-r.top)/r.height-0.5;
+        gsap.to(card,{rotateY:x*6,rotateX:-y*6,transformPerspective:800,duration:0.3,ease:'power2.out'});
+      });
+      card.addEventListener('mouseleave',function(){
+        gsap.to(card,{rotateY:0,rotateX:0,duration:0.5,ease:'elastic.out(1,0.5)'});
+      });
+    });
+  }
+
+  if(currentPage==='detail'){
+    gsap.fromTo('.detail-gallery',{opacity:0,x:-40,scale:0.98},{opacity:1,x:0,scale:1,duration:0.9,ease:'power3.out'});
+    gsap.fromTo('.detail-info',{opacity:0,x:40},{opacity:1,x:0,duration:0.9,ease:'power3.out',delay:0.15});
+  }
+
+  if(currentPage==='contact'){
+    gsap.fromTo('.contact-info',{opacity:0,x:-40},{opacity:1,x:0,duration:0.8,ease:'power3.out'});
+    gsap.fromTo('.contact-form',{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power3.out',delay:0.2});
+    document.querySelectorAll('.section-divider').forEach(function(el){
+      gsap.to(el,{scaleX:1,duration:0.8,ease:'power2.inOut',delay:0.3});
+    });
+    // Stagger contact links
+    gsap.fromTo('.contact-link-item',{opacity:0,x:-20},{opacity:1,x:0,stagger:0.1,duration:0.5,delay:0.4,ease:'power2.out'});
+  }
+
+  if(currentPage==='privacy'){
+    document.querySelectorAll('.section-divider').forEach(function(el){
+      gsap.to(el,{scaleX:1,duration:0.8,ease:'power2.inOut'});
+    });
+  }
+}
+
+/* =============================================
+   NAV SCROLL EFFECTS
+============================================= */
+var lastScroll=0;
+window.addEventListener('scroll',function(){
+  var nav=document.getElementById('mainNav');
+  var y=window.scrollY;
+  if(y>80){nav.classList.add('scrolled');}else{nav.classList.remove('scrolled');}
+  // Hide nav on scroll down, show on scroll up
+  if(y>300){
+    if(y>lastScroll+5){gsap.to(nav,{y:-100,duration:0.3,ease:'power2.in'});}
+    else if(y<lastScroll-5){gsap.to(nav,{y:0,duration:0.3,ease:'power2.out'});}
+  }else{
+    gsap.to(nav,{y:0,duration:0.3,ease:'power2.out'});
+  }
+  lastScroll=y;
+});
+
+/* =============================================
+   INIT
+============================================= */
+document.addEventListener('DOMContentLoaded',function(){
+  gsap.registerPlugin(ScrollTrigger);
+  renderFeatured();
+  renderShop();
+  createParticles();
+
+  // Loading sequence
+  playLoader(function(){
+    // Show nav
+    var nav=document.getElementById('mainNav');
+    nav.classList.add('visible');
+    gsap.fromTo(nav,{y:-100},{y:0,duration:0.6,ease:'power3.out'});
+    // Play hero
+    playHero();
+    initPageGSAP();
+  });
+});
+</script>
+</body>
+</html>
