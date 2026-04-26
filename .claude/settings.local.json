@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx -y serve . -p 3000)",
+      "Bash(cd:*)",
+      "Bash(npx --yes serve . -p 5180 -l 5180)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5180/)",
+      "Bash(curl -s -o /dev/null -w \"asset:%{http_code}\\\\n\" \"http://localhost:5180/assets/Damascus-USA-Flag-Pocket-Knife1.png\")",
+      "Bash(curl -s -o /dev/null -w \"asset2:%{http_code}\\\\n\" \"http://localhost:5180/assets/Damascus-%26-Pakkawood-Pocket-Knife1.png\")",
+      "Bash(curl -s -o /dev/null -w \"asset3:%{http_code}\\\\n\" \"http://localhost:5180/assets/7%E2%80%9D-Damascus-Skinner-Knife1.png\")",
+      "Bash(curl -s -o /dev/null -w \"logo:%{http_code}\\\\n\" \"http://localhost:5180/atlbladecologo.png\")",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "PowerShell(Get-NetTCPConnection *)",
+      "Bash(curl -s -o /dev/null -w \"page:%{http_code} R:\" http://localhost:5180/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5180/R.jpg)",
+      "Skill(humanizer)",
+      "Bash(grep -n \"playHero\\(\\);$\\\\|function playHero\" C:/Users/onina/atl-blade.co/index.html)",
+      "Bash(npx --yes serve . -p 5181 -l 5181)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5181/)",
+      "Bash(npx --yes serve . -p 5182 -l 5182)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5182/)",
+      "Bash(npx --yes serve . -p 5183 -l 5183)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/)"
+    ]
+  }
+}

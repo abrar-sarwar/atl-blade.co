@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img "ATL Blade Co." [ref=e3]
+    - generic [ref=e6]: Forging your experience
+  - generic:
+    - generic:
+      - img "ATL Blade Co."
+  - generic [ref=e7]:
+    - generic [ref=e8]: ✦
+    - generic [ref=e9]: Added to cart
+    - button "✕" [ref=e10] [cursor=pointer]
+  - navigation [ref=e11]:
+    - generic [ref=e12] [cursor=pointer]:
+      - img "ATL Blade Co." [ref=e13]
+      - generic [ref=e14]:
+        - text: ATL Blade Co.
+        - generic [ref=e15]: Quality Tools • Est. 2026
+    - generic [ref=e16]:
+      - generic [ref=e17] [cursor=pointer]: Home
+      - generic [ref=e18] [cursor=pointer]: Shop
+      - generic [ref=e19] [cursor=pointer]: About
+      - generic [ref=e20] [cursor=pointer]: Contact
+      - generic [ref=e21] [cursor=pointer]: Privacy
+    - button "Cart (0)" [ref=e22] [cursor=pointer]
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: Atlanta, Georgia • Est. 2026
+          - heading "Premium Handcrafted Knives" [level=1] [ref=e32]:
+            - text: Premium
+            - text: Handcrafted
+            - text: Knives
+          - paragraph [ref=e33]: Forged for the Edge. Built for the Bold. Every blade tells a story of fire, steel, and craft.
+          - generic [ref=e34]:
+            - button "Shop Collection" [ref=e36] [cursor=pointer]
+            - button "Our Story" [ref=e38] [cursor=pointer]
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]: Featured
+            - generic [ref=e42]:
+              - generic [ref=e43]: ⚔
+              - generic [ref=e44]:
+                - text: Add your featured knife photo here
+                - text: images/hero-knife.jpg
+          - generic [ref=e45]:
+            - generic [ref=e47] [cursor=pointer]:
+              - generic [ref=e48]: ⚖
+              - generic [ref=e49]: Blade Detail
+            - generic [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]: ⚗
+              - generic [ref=e53]: Handle Detail
+            - generic [ref=e55] [cursor=pointer]:
+              - generic [ref=e56]: ⚙
+              - generic [ref=e57]: In Action
+      - generic [ref=e59] [cursor=pointer]: Scroll
+    - generic [ref=e62]: Damascus Steel✦ Handcrafted Blades✦ ATL Blade Co.✦ Premium Hunting Knives✦ Pocket Knives✦ Atlanta, Georgia✦ Forged for the Edge✦ Damascus Steel✦ Handcrafted Blades✦ ATL Blade Co.✦ Premium Hunting Knives✦ Pocket Knives✦ Atlanta, Georgia✦ Forged for the Edge✦
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: Our Collection
+        - heading "Featured Blades" [level=2] [ref=e66]:
+          - text: Featured
+          - emphasis [ref=e67]: Blades
+        - paragraph [ref=e68]: Every knife is forged with intention — blending ancient Damascus techniques with modern precision craftsmanship.
+      - generic [ref=e69]:
+        - generic [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: Limited
+            - img "Karambit Knife — Powdercoated Blade" [ref=e73]
+          - generic [ref=e74]:
+            - generic [ref=e75]: Karambit Knife — Powdercoated Blade
+            - generic [ref=e76]: A bold tactical-style karambit featuring a durable powdercoated blade and a rugged black micarta handle, finished with a striking mosaic pin.
+            - generic [ref=e77]:
+              - generic [ref=e78]: Handcrafted
+              - button "View" [ref=e79]
+        - generic [ref=e80] [cursor=pointer]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: Premium
+            - img "Damascus Pakkawood USA Pocket Knife" [ref=e83]
+          - generic [ref=e84]:
+            - generic [ref=e85]: Damascus Pakkawood USA Pocket Knife
+            - generic [ref=e86]: A premium folding knife with Damascus steel bolsters and blade, paired with a striking USA flag-color pakkawood and white resin handle.
+            - generic [ref=e87]:
+              - generic [ref=e88]: Handcrafted
+              - button "View" [ref=e89]
+        - generic [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: Hunter
+            - img "7” Damascus Skinner Knife" [ref=e93]
+          - generic [ref=e94]:
+            - generic [ref=e95]: 7” Damascus Skinner Knife
+            - generic [ref=e96]: A robust skinner with a hand-forged Damascus blade and a durable pakkawood handle.
+            - generic [ref=e97]:
+              - generic [ref=e98]: Handcrafted
+              - button "View" [ref=e99]
+      - button "View Full Collection" [ref=e102] [cursor=pointer]
+    - generic [ref=e104]:
+      - generic [ref=e105]:
+        - generic: "01"
+        - img "Atlanta, Georgia — ATL Blade Co." [ref=e107]
+        - generic [ref=e109]:
+          - generic [ref=e110]: ⚖
+          - generic [ref=e111]: Detail Shot
+      - generic [ref=e112]:
+        - generic [ref=e113]: Our Story
+        - heading "Born in Atlanta, Forged in Fire" [level=2] [ref=e114]:
+          - text: Born in Atlanta,
+          - emphasis [ref=e115]: Forged in Fire
+        - paragraph [ref=e116]: ATL Blade Co. was founded by Atlanta craftsmen who believed that a knife should be more than a tool — it should be a work of art. Every blade we create is a testament to the ancient traditions of Damascus steel forging, reimagined for the modern world.
+        - paragraph [ref=e117]: We source only the finest high-carbon and stainless steels, hand-folding each blade through hundreds of layers to create the unmistakable Damascus wave pattern. Our handles are crafted from premium stabilized wood, G10, and natural bone.
+        - generic [ref=e118]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: "0"
+            - generic [ref=e121]: Layers per blade
+          - generic [ref=e122]:
+            - generic [ref=e123]: "0"
+            - generic [ref=e124]: Craftsmanship
+          - generic [ref=e125]:
+            - generic [ref=e126]: "0"
+            - generic [ref=e127]: Handmade
+        - button "Explore Collection" [ref=e129] [cursor=pointer]
+    - generic [ref=e132]:
+      - blockquote [ref=e133]: “The knife does not know the hand that holds it — but the hand always knows the knife.”
+      - generic [ref=e134]: — ATL Blade Co. Philosophy
+    - contentinfo [ref=e135]:
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - img "ATL Blade Co." [ref=e139]
+            - generic [ref=e140]: ATL BLADE CO.
+          - paragraph [ref=e141]: Premium handcrafted knives born in Atlanta, Georgia. Every blade tells a story of fire, steel, and craft.
+          - generic [ref=e142]:
+            - link "Instagram" [ref=e143] [cursor=pointer]:
+              - /url: https://www.instagram.com/atlbladeco/
+              - text: IG
+            - link "TikTok" [ref=e144] [cursor=pointer]:
+              - /url: https://www.tiktok.com/@atlbladeco?_r=1&_t=ZT-95P7LZQVYUv
+              - text: TT
+        - generic [ref=e145]:
+          - heading "Shop" [level=4] [ref=e146]
+          - list [ref=e147]:
+            - listitem [ref=e148]: Damascus Knives
+            - listitem [ref=e149]: Pocket Knives
+            - listitem [ref=e150]: Hunting Knives
+            - listitem [ref=e151]: Gift Sets
+        - generic [ref=e152]:
+          - heading "Company" [level=4] [ref=e153]
+          - list [ref=e154]:
+            - listitem [ref=e155]: About Us
+            - listitem [ref=e156]: Contact
+            - listitem [ref=e157]: Wholesale
+            - listitem [ref=e158]: Custom Orders
+        - generic [ref=e159]:
+          - heading "Legal" [level=4] [ref=e160]
+          - list [ref=e161]:
+            - listitem [ref=e162]: Privacy Policy
+            - listitem [ref=e163]: Terms of Service
+            - listitem [ref=e164]: Return Policy
+            - listitem [ref=e165]: Shipping Info
+      - generic [ref=e166]:
+        - generic [ref=e167]: © 2026 ATL Blade Co. All rights reserved. Atlanta, GA.
+        - generic [ref=e168]:
+          - generic [ref=e169] [cursor=pointer]: Privacy
+          - generic [ref=e170] [cursor=pointer]: Terms
+          - generic [ref=e171] [cursor=pointer]: Contact
+  - text: — ▸ ▸ ▸ ▸ ▸ — ▸ ▸ ▸ ▸ ▸ — — — — — — ▸ ▸ ▸

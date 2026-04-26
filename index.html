@@ -443,6 +443,107 @@
       object-fit: cover;
     }
 
+    /* =============================================
+       HERO GALLERY (auto-rotating)
+    ============================================= */
+    .hero-gallery {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: #0a0a0a;
+      border: 1px solid rgba(201,168,76,0.2);
+      overflow: hidden;
+    }
+    .hero-gallery::before {
+      content: '';
+      position: absolute; top: -1px; left: -1px;
+      width: 40px; height: 40px;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      z-index: 4;
+      transition: width 0.4s, height 0.4s;
+    }
+    .hero-gallery::after {
+      content: '';
+      position: absolute; bottom: -1px; right: -1px;
+      width: 40px; height: 40px;
+      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      z-index: 4;
+      transition: width 0.4s, height 0.4s;
+    }
+    .hero-gallery:hover::before, .hero-gallery:hover::after { width: 56px; height: 56px; }
+
+    .gallery-track {
+      position: relative;
+      width: 100%; height: 100%;
+    }
+    .gallery-slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 1.1s cubic-bezier(0.4,0,0.2,1),
+                  transform 5.2s cubic-bezier(0.25,0.1,0.25,1);
+    }
+    .gallery-slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .gallery-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      padding: 0;
+    }
+
+    .gallery-eyebrow {
+      position: absolute; top: 1rem; left: 1rem;
+      font-family: var(--font-ui);
+      font-size: 0.6rem; letter-spacing: 0.4em;
+      text-transform: uppercase; font-weight: 600;
+      color: var(--gold);
+      background: rgba(10,10,10,0.7);
+      backdrop-filter: blur(6px);
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(201,168,76,0.18);
+      z-index: 3;
+    }
+
+    .gallery-dots {
+      position: absolute; bottom: 1.1rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 0.5rem;
+      align-items: center;
+      padding: 0.55rem 0.8rem;
+      background: rgba(10,10,10,0.55);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 999px;
+      z-index: 3;
+    }
+    .gallery-dot {
+      width: 22px; height: 2px;
+      background: rgba(201,168,76,0.25);
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+    .gallery-dot.active {
+      background: var(--gold);
+      width: 32px;
+    }
+    .gallery-dot:hover { background: rgba(201,168,76,0.6); }
+
+    .gallery-progress {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: rgba(0,0,0,0.55);
+      z-index: 2;
+    }
+    .gallery-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+    }
+
     /* Showcase badge */
     .hero-showcase-badge {
       position: absolute; top: 1rem; left: 1rem; z-index: 3;
@@ -920,6 +1021,7 @@
     ============================================= */
     footer { background: var(--dark-2); border-top: 1px solid rgba(201,168,76,0.15); padding: 4rem 3rem 2rem; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+    .footer-grid.footer-grid-3 { grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
     .footer-brand { display: flex; flex-direction: column; gap: 1rem; }
     .footer-brand-logo { display: flex; align-items: center; gap: 0.75rem; }
     .footer-brand-logo img { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(201,168,76,0.15)); }
@@ -955,6 +1057,367 @@
     .transition-logo img { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); }
 
     /* =============================================
+       CATALOG (SHOP) — 7 SPECIMEN CARDS
+    ============================================= */
+    .shop-hero { padding: 9rem 3rem 3rem; }
+
+    /* Compliance strip — editorial, 4 columns */
+    .compliance-strip {
+      background: linear-gradient(180deg, var(--black) 0%, #060606 100%);
+      border-top: 1px solid rgba(201,168,76,0.12);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      padding: 2.2rem 3rem;
+      position: relative;
+    }
+    .compliance-strip::before, .compliance-strip::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+      width: 64px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+    .compliance-strip::before { top: 0; }
+    .compliance-strip::after  { bottom: 0; }
+    .compliance-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .compliance-item {
+      padding: 0.4rem 1.6rem;
+      border-left: 1px solid rgba(201,168,76,0.12);
+    }
+    .compliance-item:first-child { border-left: none; padding-left: 0; }
+    .compliance-item:last-child  { padding-right: 0; }
+    .compliance-icon {
+      font-family: var(--font-display);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      margin-bottom: 0.45rem;
+      display: flex; align-items: center; gap: 0.45rem;
+    }
+    .compliance-icon::before {
+      content: ''; width: 18px; height: 1px; background: var(--gold);
+      flex-shrink: 0;
+    }
+    .compliance-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 0.35rem;
+    }
+    .compliance-copy {
+      font-family: var(--font-body);
+      font-size: 0.82rem; font-weight: 300; font-style: italic;
+      color: var(--silver);
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+    }
+
+    /* Catalog grid — overrides .shop-grid for richer cards */
+    #shop-grid {
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2.5rem;
+      max-width: 1320px;
+    }
+
+    .catalog-card {
+      position: relative;
+      background: linear-gradient(180deg, #131313 0%, #0d0d0d 100%);
+      border: 1px solid rgba(201,168,76,0.12);
+      display: flex; flex-direction: column;
+      opacity: 0; transform: translateY(60px);
+      transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+    }
+    .catalog-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7),
+                  0 0 0 1px rgba(201,168,76,0.18),
+                  0 0 60px -20px rgba(201,168,76,0.15);
+    }
+    .catalog-card::before {
+      content: ''; position: absolute; top: -1px; left: -1px;
+      width: 28px; height: 28px;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      opacity: 0; transition: opacity 0.4s, width 0.4s, height 0.4s; z-index: 4;
+    }
+    .catalog-card::after {
+      content: ''; position: absolute; bottom: -1px; right: -1px;
+      width: 28px; height: 28px;
+      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      opacity: 0; transition: opacity 0.4s, width 0.4s, height 0.4s; z-index: 4;
+    }
+    .catalog-card:hover::before, .catalog-card:hover::after { opacity: 1; width: 42px; height: 42px; }
+
+    /* Specimen index strip */
+    .specimen-strip {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 1.1rem 1.4rem 0.6rem;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+    .specimen-num {
+      font-family: var(--font-display);
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+    }
+    .specimen-num .num-of {
+      color: var(--gold-dim); font-weight: 400;
+    }
+    .specimen-tags {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+    }
+    .tag-chip {
+      font-family: var(--font-ui);
+      font-size: 0.55rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      font-weight: 500;
+      color: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.22);
+      padding: 0.18rem 0.55rem;
+    }
+
+    /* Slideshow stage */
+    .slideshow {
+      position: relative;
+      width: 100%; aspect-ratio: 5/4;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at center, #1a1a1a 0%, #0a0a0a 100%);
+    }
+    .slideshow-track {
+      position: relative;
+      width: 100%; height: 100%;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.9s cubic-bezier(0.4,0,0.2,1);
+    }
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .slide img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      padding: 1.2rem;
+      filter: drop-shadow(0 14px 24px rgba(0,0,0,0.5));
+    }
+
+    /* Vignette + grain over slideshow */
+    .slideshow::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.4) 100%);
+      z-index: 1;
+    }
+
+    /* Slideshow arrows */
+    .slide-arrow {
+      position: absolute; top: 50%;
+      width: 44px; height: 44px;
+      transform: translateY(-50%);
+      background: rgba(10,10,10,0.65);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s, background 0.25s, transform 0.25s, border-color 0.25s;
+      z-index: 3;
+    }
+    .slide-arrow.prev { left: 0.9rem; }
+    .slide-arrow.next { right: 0.9rem; }
+    .catalog-card:hover .slide-arrow { opacity: 1; }
+    .slide-arrow:hover {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+    .slide-arrow.prev:hover { transform: translateY(-50%) translateX(-2px); }
+    .slide-arrow.next:hover { transform: translateY(-50%) translateX(2px); }
+
+    /* Slideshow counter (top-right) */
+    .slide-counter {
+      position: absolute; top: 0.85rem; right: 0.85rem;
+      z-index: 3;
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      background: rgba(10,10,10,0.7);
+      backdrop-filter: blur(6px);
+      padding: 0.32rem 0.6rem;
+      border: 1px solid rgba(201,168,76,0.18);
+    }
+
+    /* Slideshow dots */
+    .slide-dots {
+      position: absolute; bottom: 0.9rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 0.45rem;
+      z-index: 3;
+    }
+    .slide-dot {
+      width: 18px; height: 2px;
+      background: rgba(201,168,76,0.25);
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+    .slide-dot.active {
+      background: var(--gold);
+      width: 28px;
+    }
+    .slide-dot:hover { background: rgba(201,168,76,0.6); }
+
+    /* Card body */
+    .catalog-body {
+      padding: 1.6rem 1.6rem 1.4rem;
+      display: flex; flex-direction: column;
+      gap: 1.1rem;
+      flex: 1;
+    }
+    .catalog-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 600;
+      letter-spacing: 0.025em;
+      line-height: 1.2;
+      color: var(--white);
+    }
+    .catalog-desc {
+      font-family: var(--font-body);
+      font-size: 0.97rem; font-weight: 300;
+      font-style: italic;
+      color: var(--silver);
+      line-height: 1.6;
+    }
+
+    /* Section header inside card */
+    .catalog-subhead {
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    .catalog-subhead::before, .catalog-subhead::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    }
+    .catalog-subhead::before { background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent); flex: 0 0 18px; }
+    .catalog-subhead::after  { background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent); }
+
+    /* Spec ledger */
+    .catalog-specs {
+      border-top: 1px solid rgba(201,168,76,0.12);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      padding: 0.4rem 0;
+    }
+    .catalog-specs .spec-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline;
+      padding: 0.55rem 0;
+      font-family: var(--font-ui);
+      font-size: 0.74rem;
+      gap: 1rem;
+      border-bottom: 1px dashed rgba(201,168,76,0.07);
+    }
+    .catalog-specs .spec-row:last-child { border-bottom: none; }
+    .catalog-specs .spec-label {
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold-dim); font-weight: 500;
+      flex-shrink: 0;
+    }
+    .catalog-specs .spec-value {
+      font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--silver-light);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-align: right;
+    }
+
+    /* Features list */
+    .catalog-features { display: flex; flex-direction: column; gap: 0.45rem; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      font-family: var(--font-body);
+      font-size: 0.93rem; font-weight: 300;
+      color: var(--silver);
+      line-height: 1.5;
+    }
+    .feature-item::before {
+      content: '';
+      width: 8px; height: 8px;
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+      transform: rotate(45deg);
+      border-top: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+    }
+
+    /* Footer / CTA */
+    .catalog-footer {
+      margin-top: 0.4rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(201,168,76,0.12);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .catalog-cta {
+      flex: 1;
+      font-family: var(--font-ui); font-size: 0.7rem;
+      font-weight: 600; letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--black); background: var(--gold);
+      border: none; padding: 0.85rem 1.1rem; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .catalog-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold-light);
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.65,0,0.35,1);
+    }
+    .catalog-cta span { position: relative; z-index: 1; }
+    .catalog-cta:hover::before { transform: translateX(0); }
+    .catalog-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(201,168,76,0.25); }
+
+    .catalog-detail {
+      font-family: var(--font-ui); font-size: 0.65rem;
+      font-weight: 600; letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--silver-light); background: transparent;
+      border: 1px solid rgba(192,192,192,0.2);
+      padding: 0.85rem 1rem; cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .catalog-detail:hover { border-color: var(--gold); color: var(--gold); }
+
+    .catalog-badge {
+      position: absolute; top: 0.85rem; left: 0.85rem; z-index: 4;
+      font-family: var(--font-ui); font-size: 0.55rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      font-weight: 700;
+      background: var(--gold); color: var(--black);
+      padding: 0.32rem 0.7rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    /* =============================================
        RESPONSIVE
     ============================================= */
     @media (max-width: 1024px) {
@@ -965,6 +1428,13 @@
       .detail-gallery { position: relative; top: 0; }
       .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
       .hero-ring, .hero-ring-2 { display: none; }
+      .compliance-grid { grid-template-columns: 1fr 1fr; gap: 0; }
+      .compliance-item:nth-child(2) { padding-right: 0; }
+      .compliance-item:nth-child(3) { border-left: none; padding-left: 0; }
+      .compliance-item:nth-child(3), .compliance-item:nth-child(4) {
+        border-top: 1px solid rgba(201,168,76,0.12);
+        padding-top: 1.2rem; margin-top: 1.2rem;
+      }
     }
     @media (max-width: 768px) {
       nav { padding: 0.8rem 1.5rem; }
@@ -979,6 +1449,17 @@
       .hero-showcase { max-width: 400px; margin: 0 auto; }
       .hero-rays { width: 500px; height: 500px; }
       .featured, .about, .shop-grid-section, .contact-inner, .privacy-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .shop-hero { padding: 7rem 1.5rem 2rem; }
+      .compliance-strip { padding: 1.6rem 1.5rem; }
+      .compliance-grid { grid-template-columns: 1fr; }
+      .compliance-item { padding: 1.1rem 0 !important; border-left: none !important; border-top: 1px solid rgba(201,168,76,0.12); }
+      .compliance-item:first-child { border-top: none; padding-top: 0 !important; }
+      #shop-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .catalog-card .slide-arrow { opacity: 1; width: 38px; height: 38px; }
+      .catalog-body { padding: 1.3rem 1.2rem 1.2rem; }
+      .catalog-specs .spec-value { font-size: 0.88rem; }
+      .catalog-footer { flex-direction: column; gap: 0.6rem; align-items: stretch; }
+      .catalog-detail { text-align: center; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
       .about-stats { grid-template-columns: 1fr 1fr; }
@@ -997,17 +1478,17 @@
 
 <!-- Loading screen -->
 <div class="loader" id="loader">
-  <img src="atlbladelogo.png" alt="ATL Blade Co." class="loader-logo" id="loaderLogo">
+  <img src="atlbladecologo.png" alt="ATL Blade Co." class="loader-logo" id="loaderLogo">
   <div class="loader-bar-track">
     <div class="loader-bar-fill" id="loaderBar"></div>
   </div>
-  <div class="loader-text" id="loaderText">Forging your experience</div>
+  <div class="loader-text" id="loaderText">Sharpening up</div>
 </div>
 
 <!-- Page transition -->
 <div class="page-transition" id="pageTransition">
   <div class="transition-logo" id="transitionLogo">
-    <img src="atlbladelogo.png" alt="ATL Blade Co.">
+    <img src="atlbladecologo.png" alt="ATL Blade Co.">
   </div>
 </div>
 
@@ -1021,7 +1502,7 @@
 <!-- NAVIGATION -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="goTo('home')">
-    <img src="atlbladelogo.png" alt="ATL Blade Co.">
+    <img src="atlbladecologo.png" alt="ATL Blade Co.">
     <div class="nav-logo-text">
       ATL Blade Co.
       <span>Quality Tools &bull; Est. 2026</span>
@@ -1042,7 +1523,7 @@
 
 <!-- Mobile nav -->
 <div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,10,10,0.97);backdrop-filter:blur(12px);flex-direction:column;align-items:center;justify-content:center;gap:2rem;">
-  <img src="atlbladelogo.png" alt="ATL Blade Co." style="width:100px;height:100px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 0 15px rgba(201,168,76,0.3))">
+  <img src="atlbladecologo.png" alt="ATL Blade Co." style="width:100px;height:100px;object-fit:contain;margin-bottom:1rem;filter:drop-shadow(0 0 15px rgba(201,168,76,0.3))">
   <a onclick="goTo('home'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Home</a>
   <a onclick="goTo('shop'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Shop</a>
   <a onclick="goTo('contact'); closeMobileNav()" style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);cursor:pointer;letter-spacing:0.1em">Contact</a>
@@ -1069,9 +1550,9 @@
       <div class="hero-text">
         <div class="hero-eyebrow" id="heroEyebrow">Atlanta, Georgia &bull; Est. 2026</div>
         <h1 class="hero-title" id="heroTitle">
-          Premium<br><span class="gold-word">Handcrafted</span><br>Knives
+          Handmade<br><span class="gold-word">Knives</span><br>From Atlanta
         </h1>
-        <p class="hero-tagline" id="heroTagline">Forged for the Edge. Built for the Bold. Every blade tells a story of fire, steel, and craft.</p>
+        <p class="hero-tagline" id="heroTagline">Handmade knives out of a new shop in Atlanta. Each one comes off the bench a little different. That's kind of the point.</p>
         <div class="hero-ctas" id="heroCtas">
           <div class="magnetic-wrap" data-magnetic>
             <button class="btn-primary" onclick="goTo('shop')"><span>Shop Collection</span></button>
@@ -1082,43 +1563,20 @@
         </div>
       </div>
 
-      <!-- Right: Product Image Showcase -->
+      <!-- Right: Auto-rotating gallery -->
       <div class="hero-showcase" id="heroShowcase">
-        <div class="hero-img-main">
-          <div class="hero-showcase-badge">Featured</div>
-          <!--
-            ============================================
-            REPLACE THIS PLACEHOLDER WITH YOUR KNIFE IMAGE:
-            <img src="images/hero-knife.jpg" alt="Featured Damascus Knife">
-            ============================================
-          -->
-          <div class="img-placeholder">
-            <div class="img-placeholder-icon">&#9876;</div>
-            <div class="img-placeholder-text">Add your featured knife photo here<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">images/hero-knife.jpg</small></div>
+        <div class="hero-gallery" id="heroGallery">
+          <div class="gallery-track">
+            <div class="gallery-slide active" data-slide="0"><img src="assets/Karambit-Knife-Powdercoated-Blade1.png" alt="Karambit knife with mosaic pin"></div>
+            <div class="gallery-slide" data-slide="1"><img src="assets/Damascus-Pakkawood-USA-Pocket-Knife1.png" alt="Damascus pakkawood USA pocket knife"></div>
+            <div class="gallery-slide" data-slide="2"><img src="assets/7%E2%80%9D-Damascus-Skinner-Knife1.png" alt="Damascus skinner with pakkawood handle"></div>
           </div>
-        </div>
-        <div class="hero-img-row">
-          <div class="hero-img-thumb">
-            <!-- <img src="images/hero-thumb-1.jpg" alt="Knife detail"> -->
-            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
-              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9878;</div>
-              <span>Blade Detail</span>
-            </div>
+          <div class="gallery-dots">
+            <div class="gallery-dot active" data-dot="0" aria-label="Show image 1"></div>
+            <div class="gallery-dot" data-dot="1" aria-label="Show image 2"></div>
+            <div class="gallery-dot" data-dot="2" aria-label="Show image 3"></div>
           </div>
-          <div class="hero-img-thumb">
-            <!-- <img src="images/hero-thumb-2.jpg" alt="Handle detail"> -->
-            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
-              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9879;</div>
-              <span>Handle Detail</span>
-            </div>
-          </div>
-          <div class="hero-img-thumb">
-            <!-- <img src="images/hero-thumb-3.jpg" alt="Sheath detail"> -->
-            <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
-              <div class="img-placeholder-icon" style="width:28px;height:28px;font-size:0.9rem">&#9881;</div>
-              <span>In Action</span>
-            </div>
-          </div>
+          <div class="gallery-progress"><div class="gallery-progress-fill" id="heroGalleryFill"></div></div>
         </div>
       </div>
     </div>
@@ -1132,19 +1590,19 @@
   <div class="marquee-strip">
     <div class="marquee-inner" id="marquee">
       <span>Damascus Steel</span><span class="dot">&#10022;</span>
-      <span>Handcrafted Blades</span><span class="dot">&#10022;</span>
+      <span>Made in Atlanta</span><span class="dot">&#10022;</span>
       <span>ATL Blade Co.</span><span class="dot">&#10022;</span>
-      <span>Premium Hunting Knives</span><span class="dot">&#10022;</span>
       <span>Pocket Knives</span><span class="dot">&#10022;</span>
-      <span>Atlanta, Georgia</span><span class="dot">&#10022;</span>
-      <span>Forged for the Edge</span><span class="dot">&#10022;</span>
+      <span>Karambits</span><span class="dot">&#10022;</span>
+      <span>Skinners</span><span class="dot">&#10022;</span>
+      <span>Trackers</span><span class="dot">&#10022;</span>
       <span>Damascus Steel</span><span class="dot">&#10022;</span>
-      <span>Handcrafted Blades</span><span class="dot">&#10022;</span>
+      <span>Made in Atlanta</span><span class="dot">&#10022;</span>
       <span>ATL Blade Co.</span><span class="dot">&#10022;</span>
-      <span>Premium Hunting Knives</span><span class="dot">&#10022;</span>
       <span>Pocket Knives</span><span class="dot">&#10022;</span>
-      <span>Atlanta, Georgia</span><span class="dot">&#10022;</span>
-      <span>Forged for the Edge</span><span class="dot">&#10022;</span>
+      <span>Karambits</span><span class="dot">&#10022;</span>
+      <span>Skinners</span><span class="dot">&#10022;</span>
+      <span>Trackers</span><span class="dot">&#10022;</span>
     </div>
   </div>
 
@@ -1154,7 +1612,7 @@
       <h2 class="section-title reveal-up">Featured <em>Blades</em></h2>
       <div class="section-divider divider-center"></div>
       <p class="reveal-up" style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:520px;margin:0 auto">
-        Every knife is forged with intention — blending ancient Damascus techniques with modern precision craftsmanship.
+        A few of the blades in the shop right now. New pieces get added when they're ready.
       </p>
     </div>
     <div class="products-grid" id="featured-grid"></div>
@@ -1170,48 +1628,29 @@
       <div class="about-visual">
         <div class="about-number" id="aboutNum">01</div>
         <div class="about-visual-inner">
-          <!--
-            ============================================
-            REPLACE WITH YOUR WORKSHOP/FORGE PHOTO:
-            <img src="images/about-forge.jpg" alt="ATL Blade Co. Workshop">
-            ============================================
-          -->
-          <div class="img-placeholder">
-            <div class="img-placeholder-icon" style="width:56px;height:56px;font-size:1.6rem">&#128296;</div>
-            <div class="img-placeholder-text">Workshop / Forge Photo<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">images/about-forge.jpg</small></div>
-          </div>
+          <img src="R.jpg" alt="Atlanta, Georgia" style="width:100%;height:100%;object-fit:cover">
           <div class="about-corner-tl" id="aboutCornerTL"></div>
           <div class="about-corner-br" id="aboutCornerBR"></div>
-        </div>
-        <div class="about-img-accent">
-          <!--
-            REPLACE WITH A DETAIL SHOT:
-            <img src="images/about-detail.jpg" alt="Blade close-up" style="width:100%;height:100%;object-fit:cover">
-          -->
-          <div class="img-placeholder" style="font-size:0.5rem;gap:0.4rem">
-            <div class="img-placeholder-icon" style="width:32px;height:32px;font-size:1rem">&#9878;</div>
-            <span>Detail Shot</span>
-          </div>
         </div>
       </div>
       <div class="about-text">
         <div class="section-label reveal-right">Our Story</div>
-        <h2 class="section-title reveal-right">Born in Atlanta,<br><em>Forged in Fire</em></h2>
+        <h2 class="section-title reveal-right">A new shop,<br><em>in Atlanta</em></h2>
         <div class="section-divider" id="aboutDivider"></div>
-        <p class="about-body reveal-right">ATL Blade Co. was founded by Atlanta craftsmen who believed that a knife should be more than a tool — it should be a work of art. Every blade we create is a testament to the ancient traditions of Damascus steel forging, reimagined for the modern world.</p>
-        <p class="about-body reveal-right">We source only the finest high-carbon and stainless steels, hand-folding each blade through hundreds of layers to create the unmistakable Damascus wave pattern. Our handles are crafted from premium stabilized wood, G10, and natural bone.</p>
+        <p class="about-body reveal-right">ATL Blade Co. was founded by Zian Bhutta, an Atlanta native who spent his whole life in the city before deciding it was time to actually make something for the place that raised him, instead of just being from it. The shop is new, and right now it's just him at a small bench with a slowly growing group of people around the city who care about this kind of work. Knives ended up being the starting point because the craft is honest and the result is something you can hold in your hand.</p>
+        <p class="about-body reveal-right">Most of the catalog is hand-forged Damascus steel, the patterned blades you'll see on the pocket knives and the skinner, while the fixed blades and the karambit are powdercoated for hard outdoor use. Handles are pakkawood, camel bone, micarta, or resin, picked to suit whatever the knife is built for, and every piece comes off the bench a little different from the one before it.</p>
         <div class="about-stats" id="aboutStats">
           <div class="stat-item">
             <div class="stat-number" data-count="200" data-suffix="+">0</div>
-            <div class="stat-label">Layers per blade</div>
+            <div class="stat-label">Damascus layers</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-count="5" data-suffix=" yr">0</div>
-            <div class="stat-label">Craftsmanship</div>
+            <div class="stat-number" data-count="7" data-suffix="">0</div>
+            <div class="stat-label">Knives in the shop</div>
           </div>
           <div class="stat-item">
             <div class="stat-number" data-count="100" data-suffix="%">0</div>
-            <div class="stat-label">Handmade</div>
+            <div class="stat-label">Made by hand</div>
           </div>
         </div>
         <div class="magnetic-wrap reveal-right" data-magnetic>
@@ -1224,41 +1663,95 @@
   <section class="craft-banner" id="craft-section">
     <div class="craft-banner-bg"></div>
     <div class="craft-content">
-      <img src="atlbladelogo.png" alt="" class="craft-logo" id="craftLogo">
-      <blockquote id="craftQuote">The knife does not know the hand that holds it — but the hand always knows the knife.</blockquote>
-      <div class="craft-attr" id="craftAttr">— ATL Blade Co. Philosophy</div>
+      <img src="atlbladecologo.png" alt="" class="craft-logo" id="craftLogo">
+      <blockquote id="craftQuote">A good knife should feel right the first time you pick it up.</blockquote>
+      <div class="craft-attr" id="craftAttr">— Zian</div>
     </div>
   </section>
 
   <footer>
-    <div class="footer-grid">
+    <div class="footer-grid footer-grid-3">
       <div class="footer-brand">
         <div class="footer-brand-logo">
-          <img src="atlbladelogo.png" alt="ATL Blade Co.">
+          <img src="atlbladecologo.png" alt="ATL Blade Co.">
           <span class="footer-logo-text">ATL BLADE CO.</span>
         </div>
-        <p>Premium handcrafted knives born in Atlanta, Georgia. Every blade tells a story of fire, steel, and craft.</p>
+        <p>Handmade knives out of Atlanta. New shop, run by Zian Bhutta.</p>
         <div class="footer-social">
-          <div class="social-btn">IG</div><div class="social-btn">FB</div><div class="social-btn">TK</div><div class="social-btn">YT</div>
+          <a href="https://www.instagram.com/atlbladeco/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">IG</a><a href="https://www.tiktok.com/@atlbladeco?_r=1&amp;_t=ZT-95P7LZQVYUv" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">TT</a>
         </div>
       </div>
-      <div class="footer-col"><h4>Shop</h4><ul><li><a onclick="goTo('shop')">Damascus Knives</a></li><li><a onclick="goTo('shop')">Pocket Knives</a></li><li><a onclick="goTo('shop')">Hunting Knives</a></li><li><a onclick="goTo('shop')">Gift Sets</a></li></ul></div>
-      <div class="footer-col"><h4>Company</h4><ul><li><a onclick="goTo('home','about-section')">About Us</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a>Wholesale</a></li><li><a>Custom Orders</a></li></ul></div>
-      <div class="footer-col"><h4>Legal</h4><ul><li><a onclick="goTo('privacy')">Privacy Policy</a></li><li><a>Terms of Service</a></li><li><a>Return Policy</a></li><li><a>Shipping Info</a></li></ul></div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a onclick="goToShopFiltered('all blades')">All Blades</a></li>
+          <li><a onclick="goToShopFiltered('damascus')">Damascus</a></li>
+          <li><a onclick="goToShopFiltered('pocket')">Pocket</a></li>
+          <li><a onclick="goToShopFiltered('outdoor')">Outdoor</a></li>
+          <li><a onclick="goToShopFiltered('tactical')">Tactical</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a onclick="goTo('home','about-section')">About</a></li>
+          <li><a onclick="goTo('contact')">Contact</a></li>
+          <li><a onclick="goTo('contact')">Custom Orders</a></li>
+          <li><a onclick="goTo('privacy')">Privacy Policy</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">&copy; 2026 ATL Blade Co. All rights reserved. Atlanta, GA.</div>
-      <div class="footer-legal"><a onclick="goTo('privacy')">Privacy</a><a>Terms</a><a onclick="goTo('contact')">Contact</a></div>
+      <div class="footer-copy">&copy; 2026 ATL Blade Co. Atlanta, GA.</div>
+      <div class="footer-legal"><a onclick="goTo('privacy')">Privacy</a><a onclick="goTo('contact')">Contact</a></div>
     </div>
   </footer>
 </div>
 
 <!-- SHOP PAGE -->
 <div class="page" id="page-shop">
-  <div class="shop-hero"><div class="section-label">The Collection</div><h1 class="section-title">Our <em>Knives</em></h1><div class="section-divider divider-center"></div><p style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:480px;margin:0 auto">Each blade is handcrafted to order. Built to last a lifetime — and beyond.</p></div>
-  <div class="shop-filters"><button class="filter-btn active" onclick="filterProducts('all',this)">All Blades</button><button class="filter-btn" onclick="filterProducts('damascus',this)">Damascus</button><button class="filter-btn" onclick="filterProducts('pocket',this)">Pocket Knives</button><button class="filter-btn" onclick="filterProducts('hunting',this)">Hunting</button><button class="filter-btn" onclick="filterProducts('gift',this)">Gift Sets</button></div>
+  <div class="shop-hero">
+    <div class="section-label">The Collection</div>
+    <h1 class="section-title">Seven <em>Specimens</em></h1>
+    <div class="section-divider divider-center"></div>
+    <p style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:520px;margin:0 auto;font-style:italic">Everything here is made by hand, one knife at a time.</p>
+  </div>
+
+  <!-- Compliance / legal strip -->
+  <section class="compliance-strip" aria-label="Purchase notices">
+    <div class="compliance-grid">
+      <div class="compliance-item">
+        <div class="compliance-icon">18+</div>
+        <div class="compliance-title">Adults Only</div>
+        <div class="compliance-copy">You have to be 18 to buy. We verify at checkout.</div>
+      </div>
+      <div class="compliance-item">
+        <div class="compliance-icon">Laws</div>
+        <div class="compliance-title">Know Your Code</div>
+        <div class="compliance-copy">Knife laws vary a lot by state and city. It's on you to know what's legal where you live and carry.</div>
+      </div>
+      <div class="compliance-item">
+        <div class="compliance-icon">Ship</div>
+        <div class="compliance-title">Shipping Notes</div>
+        <div class="compliance-copy">A few states restrict certain blade types, karambits especially. Restricted addresses get blocked at checkout.</div>
+      </div>
+      <div class="compliance-item">
+        <div class="compliance-icon">Care</div>
+        <div class="compliance-title">Final Sale</div>
+        <div class="compliance-copy">Knives are final sale for safety. If yours arrives damaged, I'll replace it.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shop-filters">
+    <button class="filter-btn active" onclick="filterProducts('all',this)">All Blades</button>
+    <button class="filter-btn" onclick="filterProducts('damascus',this)">Damascus</button>
+    <button class="filter-btn" onclick="filterProducts('pocket',this)">Pocket</button>
+    <button class="filter-btn" onclick="filterProducts('outdoor',this)">Outdoor</button>
+    <button class="filter-btn" onclick="filterProducts('tactical',this)">Tactical</button>
+  </div>
   <div class="shop-grid-section"><div class="shop-grid" id="shop-grid"></div></div>
-  <footer><div class="footer-grid" style="grid-template-columns:2fr 1fr"><div class="footer-brand"><div class="footer-brand-logo"><img src="atlbladelogo.png" alt="ATL Blade Co."><span class="footer-logo-text">ATL BLADE CO.</span></div><p>Premium handcrafted knives born in Atlanta, Georgia.</p><div class="footer-social"><div class="social-btn">IG</div><div class="social-btn">FB</div><div class="social-btn">TK</div></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="goTo('home')">Home</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a onclick="goTo('privacy')">Privacy Policy</a></li></ul></div></div><div class="footer-bottom" style="margin-top:2rem;padding-top:1.5rem"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div></div></footer>
+  <footer><div class="footer-grid" style="grid-template-columns:2fr 1fr"><div class="footer-brand"><div class="footer-brand-logo"><img src="atlbladecologo.png" alt="ATL Blade Co."><span class="footer-logo-text">ATL BLADE CO.</span></div><p>Handmade knives out of Atlanta. Run by Zian Bhutta.</p><div class="footer-social"><a href="https://www.instagram.com/atlbladeco/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">IG</a><a href="https://www.tiktok.com/@atlbladeco?_r=1&amp;_t=ZT-95P7LZQVYUv" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">TT</a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="goTo('home')">Home</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a onclick="goTo('privacy')">Privacy Policy</a></li></ul></div></div><div class="footer-bottom" style="margin-top:2rem;padding-top:1.5rem"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div></div></footer>
 </div>
 
 <!-- PRODUCT DETAIL PAGE -->
@@ -1270,15 +1763,15 @@
 <!-- CONTACT PAGE -->
 <div class="page" id="page-contact">
   <div class="contact-page"><div class="contact-inner">
-    <div class="contact-info"><div class="section-label">Get In Touch</div><h1 class="section-title">Let's <em>Talk Steel</em></h1><div class="section-divider"></div><p class="contact-body">Whether you're interested in a custom order, wholesale partnership, or simply want to know more about our process — we'd love to hear from you.</p><p class="contact-body">Custom commissions are welcome. Tell us your vision and we'll bring it to life in steel.</p><div class="contact-links"><div class="contact-link-item"><span class="cl-icon">&#9993;</span><span>hello@atlbladeco.com</span></div><div class="contact-link-item"><span class="cl-icon">&#9742;</span><span>(404) 555-0182</span></div><div class="contact-link-item"><span class="cl-icon">&#8982;</span><span>Atlanta, Georgia, USA</span></div></div><div style="margin-top:3rem;opacity:0.1"><img src="atlbladelogo.png" alt="" style="width:120px;filter:grayscale(100%)"></div></div>
-    <div class="contact-form"><div style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--white);margin-bottom:0.5rem">Send a Message</div><div style="width:40px;height:1px;background:var(--gold);margin-bottom:2rem"></div><div class="form-group"><label class="form-label" for="contact-name">Full Name</label><input class="form-input" type="text" id="contact-name" placeholder="Your name"></div><div class="form-group"><label class="form-label" for="contact-email">Email Address</label><input class="form-input" type="email" id="contact-email" placeholder="your@email.com"></div><div class="form-group"><label class="form-label" for="contact-subject">Subject</label><input class="form-input" type="text" id="contact-subject" placeholder="Custom order inquiry, etc."></div><div class="form-group"><label class="form-label" for="contact-msg">Message</label><textarea class="form-textarea" id="contact-msg" placeholder="Tell us about your needs..."></textarea></div><div class="form-group" style="display:flex;align-items:center;gap:0.75rem"><input type="checkbox" id="newsletter" style="accent-color:var(--gold);width:15px;height:15px"><label for="newsletter" style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.1em;color:var(--silver);cursor:pointer">Subscribe to our newsletter for new releases &amp; offers</label></div><button class="form-submit" onclick="submitContact()"><span>Send Message &rarr;</span></button><div class="form-msg" id="contact-msg-success">&#10022; Your message has been received. We'll be in touch within 24 hours.</div></div>
+    <div class="contact-info"><div class="section-label">Get In Touch</div><h1 class="section-title">Let's <em>Talk Steel</em></h1><div class="section-divider"></div><p class="contact-body">Custom orders, wholesale, or just questions about a knife you're curious about. Email me directly or use the form.</p><p class="contact-body">If you have something specific in mind, send a quick description and I'll see what I can do.</p><div class="contact-links"><div class="contact-link-item"><span class="cl-icon">&#9993;</span><span>atlbladeco@gmail.com</span></div><div class="contact-link-item"><span class="cl-icon">&#9742;</span><span>(404) 944-1159</span></div><div class="contact-link-item"><span class="cl-icon">&#8982;</span><span>Atlanta, Georgia, USA</span></div></div><div style="margin-top:3rem;opacity:0.1"><img src="atlbladecologo.png" alt="" style="width:120px;filter:grayscale(100%)"></div></div>
+    <div class="contact-form"><div style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--white);margin-bottom:0.5rem">Send a Message</div><div style="width:40px;height:1px;background:var(--gold);margin-bottom:2rem"></div><div class="form-group"><label class="form-label" for="contact-name">Full Name</label><input class="form-input" type="text" id="contact-name" placeholder="Your name"></div><div class="form-group"><label class="form-label" for="contact-email">Email Address</label><input class="form-input" type="email" id="contact-email" placeholder="your@email.com"></div><div class="form-group"><label class="form-label" for="contact-subject">Subject</label><input class="form-input" type="text" id="contact-subject" placeholder="Custom order inquiry, etc."></div><div class="form-group"><label class="form-label" for="contact-msg">Message</label><textarea class="form-textarea" id="contact-msg" placeholder="Tell us about your needs..."></textarea></div><div class="form-group" style="display:flex;align-items:center;gap:0.75rem"><input type="checkbox" id="newsletter" style="accent-color:var(--gold);width:15px;height:15px"><label for="newsletter" style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.1em;color:var(--silver);cursor:pointer">Subscribe to our newsletter for new releases &amp; offers</label></div><button class="form-submit" onclick="submitContact()"><span>Send Message &rarr;</span></button><div class="form-msg" id="contact-msg-success">&#10022; Got it. I'll get back to you soon.</div></div>
   </div></div>
   <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('privacy')">Privacy</a></div></div></footer>
 </div>
 
 <!-- PRIVACY PAGE -->
 <div class="page" id="page-privacy">
-  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Legal</div><h1 class="section-title">Privacy <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">Effective Date: January 1, 2026</div><div class="privacy-body"><p>ATL Blade Co. ("we," "our," or "us") is committed to protecting the privacy and security of our customers. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p><h3>Information We Collect</h3><p>When you place an order or create an account with us, we may collect the following information:</p><ul><li>Full name and shipping/billing address</li><li>Email address and phone number</li><li>Payment method (processed securely — we do not store full card details)</li><li>Order history and product preferences</li><li>IP address and browser type for security and analytics</li></ul><h3>How We Use Your Information</h3><p>Your information is used exclusively to:</p><ul><li>Process and fulfill your orders</li><li>Communicate order status and shipping updates</li><li>Send marketing emails — only if you have opted in</li><li>Improve our website and customer experience</li><li>Comply with legal obligations</li></ul><h3>Email Marketing</h3><p>We may send promotional emails about new products, exclusive offers, and company news to customers who have subscribed. You may opt out at any time by clicking the "Unsubscribe" link in any email or by contacting us directly at hello@atlbladeco.com.</p><h3>Data Sharing</h3><p>ATL Blade Co. does not sell, trade, or rent your personal information to third parties. We may share data only with trusted service providers strictly to fulfill your order.</p><h3>Data Security</h3><p>We implement industry-standard security measures including SSL/TLS encryption, secure storage, regular audits, and PCI-DSS compliant payment processing.</p><h3>Cookies &amp; Tracking</h3><p>Our website uses cookies to enhance your browsing experience. You may disable cookies in your browser settings. We do not use third-party advertising trackers.</p><h3>Your Rights</h3><p>You have the right to request a copy of your data, request correction or deletion, opt out of marketing, and lodge complaints with your local data protection authority.</p><h3>Contact Us</h3><ul><li>Email: hello@atlbladeco.com</li><li>Phone: (404) 555-0182</li><li>Address: ATL Blade Co., Atlanta, Georgia, USA</li></ul></div></div></div>
+  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Legal</div><h1 class="section-title">Privacy <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">Effective Date: January 1, 2026</div><div class="privacy-body"><p>ATL Blade Co. ("we," "our," or "us") is committed to protecting the privacy and security of our customers. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p><h3>Information We Collect</h3><p>When you place an order or create an account with us, we may collect the following information:</p><ul><li>Full name and shipping/billing address</li><li>Email address and phone number</li><li>Payment method (processed securely — we do not store full card details)</li><li>Order history and product preferences</li><li>IP address and browser type for security and analytics</li></ul><h3>How We Use Your Information</h3><p>Your information is used exclusively to:</p><ul><li>Process and fulfill your orders</li><li>Communicate order status and shipping updates</li><li>Send marketing emails — only if you have opted in</li><li>Improve our website and customer experience</li><li>Comply with legal obligations</li></ul><h3>Email Marketing</h3><p>We may send promotional emails about new products, exclusive offers, and company news to customers who have subscribed. You may opt out at any time by clicking the "Unsubscribe" link in any email or by contacting us directly at atlbladeco@gmail.com.</p><h3>Data Sharing</h3><p>ATL Blade Co. does not sell, trade, or rent your personal information to third parties. We may share data only with trusted service providers strictly to fulfill your order.</p><h3>Data Security</h3><p>We implement industry-standard security measures including SSL/TLS encryption, secure storage, regular audits, and PCI-DSS compliant payment processing.</p><h3>Cookies &amp; Tracking</h3><p>Our website uses cookies to enhance your browsing experience. You may disable cookies in your browser settings. We do not use third-party advertising trackers.</p><h3>Your Rights</h3><p>You have the right to request a copy of your data, request correction or deletion, opt out of marketing, and lodge complaints with your local data protection authority.</p><h3>Contact Us</h3><ul><li>Email: atlbladeco@gmail.com</li><li>Phone: (404) 944-1159</li><li>Address: ATL Blade Co., Atlanta, Georgia, USA</li></ul></div></div></div>
   <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('contact')">Contact</a></div></div></footer>
 </div>
 
@@ -1311,22 +1804,169 @@
   =============================================
 */
 var PRODUCTS = [
-  {id:1,name:"Damascus Raider",category:"damascus",price:349,badge:"Bestseller",
-   image:"images/damascus-raider.jpg",
-   shortDesc:"200-layer hand-folded Damascus steel with rosewood handle.",desc:"The Damascus Raider is our flagship blade \u2014 hand-forged through 200 layers of high-carbon and stainless steel, revealing the iconic flowing Damascus wave pattern unique to each knife. Full-tang construction with stabilized rosewood handle. Comes with a genuine leather sheath.",specs:{"Blade Length":"8.5 inches","Overall Length":"13.5 inches","Blade Steel":"Damascus (VG10 Core)","Handle Material":"Stabilized Rosewood","Blade Thickness":"4mm","Hardness":"60-62 HRC","Finish":"Hand-polished satin"},svgColor:"#a0522d"},
-  {id:2,name:"Obsidian Folder",category:"pocket",price:189,badge:"New",
-   image:"images/obsidian-folder.jpg",
-   shortDesc:"Premium G10 handle pocket knife with Damascus drop-point blade.",desc:"The Obsidian Folder is the everyday carry elevated to an art form. Drop-point Damascus blade with G10 composite handle. Precision ball-bearing pivot for smooth deployment.",specs:{"Blade Length":"3.75 inches","Overall Length":"8.75 inches (open)","Blade Steel":"Damascus (high-carbon)","Handle Material":"Black G10","Lock Type":"Liner Lock","Blade Style":"Drop-Point","Carry":"Reversible clip"},svgColor:"#2a2a2a"},
-  {id:3,name:"Forest Stalker",category:"hunting",price:279,badge:null,
-   image:"images/forest-stalker.jpg",
-   shortDesc:"Full-tang hunting knife, bone handle, single bevel grind.",desc:"Built for the backcountry. Clip-point blade with hollow grind. Genuine stabilized bone handle for secure grip in any conditions.",specs:{"Blade Length":"6.5 inches","Overall Length":"11.5 inches","Blade Steel":"1095 High Carbon","Handle Material":"Stabilized Bone","Blade Style":"Clip-Point","Grind":"Hollow Grind","Sheath":"Leather with snap closure"},svgColor:"#8b7355"},
-  {id:4,name:"Serpent\u2019s Wave",category:"damascus",price:425,badge:"Limited",
-   image:"images/serpents-wave.jpg",
-   shortDesc:"Artisan Damascus chef-style blade \u2014 320 layers of folded steel.",desc:"Collector-grade Damascus masterpiece. 320 layers of alternating high-carbon and nickel steels. Hand-carved stabilized maple burl handle.",specs:{"Blade Length":"9 inches","Overall Length":"14.5 inches","Blade Steel":"Damascus (320 layers)","Handle Material":"Maple Burl (stabilized)","Blade Style":"Gyuto / Chef","Hardness":"58-62 HRC","Includes":"Handmade wooden display box"},svgColor:"#6b4c2a"},
-  {id:5,name:"ATL Signature Gift Set",category:"gift",price:599,badge:"Gift Set",
-   image:"images/gift-set.jpg",
-   shortDesc:"Damascus folder + hunting knife in a handcrafted walnut box.",desc:"Pairs our Obsidian Folder with the Forest Stalker in a hand-oiled walnut display box. Certificate of authenticity and care guide included.",specs:{"Includes":"Obsidian Folder + Forest Stalker","Box Material":"Hand-oiled black walnut","Certificate":"Signed & numbered","Packaging":"Felt-lined presentation box","Custom Engraving":"Available (+$45)","Lead Time":"5\u20137 business days"},svgColor:"#3d2b1a"}
+  {
+    id: 1,
+    name: "Damascus USA Flag Pocket Knife",
+    slugBase: "Damascus-USA-Flag-Pocket-Knife",
+    imageCount: 3,
+    tags: ["damascus","pocket"],
+    badge: "Patriot",
+    description: "Compact liner-lock pocket knife with a striking USA flag handle and a hand-forged Damascus blade.",
+    specs: [
+      ["Overall Length","5\""],
+      ["Closed Length","3\""],
+      ["Blade","Damascus steel"],
+      ["Lock","Liner lock"],
+      ["Liners","Brass"]
+    ],
+    features: [
+      "Lightweight, pocket-friendly EDC",
+      "Unique patriotic design",
+      "Smooth and secure operation",
+      "Perfect for everyday carry, collectors, or gifting"
+    ]
+  },
+  {
+    id: 2,
+    name: "Damascus Pakkawood USA Pocket Knife",
+    slugBase: "Damascus-Pakkawood-USA-Pocket-Knife",
+    imageCount: 3,
+    tags: ["damascus","pocket"],
+    badge: "Premium",
+    description: "A premium folding knife with Damascus steel bolsters and blade, paired with a striking USA flag-color pakkawood and white resin handle.",
+    specs: [
+      ["Closed Length","4.5\""],
+      ["Blade","Damascus steel"],
+      ["Bolsters","Damascus"],
+      ["Handle","Pakkawood + white resin (USA flag colors)"],
+      ["Lock","Liner lock"]
+    ],
+    features: [
+      "Elegant mixed-material handle design",
+      "Matching Damascus blade & bolsters",
+      "Solid, stylish everyday carry",
+      "Ideal for collectors, EDC, or a standout gift piece"
+    ]
+  },
+  {
+    id: 3,
+    name: "Damascus & Pakkawood Pocket Knife",
+    slugBase: "Damascus-&-Pakkawood-Pocket-Knife",
+    imageCount: 3,
+    tags: ["damascus","pocket"],
+    badge: null,
+    description: "A premium folding knife with Damascus steel bolsters and blade, paired with a striking pakkawood and camel-bone handle.",
+    specs: [
+      ["Closed Length","4.5\""],
+      ["Blade","Damascus steel"],
+      ["Bolsters","Damascus"],
+      ["Handle","Pakkawood + camel bone"],
+      ["Lock","Liner lock"]
+    ],
+    features: [
+      "Elegant mixed-material handle design",
+      "Matching Damascus blade & bolsters",
+      "Solid, stylish everyday carry",
+      "Ideal for collectors, EDC, or a standout gift piece"
+    ]
+  },
+  {
+    id: 4,
+    name: "SS & Bone Pocket Knife \u2014 Compact Folder",
+    slugBase: "SS-&-Bone-Pocket-Knife-Compact-Folder",
+    imageCount: 3,
+    tags: ["pocket"],
+    badge: null,
+    description: "Small, durable pocket knife featuring a stainless steel blade with a bone and stainless steel handle combination.",
+    specs: [
+      ["Closed Length","4\""],
+      ["Blade","Stainless steel"],
+      ["Handle","Bone & stainless steel"],
+      ["Lock","Liner lock"]
+    ],
+    features: [
+      "Compact and easy to carry",
+      "Classic bone + steel look",
+      "Reliable everyday utility",
+      "Great for EDC, collectors, or a simple gift option"
+    ]
+  },
+  {
+    id: 5,
+    name: "7\u201d Damascus Skinner Knife",
+    slugBase: "7\u201d-Damascus-Skinner-Knife",
+    imageCount: 3,
+    tags: ["damascus","outdoor"],
+    badge: "Hunter",
+    description: "A robust skinner with a hand-forged Damascus blade and a durable pakkawood handle.",
+    specs: [
+      ["Overall Length","7\""],
+      ["Blade","Damascus steel"],
+      ["Handle","Pakkawood"],
+      ["Style","Skinner"]
+    ],
+    features: [
+      "Curved skinner blade for efficient processing",
+      "Strong, moisture-resistant pakkawood grip",
+      "Unique Damascus pattern on every piece",
+      "Ideal for hunting, outdoor use, or collectors"
+    ]
+  },
+  {
+    id: 6,
+    name: "Powdercoated Tracker Knife \u2014 11\u201d",
+    slugBase: "Powdercoated-Tracker-Knife-11\u201d",
+    imageCount: 3,
+    tags: ["outdoor","tactical"],
+    badge: "Heavy-Duty",
+    description: "A rugged tracker-style fixed blade built for hard outdoor use, featuring a durable powdercoated blade and a solid black resin handle.",
+    specs: [
+      ["Overall Length","11\""],
+      ["Blade","Powdercoated steel"],
+      ["Handle","Black resin"],
+      ["Style","Tracker"]
+    ],
+    features: [
+      "Tough powdercoated finish for corrosion resistance",
+      "Ergonomic, weather-resistant resin grip",
+      "Versatile tracker design for chopping, slicing & utility",
+      "Ideal for camping, bushcraft, and heavy-duty outdoor tasks"
+    ]
+  },
+  {
+    id: 7,
+    name: "Karambit Knife \u2014 Powdercoated Blade",
+    slugBase: "Karambit-Knife-Powdercoated-Blade",
+    imageCount: 3,
+    tags: ["tactical"],
+    badge: "Limited",
+    description: "A bold tactical-style karambit featuring a durable powdercoated blade and a rugged black micarta handle, finished with a striking mosaic pin.",
+    specs: [
+      ["Overall Length","10\""],
+      ["Blade","Powdercoated steel"],
+      ["Handle","Black micarta"],
+      ["Feature","Mosaic pin"]
+    ],
+    features: [
+      "Curved karambit blade for precision and control",
+      "Tough non-slip micarta grip",
+      "Eye-catching mosaic pin detail",
+      "Built for durability and performance",
+      "Ideal for collectors, outdoor use, or tactical-style carry"
+    ]
+  }
 ];
+
+function productImages(p) {
+  var arr = [];
+  for (var i = 1; i <= (p.imageCount || 3); i++) {
+    arr.push('assets/' + encodeURIComponent(p.slugBase + i) + '.png');
+  }
+  return arr;
+}
+function productImage(p, idx) {
+  return 'assets/' + encodeURIComponent(p.slugBase + ((idx||0)+1)) + '.png';
+}
 
 /* =============================================
    KNIFE SVG GENERATOR
@@ -1337,31 +1977,223 @@ function makeSVGDataURL(s){return'data:image/svg+xml;charset=UTF-8,'+encodeURICo
 /* =============================================
    RENDER CARDS
 ============================================= */
-function makeProductImage(p) {
-  // Returns an <img> if the image exists, otherwise a styled placeholder
-  return '<img src="'+p.image+'" alt="'+p.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+function imgWithFallback(src, alt) {
+  return '<img src="'+src+'" alt="'+escapeHtml(alt)+'" loading="lazy" '+
+    'onerror="this.style.display=\'none\';var ph=this.parentNode.querySelector(\'.img-placeholder\');if(ph)ph.style.display=\'flex\'">' +
     '<div class="img-placeholder" style="display:none;position:absolute;inset:0">' +
       '<div class="img-placeholder-icon">&#9876;</div>' +
-      '<div class="img-placeholder-text">'+p.name+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.5rem">'+p.image+'</small></div>' +
+      '<div class="img-placeholder-text">'+escapeHtml(alt)+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.5rem">'+src+'</small></div>' +
     '</div>';
 }
 
-function renderCard(p,c){var d=document.createElement('div');d.className='product-card';d.setAttribute('data-category',p.category);d.innerHTML='<div class="product-img-wrap" style="position:relative">'+(p.badge?'<div class="product-badge">'+p.badge+'</div>':'')+makeProductImage(p)+'</div><div class="product-info"><div class="product-name">'+p.name+'</div><div class="product-desc">'+p.shortDesc+'</div><div class="product-footer"><div class="product-price">$'+p.price+'</div><button class="btn-sm" onclick="event.stopPropagation();addToCart(\''+p.name+'\')">Add to Cart</button></div></div>';d.addEventListener('click',function(){goToDetail(p.id);});c.appendChild(d);}
-function renderFeatured(){var g=document.getElementById('featured-grid');g.innerHTML='';PRODUCTS.slice(0,3).forEach(function(p){renderCard(p,g);});}
-function renderShop(){var g=document.getElementById('shop-grid');g.innerHTML='';PRODUCTS.forEach(function(p){renderCard(p,g);});}
+/* Featured cards on the homepage \u2014 kept simple, image-first */
+function renderFeaturedCard(p, c) {
+  var d = document.createElement('div');
+  d.className = 'product-card';
+  d.setAttribute('data-category', (p.tags && p.tags[0]) || 'all');
+  d.innerHTML =
+    '<div class="product-img-wrap" style="position:relative">' +
+      (p.badge ? '<div class="product-badge">'+escapeHtml(p.badge)+'</div>' : '') +
+      imgWithFallback(productImage(p,0), p.name) +
+    '</div>' +
+    '<div class="product-info">' +
+      '<div class="product-name">'+escapeHtml(p.name)+'</div>' +
+      '<div class="product-desc">'+escapeHtml(p.description)+'</div>' +
+      '<div class="product-footer">' +
+        '<div class="product-price" style="font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;font-family:var(--font-ui);font-weight:600">Handcrafted</div>' +
+        '<button class="btn-sm" onclick="event.stopPropagation();goTo(\'shop\')">View</button>' +
+      '</div>' +
+    '</div>';
+  d.addEventListener('click', function(){ goToDetail(p.id); });
+  c.appendChild(d);
+}
+function renderFeatured(){
+  var g = document.getElementById('featured-grid');
+  g.innerHTML = '';
+  var featuredIds = [7, 2, 5];
+  featuredIds.forEach(function(id){
+    var p = PRODUCTS.find(function(x){ return x.id === id; });
+    if (p) renderFeaturedCard(p, g);
+  });
+}
+
+/* Catalog cards \u2014 full slideshow + specs + features */
+function renderCatalogCard(p, c, index, total) {
+  var imgs = productImages(p);
+  var card = document.createElement('div');
+  card.className = 'catalog-card';
+  card.setAttribute('data-tags', (p.tags || []).join(' '));
+  card.setAttribute('data-product-id', p.id);
+
+  var slidesHtml = imgs.map(function(src, i){
+    return '<div class="slide'+(i===0?' active':'')+'" data-slide="'+i+'">' + imgWithFallback(src, p.name + ' \u2014 view ' + (i+1)) + '</div>';
+  }).join('');
+  var dotsHtml = imgs.map(function(_, i){
+    return '<div class="slide-dot'+(i===0?' active':'')+'" data-dot="'+i+'" aria-label="View image '+(i+1)+'"></div>';
+  }).join('');
+  var specsHtml = (p.specs || []).map(function(s){
+    return '<div class="spec-row"><span class="spec-label">'+escapeHtml(s[0])+'</span><span class="spec-value">'+escapeHtml(s[1])+'</span></div>';
+  }).join('');
+  var featuresHtml = (p.features || []).map(function(f){
+    return '<div class="feature-item">'+escapeHtml(f)+'</div>';
+  }).join('');
+  var indexLabel = String(index+1).padStart(2,'0');
+  var totalLabel = String(total).padStart(2,'0');
+  var tagsHtml = (p.tags || []).map(function(t){
+    return '<span class="tag-chip">'+escapeHtml(t)+'</span>';
+  }).join('');
+
+  card.innerHTML =
+    '<div class="specimen-strip">' +
+      '<div class="specimen-num">SPECIMEN '+indexLabel+' <span class="num-of">/ '+totalLabel+'</span></div>' +
+      '<div class="specimen-tags">'+tagsHtml+'</div>' +
+    '</div>' +
+    '<div class="slideshow" data-slideshow>' +
+      (p.badge ? '<div class="catalog-badge">'+escapeHtml(p.badge)+'</div>' : '') +
+      '<div class="slide-counter"><span data-current>1</span> / '+imgs.length+'</div>' +
+      '<div class="slideshow-track">'+slidesHtml+'</div>' +
+      '<button class="slide-arrow prev" data-prev aria-label="Previous image">&#10094;</button>' +
+      '<button class="slide-arrow next" data-next aria-label="Next image">&#10095;</button>' +
+      '<div class="slide-dots">'+dotsHtml+'</div>' +
+    '</div>' +
+    '<div class="catalog-body">' +
+      '<div>' +
+        '<div class="catalog-name">'+escapeHtml(p.name)+'</div>' +
+      '</div>' +
+      '<div class="catalog-desc">'+escapeHtml(p.description)+'</div>' +
+      '<div>' +
+        '<div class="catalog-subhead">Specifications</div>' +
+        '<div class="catalog-specs">'+specsHtml+'</div>' +
+      '</div>' +
+      '<div>' +
+        '<div class="catalog-subhead">Features</div>' +
+        '<div class="catalog-features">'+featuresHtml+'</div>' +
+      '</div>' +
+      '<div class="catalog-footer">' +
+        '<button class="catalog-cta" onclick="addToCart(\''+escapeHtml(p.name).replace(/\\/g,"\\\\").replace(/'/g,"\\\'")+'\')"><span>Add to Cart</span></button>' +
+        '<button class="catalog-detail" onclick="goToDetail('+p.id+')">Details &rarr;</button>' +
+      '</div>' +
+    '</div>';
+
+  c.appendChild(card);
+  initSlideshow(card);
+}
+
+function renderShop(){
+  var g = document.getElementById('shop-grid');
+  if (!g) return;
+  g.innerHTML = '';
+  PRODUCTS.forEach(function(p, i){ renderCatalogCard(p, g, i, PRODUCTS.length); });
+}
+
+/* =============================================
+   SLIDESHOW (per card)
+============================================= */
+function initSlideshow(card) {
+  var stage = card.querySelector('[data-slideshow]');
+  if (!stage) return;
+  var slides = stage.querySelectorAll('.slide');
+  var dots   = stage.querySelectorAll('.slide-dot');
+  var current = stage.querySelector('[data-current]');
+  var prev   = stage.querySelector('[data-prev]');
+  var next   = stage.querySelector('[data-next]');
+  var idx = 0;
+  var total = slides.length;
+
+  function show(n) {
+    n = (n + total) % total;
+    slides[idx].classList.remove('active');
+    dots[idx].classList.remove('active');
+    idx = n;
+    slides[idx].classList.add('active');
+    dots[idx].classList.add('active');
+    if (current) current.textContent = String(idx + 1);
+  }
+  prev.addEventListener('click', function(e){ e.stopPropagation(); show(idx - 1); });
+  next.addEventListener('click', function(e){ e.stopPropagation(); show(idx + 1); });
+  dots.forEach(function(dot, i){
+    dot.addEventListener('click', function(e){ e.stopPropagation(); show(i); });
+  });
+
+  // Keyboard arrows when card is focused
+  card.tabIndex = 0;
+  card.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft')  { show(idx - 1); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { show(idx + 1); e.preventDefault(); }
+  });
+}
 
 /* =============================================
    FILTER
 ============================================= */
-function filterProducts(cat,btn){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');document.querySelectorAll('#shop-grid .product-card').forEach(function(card,i){if(cat==='all'||card.dataset.category===cat){card.style.display='';gsap.fromTo(card,{opacity:0,y:30,scale:0.95},{opacity:1,y:0,scale:1,duration:0.5,delay:i*0.08,ease:'back.out(1.4)'});}else{card.style.display='none';}});}
+function filterProducts(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var visible = 0;
+  document.querySelectorAll('#shop-grid .catalog-card').forEach(function(card,i){
+    var tags = (card.dataset.tags || '').split(/\s+/);
+    var match = (cat === 'all') || tags.indexOf(cat) !== -1;
+    if (match) {
+      card.style.display = '';
+      gsap.fromTo(card,
+        {opacity:0, y:30, scale:0.97},
+        {opacity:1, y:0, scale:1, duration:0.5, delay: visible*0.06, ease:'power3.out'}
+      );
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
 
 /* =============================================
    DETAIL PAGE
 ============================================= */
-function goToDetail(id){var p=PRODUCTS.find(function(x){return x.id===id;});if(!p)return;document.getElementById('detail-breadcrumb-name').textContent=p.name;var mi=document.getElementById('detail-main-img-el');mi.src=p.image;mi.alt=p.name;mi.onerror=function(){this.style.display='none';this.parentNode.innerHTML+='<div class="img-placeholder" style="position:absolute;inset:0"><div class="img-placeholder-icon" style="width:56px;height:56px;font-size:1.6rem">&#9876;</div><div class="img-placeholder-text">'+p.name+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">'+p.image+'</small></div></div>';};var te=document.getElementById('detail-thumbs');te.innerHTML='';var thumbImgs=[p.image,p.image,p.image];thumbImgs.forEach(function(src,i){var d=document.createElement('div');d.className='detail-thumb'+(i===0?' active':'');d.innerHTML='<img src="'+src+'" alt="'+p.name+' view '+(i+1)+'" onerror="this.style.display=\'none\'">';d.addEventListener('click',function(){document.querySelectorAll('.detail-thumb').forEach(function(t){t.classList.remove('active');});d.classList.add('active');mi.src=src;gsap.fromTo('#detail-main-img-el',{opacity:0,scale:0.97},{opacity:1,scale:1,duration:0.4,ease:'power2.out'});});te.appendChild(d);});
-var sr=Object.entries(p.specs).map(function(e){return'<div class="spec-row"><span class="spec-label">'+e[0]+'</span><span class="spec-value">'+e[1]+'</span></div>';}).join('');
-document.getElementById('detail-info-panel').innerHTML='<div class="detail-category">'+p.category.charAt(0).toUpperCase()+p.category.slice(1)+' Knife</div><div class="detail-title">'+p.name+'</div><div class="detail-price">$'+p.price+'</div><p class="detail-desc">'+p.desc+'</p><div class="detail-specs">'+sr+'</div><div class="qty-add"><div class="qty-control"><button class="qty-btn" onclick="changeQty(-1)">\u2212</button><input class="qty-val" type="number" value="1" min="1" id="qty-input" readonly><button class="qty-btn" onclick="changeQty(1)">+</button></div><button class="btn-addcart" onclick="addToCart(\''+p.name+'\')"><span>Add to Cart</span></button><button class="btn-wishlist" title="Save">\u2661</button></div><div class="guarantee-badges"><div class="badge-item"><span class="badge-icon">\u2726</span> Free Shipping $200+</div><div class="badge-item"><span class="badge-icon">\u2726</span> Lifetime Warranty</div><div class="badge-item"><span class="badge-icon">\u2726</span> Handcrafted</div></div>';
-goTo('detail');}
+function goToDetail(id){
+  var p = PRODUCTS.find(function(x){ return x.id === id; });
+  if (!p) return;
+  var imgs = productImages(p);
+  document.getElementById('detail-breadcrumb-name').textContent = p.name;
+  var mi = document.getElementById('detail-main-img-el');
+  mi.src = imgs[0]; mi.alt = p.name;
+  mi.onerror = function(){
+    this.style.display='none';
+    this.parentNode.innerHTML += '<div class="img-placeholder" style="position:absolute;inset:0"><div class="img-placeholder-icon" style="width:56px;height:56px;font-size:1.6rem">&#9876;</div><div class="img-placeholder-text">'+escapeHtml(p.name)+'<br><small style="color:var(--silver);letter-spacing:0.1em;font-size:0.55rem">'+imgs[0]+'</small></div></div>';
+  };
+  var te = document.getElementById('detail-thumbs');
+  te.innerHTML = '';
+  imgs.forEach(function(src, i){
+    var d = document.createElement('div');
+    d.className = 'detail-thumb' + (i === 0 ? ' active' : '');
+    d.innerHTML = '<img src="'+src+'" alt="'+escapeHtml(p.name)+' view '+(i+1)+'" onerror="this.style.display=\'none\'">';
+    d.addEventListener('click', function(){
+      document.querySelectorAll('.detail-thumb').forEach(function(t){ t.classList.remove('active'); });
+      d.classList.add('active');
+      mi.style.display = '';
+      mi.src = src;
+      gsap.fromTo('#detail-main-img-el', {opacity:0,scale:0.97}, {opacity:1,scale:1,duration:0.4,ease:'power2.out'});
+    });
+    te.appendChild(d);
+  });
+  var sr = (p.specs || []).map(function(e){
+    return '<div class="spec-row"><span class="spec-label">'+escapeHtml(e[0])+'</span><span class="spec-value">'+escapeHtml(e[1])+'</span></div>';
+  }).join('');
+  var ft = (p.features || []).map(function(f){
+    return '<li style="font-family:var(--font-body);font-size:0.95rem;font-weight:300;color:var(--silver);line-height:1.65;padding:0.25rem 0 0.25rem 1.4rem;position:relative"><span style="position:absolute;left:0;top:0.25rem;color:var(--gold);font-size:0.8rem">&#9656;</span>'+escapeHtml(f)+'</li>';
+  }).join('');
+  var primaryTag = (p.tags && p.tags[0]) ? p.tags[0] : 'blade';
+  document.getElementById('detail-info-panel').innerHTML =
+    '<div class="detail-category">'+escapeHtml(primaryTag.charAt(0).toUpperCase()+primaryTag.slice(1))+' Knife</div>' +
+    '<div class="detail-title">'+escapeHtml(p.name)+'</div>' +
+    '<p class="detail-desc">'+escapeHtml(p.description)+'</p>' +
+    '<div class="detail-specs">'+sr+'</div>' +
+    (ft ? '<div style="margin:1.5rem 0 0.5rem;font-family:var(--font-ui);font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:600">Features</div><ul style="list-style:none;margin:0;padding:0">'+ft+'</ul>' : '') +
+    '<div class="qty-add" style="margin-top:2rem"><div class="qty-control"><button class="qty-btn" onclick="changeQty(-1)">&#8722;</button><input class="qty-val" type="number" value="1" min="1" id="qty-input" readonly><button class="qty-btn" onclick="changeQty(1)">+</button></div><button class="btn-addcart" onclick="addToCart(\''+escapeHtml(p.name)+'\')"><span>Add to Cart</span></button><button class="btn-wishlist" title="Save">&#9825;</button></div>' +
+    '<div class="guarantee-badges"><div class="badge-item"><span class="badge-icon">&#10022;</span> Handcrafted to Order</div><div class="badge-item"><span class="badge-icon">&#10022;</span> Lifetime Care</div><div class="badge-item"><span class="badge-icon">&#10022;</span> Atlanta, GA</div></div>';
+  goTo('detail');
+}
 function changeQty(d){var i=document.getElementById('qty-input');if(!i)return;var v=parseInt(i.value)+d;if(v>=1)i.value=v;}
 
 /* =============================================
@@ -1384,6 +2216,76 @@ var currentPage='home';
 var overlay=document.getElementById('pageTransition');
 var transLogo=document.getElementById('transitionLogo');
 function navigateTo(p){document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active');});document.getElementById('page-'+p).classList.add('active');window.scrollTo({top:0,behavior:'instant'});currentPage=p;setTimeout(function(){initPageGSAP();},100);}
+
+function goToShopFiltered(label){
+  goTo('shop');
+  setTimeout(function(){
+    var btns = document.querySelectorAll('#page-shop .filter-btn');
+    var target = (label || 'all blades').toLowerCase();
+    btns.forEach(function(b){
+      if (b.textContent.trim().toLowerCase() === target) b.click();
+    });
+  }, 700);
+}
+
+/* =============================================
+   HERO AUTO-GALLERY
+============================================= */
+var heroGalleryTimer;
+function initHeroGallery(){
+  var stage = document.getElementById('heroGallery');
+  if (!stage) return;
+  var slides = stage.querySelectorAll('.gallery-slide');
+  var dots = stage.querySelectorAll('.gallery-dot');
+  var fill = document.getElementById('heroGalleryFill');
+  if (!slides.length) return;
+  var i = 0;
+  var DURATION = 5000;
+
+  function show(n){
+    n = (n + slides.length) % slides.length;
+    if (n === i) return;
+    slides[i].classList.remove('active');
+    dots[i].classList.remove('active');
+    i = n;
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+    resetProgress();
+  }
+
+  function resetProgress(){
+    if (!fill) return;
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    void fill.offsetWidth;
+    fill.style.transition = 'width ' + DURATION + 'ms linear';
+    fill.style.width = '100%';
+  }
+
+  function tick(){ show(i + 1); }
+
+  function start(){
+    clearInterval(heroGalleryTimer);
+    heroGalleryTimer = setInterval(tick, DURATION);
+    resetProgress();
+  }
+  function stop(){
+    clearInterval(heroGalleryTimer);
+    if (fill) {
+      var current = getComputedStyle(fill).width;
+      fill.style.transition = 'none';
+      fill.style.width = current;
+    }
+  }
+
+  dots.forEach(function(dot, idx){
+    dot.addEventListener('click', function(){ show(idx); start(); });
+  });
+  stage.addEventListener('mouseenter', stop);
+  stage.addEventListener('mouseleave', start);
+
+  start();
+}
 function goTo(p,st){if(p===currentPage&&!st)return;gsap.to(overlay,{opacity:1,duration:0.3,ease:'power2.in',onComplete:function(){overlay.classList.add('active');gsap.fromTo(transLogo,{opacity:0,scale:0.7,rotation:-10},{opacity:1,scale:1,rotation:0,duration:0.4,ease:'back.out(1.7)'});setTimeout(function(){navigateTo(p);gsap.to([overlay,transLogo],{opacity:0,duration:0.4,delay:0.1,ease:'power2.out',onComplete:function(){overlay.classList.remove('active');if(st){var el=document.getElementById(st);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}}});},400);}});}
 
 /* =============================================
@@ -1402,7 +2304,7 @@ function closeMobileNav(){var n=document.getElementById('mobileNav');gsap.to(n,{
   var mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;gsap.to(dot,{x:mx,y:my,duration:0.1,ease:'power2.out'});});
   gsap.ticker.add(function(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform='translate('+rx+'px,'+ry+'px)';});
-  document.querySelectorAll('a,button,.product-card,.nav-logo,.social-btn,.filter-btn').forEach(function(el){
+  document.querySelectorAll('a,button,.product-card,.catalog-card,.slide-arrow,.slide-dot,.nav-logo,.social-btn,.filter-btn').forEach(function(el){
     el.addEventListener('mouseenter',function(){dot.classList.add('hovering');});
     el.addEventListener('mouseleave',function(){dot.classList.remove('hovering');});
   });
@@ -1697,25 +2599,18 @@ function initPageGSAP(){
   }
 
   if(currentPage==='shop'){
-    // Dividers
     document.querySelectorAll('.section-divider').forEach(function(el){
       gsap.to(el,{scaleX:1,duration:0.8,ease:'power2.inOut'});
     });
-    var shopCards=document.querySelectorAll('#shop-grid .product-card');
+    // Compliance strip stagger-in
+    gsap.fromTo('.compliance-item',
+      {opacity:0,y:18},
+      {opacity:1,y:0,duration:0.6,stagger:0.08,delay:0.1,ease:'power2.out'}
+    );
+    // Catalog cards
+    var shopCards=document.querySelectorAll('#shop-grid .catalog-card');
     shopCards.forEach(function(card,i){
-      gsap.to(card,{opacity:1,y:0,duration:0.6,delay:i*0.06,ease:'power3.out'});
-    });
-    // 3D tilt
-    shopCards.forEach(function(card){
-      card.addEventListener('mousemove',function(e){
-        var r=card.getBoundingClientRect();
-        var x=(e.clientX-r.left)/r.width-0.5;
-        var y=(e.clientY-r.top)/r.height-0.5;
-        gsap.to(card,{rotateY:x*6,rotateX:-y*6,transformPerspective:800,duration:0.3,ease:'power2.out'});
-      });
-      card.addEventListener('mouseleave',function(){
-        gsap.to(card,{rotateY:0,rotateX:0,duration:0.5,ease:'elastic.out(1,0.5)'});
-      });
+      gsap.to(card,{opacity:1,y:0,duration:0.7,delay:0.1+i*0.07,ease:'power3.out'});
     });
   }
 
@@ -1776,6 +2671,7 @@ document.addEventListener('DOMContentLoaded',function(){
     gsap.fromTo(nav,{y:-100},{y:0,duration:0.6,ease:'power3.out'});
     // Play hero
     playHero();
+    initHeroGallery();
     initPageGSAP();
   });
 });
