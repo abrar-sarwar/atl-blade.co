@@ -38,8 +38,8 @@
       background: var(--black);
       color: var(--white);
       font-family: var(--font-body);
-      font-size: 1.1rem;
-      line-height: 1.7;
+      font-size: 1.15rem;
+      line-height: 1.75;
       overflow-x: hidden;
     }
 
@@ -54,37 +54,6 @@
 
     .page { display: none; }
     .page.active { display: block; }
-
-    /* =============================================
-       CUSTOM CURSOR
-    ============================================= */
-    .cursor-dot {
-      position: fixed; top: 0; left: 0; z-index: 99999;
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      mix-blend-mode: difference;
-      transition: width 0.2s, height 0.2s, margin 0.2s;
-    }
-    .cursor-dot.hovering {
-      width: 40px; height: 40px;
-      margin: -16px 0 0 -16px;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid var(--gold);
-      mix-blend-mode: normal;
-    }
-    .cursor-ring {
-      position: fixed; top: 0; left: 0; z-index: 99998;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(201,168,76,0.35);
-      border-radius: 50%;
-      pointer-events: none;
-      margin: -14px 0 0 -14px;
-    }
-    @media (max-width: 768px) {
-      .cursor-dot, .cursor-ring { display: none; }
-    }
 
     /* =============================================
        NOISE OVERLAY
@@ -106,7 +75,7 @@
       gap: 2rem;
     }
     .loader-logo {
-      width: 120px; height: 120px;
+      width: min(280px, 38vw); height: min(280px, 38vw);
       opacity: 0;
     }
     .loader-bar-track {
@@ -153,25 +122,26 @@
       cursor: pointer;
     }
     .nav-logo img {
-      height: 44px; width: 44px; object-fit: contain;
+      height: 68px; width: 68px; object-fit: contain;
       transition: transform 0.3s ease, filter 0.3s ease;
       filter: drop-shadow(0 0 6px rgba(201,168,76,0.2));
     }
-    nav.scrolled .nav-logo img { height: 36px; width: 36px; }
+    nav.scrolled .nav-logo img { height: 54px; width: 54px; }
     .nav-logo:hover img {
       transform: rotate(8deg) scale(1.05);
       filter: drop-shadow(0 0 12px rgba(201,168,76,0.4));
     }
     .nav-logo-text {
       font-family: var(--font-display);
-      font-size: 1rem; font-weight: 700;
+      font-size: 1.25rem; font-weight: 700;
       letter-spacing: 0.2em; color: var(--gold);
       text-transform: uppercase; line-height: 1.1;
     }
     .nav-logo-text span {
-      display: block; font-size: 0.55rem; font-weight: 400;
+      display: block; font-size: 0.7rem; font-weight: 400;
       letter-spacing: 0.35em; color: var(--silver);
       font-family: var(--font-ui);
+      margin-top: 0.25rem;
     }
 
     .nav-links { display: flex; gap: 2.5rem; align-items: center; }
@@ -325,12 +295,12 @@
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-size: clamp(2.9rem, 6.2vw, 5.1rem);
       font-weight: 600;
       line-height: 1.05;
       letter-spacing: 0.03em;
       color: var(--white);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.3rem;
       opacity: 0;
     }
     .hero-title .gold-word {
@@ -341,11 +311,11 @@
 
     .hero-tagline {
       font-family: var(--font-body);
-      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      font-size: clamp(1.2rem, 2.1vw, 1.55rem);
       font-weight: 300; font-style: italic;
       color: var(--silver); letter-spacing: 0.05em;
       margin-bottom: 2rem; opacity: 0;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     /* Hero product image showcase */
@@ -648,7 +618,7 @@
     }
     .section-title {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-size: clamp(2.4rem, 4.6vw, 3.8rem);
       font-weight: 600; line-height: 1.1;
       color: var(--white); margin-bottom: 1.2rem;
     }
@@ -739,13 +709,13 @@
     }
     .product-info { padding: 1.5rem; }
     .product-name {
-      font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
-      letter-spacing: 0.05em; color: var(--white); margin-bottom: 0.4rem;
+      font-family: var(--font-display); font-size: 1.4rem; font-weight: 600;
+      letter-spacing: 0.05em; color: var(--white); margin-bottom: 0.5rem;
     }
     .product-desc {
-      font-family: var(--font-body); font-size: 0.9rem;
+      font-family: var(--font-body); font-size: 1.05rem;
       font-weight: 300; color: var(--silver);
-      margin-bottom: 1rem; line-height: 1.5;
+      margin-bottom: 1rem; line-height: 1.55;
     }
     .product-footer {
       display: flex; align-items: center; justify-content: space-between;
@@ -814,9 +784,9 @@
 
     .about-text .section-divider { margin-top: 1.2rem; }
     .about-body {
-      font-family: var(--font-body); font-size: 1.05rem;
+      font-family: var(--font-body); font-size: 1.2rem;
       font-weight: 300; color: var(--silver);
-      line-height: 1.85; margin-bottom: 1.2rem;
+      line-height: 1.85; margin-bottom: 1.3rem;
     }
     .about-stats {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -954,9 +924,9 @@
 
     .detail-info { padding-top: 1rem; }
     .detail-category { font-family: var(--font-ui); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-    .detail-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 600; line-height: 1.1; color: var(--white); margin-bottom: 0.5rem; }
-    .detail-price { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--gold); margin: 1rem 0; }
-    .detail-desc { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.85; margin: 1.5rem 0; }
+    .detail-title { font-family: var(--font-display); font-size: clamp(2.1rem, 3.4vw, 3.2rem); font-weight: 600; line-height: 1.1; color: var(--white); margin-bottom: 0.5rem; }
+    .detail-price { font-family: var(--font-display); font-size: 2.3rem; font-weight: 600; color: var(--gold); margin: 1rem 0; }
+    .detail-desc { font-family: var(--font-body); font-size: 1.15rem; font-weight: 300; color: var(--silver); line-height: 1.85; margin: 1.5rem 0; }
     .detail-specs { border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 1.5rem 0; margin: 1.5rem 0; }
     .spec-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-family: var(--font-ui); font-size: 0.8rem; }
     .spec-label { letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); font-weight: 500; }
@@ -984,14 +954,14 @@
     .contact-page { padding-top: 6rem; min-height: 100vh; background: var(--black); }
     .contact-inner { display: grid; grid-template-columns: 1fr 1.3fr; gap: 5rem; padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; align-items: start; }
     .contact-info .section-divider { margin: 1.2rem 0; }
-    .contact-body { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-body { font-family: var(--font-body); font-size: 1.15rem; font-weight: 300; color: var(--silver); line-height: 1.8; margin-bottom: 2rem; }
     .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
-    .contact-link-item { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--silver); }
+    .contact-link-item { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-ui); font-size: 0.95rem; letter-spacing: 0.1em; color: var(--silver); }
     .contact-link-item .cl-icon { color: var(--gold); width: 20px; text-align: center; }
     .contact-form { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.12); padding: 2.5rem; }
     .form-group { margin-bottom: 1.5rem; }
     .form-label { display: block; font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-    .form-input, .form-textarea { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(192,192,192,0.15); border-radius: 0; color: var(--white); font-family: var(--font-body); font-size: 1rem; padding: 0.85rem 1rem; outline: none; transition: border-color 0.3s, background 0.3s; }
+    .form-input, .form-textarea { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(192,192,192,0.15); border-radius: 0; color: var(--white); font-family: var(--font-body); font-size: 1.1rem; padding: 0.95rem 1.05rem; outline: none; transition: border-color 0.3s, background 0.3s; }
     .form-input:focus, .form-textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.04); }
     .form-textarea { resize: vertical; min-height: 130px; }
     .form-submit { width: 100%; font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; color: var(--black); background: var(--gold); border: none; padding: 1rem; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
@@ -1008,8 +978,8 @@
     .privacy-page { padding-top: 6rem; min-height: 100vh; background: var(--black); }
     .privacy-inner { max-width: 820px; margin: 0 auto; padding: 5rem 3rem; }
     .privacy-inner .section-divider { margin: 1.2rem 0 2.5rem; }
-    .privacy-body { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--silver); line-height: 1.9; }
-    .privacy-body h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--white); margin: 2.5rem 0 0.75rem; }
+    .privacy-body { font-family: var(--font-body); font-size: 1.15rem; font-weight: 300; color: var(--silver); line-height: 1.9; }
+    .privacy-body h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--white); margin: 2.5rem 0 0.75rem; }
     .privacy-body h3::before { content: '\2014  '; color: var(--gold); }
     .privacy-body p { margin-bottom: 1rem; }
     .privacy-body ul { list-style: none; margin: 0.75rem 0 1rem 1rem; }
@@ -1024,15 +994,16 @@
     .footer-grid.footer-grid-3 { grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
     .footer-brand { display: flex; flex-direction: column; gap: 1rem; }
     .footer-brand-logo { display: flex; align-items: center; gap: 0.75rem; }
-    .footer-brand-logo img { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(201,168,76,0.15)); }
-    .footer-brand-logo .footer-logo-text { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: 0.15em; color: var(--gold); }
-    .footer-brand p { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 260px; }
+    .footer-brand-logo img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(201,168,76,0.15)); }
+    .footer-brand-logo .footer-logo-text { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; letter-spacing: 0.15em; color: var(--gold); }
+    .footer-brand p { font-family: var(--font-body); font-size: 1.05rem; font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 280px; }
     .footer-social { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
-    .social-btn { width: 36px; height: 36px; background: transparent; border: 1px solid rgba(201,168,76,0.25); color: var(--silver); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s, border-color 0.3s, color 0.3s; font-family: var(--font-ui); font-weight: 600; }
-    .social-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+    .social-btn { width: 40px; height: 40px; background: transparent; border: 1px solid rgba(201,168,76,0.3); color: var(--silver); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s; }
+    .social-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); transform: translateY(-2px); }
+    .social-btn svg { width: 18px; height: 18px; fill: currentColor; display: block; }
     .footer-col h4 { font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
     .footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
-    .footer-col ul li a { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--silver); cursor: pointer; transition: color 0.3s; }
+    .footer-col ul li a { font-family: var(--font-body); font-size: 1.05rem; font-weight: 300; color: var(--silver); cursor: pointer; transition: color 0.3s; }
     .footer-col ul li a:hover { color: var(--gold); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; margin-top: 3rem; border-top: 1px solid rgba(192,192,192,0.08); max-width: 1200px; margin-left: auto; margin-right: auto; }
     .footer-copy { font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.15em; color: var(--gold-dim); }
@@ -1054,7 +1025,7 @@
     .page-transition { position: fixed; inset: 0; z-index: 9999; background: var(--black); pointer-events: none; opacity: 0; display: flex; align-items: center; justify-content: center; }
     .page-transition.active { pointer-events: all; opacity: 1; }
     .transition-logo { opacity: 0; }
-    .transition-logo img { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(201,168,76,0.4)); }
+    .transition-logo img { width: min(520px, 62vw); height: min(520px, 62vw); object-fit: contain; filter: drop-shadow(0 0 50px rgba(201,168,76,0.6)); }
 
     /* =============================================
        CATALOG (SHOP) — 7 SPECIMEN CARDS
@@ -1109,9 +1080,9 @@
     }
     .compliance-copy {
       font-family: var(--font-body);
-      font-size: 0.82rem; font-weight: 300; font-style: italic;
+      font-size: 0.98rem; font-weight: 300; font-style: italic;
       color: var(--silver);
-      line-height: 1.55;
+      line-height: 1.6;
       letter-spacing: 0.01em;
     }
 
@@ -1290,14 +1261,14 @@
     }
     .catalog-name {
       font-family: var(--font-display);
-      font-size: 1.4rem; font-weight: 600;
+      font-size: 1.6rem; font-weight: 600;
       letter-spacing: 0.025em;
       line-height: 1.2;
       color: var(--white);
     }
     .catalog-desc {
       font-family: var(--font-body);
-      font-size: 0.97rem; font-weight: 300;
+      font-size: 1.1rem; font-weight: 300;
       font-style: italic;
       color: var(--silver);
       line-height: 1.6;
@@ -1355,9 +1326,9 @@
     .feature-item {
       display: flex; align-items: flex-start; gap: 0.65rem;
       font-family: var(--font-body);
-      font-size: 0.93rem; font-weight: 300;
+      font-size: 1.05rem; font-weight: 300;
       color: var(--silver);
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .feature-item::before {
       content: '';
@@ -1441,8 +1412,10 @@
       .nav-links { display: none; }
       .nav-cart { display: none; }
       .hamburger { display: flex; }
-      .nav-logo-text { font-size: 0.85rem; }
-      .nav-logo-text span { font-size: 0.5rem; }
+      .nav-logo img { height: 56px; width: 56px; }
+      nav.scrolled .nav-logo img { height: 46px; width: 46px; }
+      .nav-logo-text { font-size: 1.05rem; }
+      .nav-logo-text span { font-size: 0.6rem; }
       .hero-content { padding: 1rem; grid-template-columns: 1fr; gap: 2rem; }
       .hero-text { align-items: center; text-align: center; }
       .hero-ctas { justify-content: center; }
@@ -1468,10 +1441,6 @@
   </style>
 </head>
 <body>
-
-<!-- Custom cursor -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- Noise overlay -->
 <div class="noise-overlay"></div>
@@ -1611,7 +1580,7 @@
       <div class="section-label reveal-up">Our Collection</div>
       <h2 class="section-title reveal-up">Featured <em>Blades</em></h2>
       <div class="section-divider divider-center"></div>
-      <p class="reveal-up" style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:520px;margin:0 auto">
+      <p class="reveal-up" style="font-family:var(--font-body);font-size:1.15rem;font-weight:300;color:var(--silver);max-width:560px;margin:0 auto;line-height:1.7">
         A few of the blades in the shop right now. New pieces get added when they're ready.
       </p>
     </div>
@@ -1678,7 +1647,7 @@
         </div>
         <p>Handmade knives out of Atlanta. New shop, run by Zian Bhutta.</p>
         <div class="footer-social">
-          <a href="https://www.instagram.com/atlbladeco/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">IG</a><a href="https://www.tiktok.com/@atlbladeco?_r=1&amp;_t=ZT-95P7LZQVYUv" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">TT</a>
+          <a href="https://instagram.com/atlbladeco" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.07 1.2.05 1.8.25 2.2.42.6.22 1 .49 1.5.97s.75.9.97 1.5c.17.42.37 1 .42 2.2.06 1.2.07 1.6.07 4.8s0 3.6-.07 4.8c-.05 1.2-.25 1.8-.42 2.2-.22.6-.49 1-.97 1.5s-.9.75-1.5.97c-.42.17-1 .37-2.2.42-1.2.06-1.6.07-4.8.07s-3.6 0-4.8-.07c-1.2-.05-1.8-.25-2.2-.42-.6-.22-1-.49-1.5-.97s-.75-.9-.97-1.5c-.17-.42-.37-1-.42-2.2C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.8c.05-1.2.25-1.8.42-2.2.22-.6.49-1 .97-1.5s.9-.75 1.5-.97c.42-.17 1-.37 2.2-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.16 0-3.5 0-4.7.07-1.1.05-1.7.23-2.1.39-.5.2-.9.45-1.3.84-.39.4-.64.8-.84 1.3-.16.4-.34 1-.39 2.1C2.6 9.5 2.6 9.84 2.6 13s0 3.5.07 4.7c.05 1.1.23 1.7.39 2.1.2.5.45.9.84 1.3.4.39.8.64 1.3.84.4.16 1 .34 2.1.39 1.2.06 1.5.07 4.7.07s3.5 0 4.7-.07c1.1-.05 1.7-.23 2.1-.39.5-.2.9-.45 1.3-.84.39-.4.64-.8.84-1.3.16-.4.34-1 .39-2.1.06-1.2.07-1.5.07-4.7s0-3.5-.07-4.7c-.05-1.1-.23-1.7-.39-2.1-.2-.5-.45-.9-.84-1.3-.4-.39-.8-.64-1.3-.84-.4-.16-1-.34-2.1-.39C15.5 4.01 15.16 4 12 4zm0 3.05a4.95 4.95 0 1 1 0 9.9 4.95 4.95 0 0 1 0-9.9zm0 1.8a3.15 3.15 0 1 0 0 6.3 3.15 3.15 0 0 0 0-6.3zm5.16-2.06a1.16 1.16 0 1 1 0 2.33 1.16 1.16 0 0 1 0-2.33z"/></svg></a><a href="https://tiktok.com/@atlbladeco" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a5.4 5.4 0 0 1-3.4-1.2 5.4 5.4 0 0 1-2-3.5h-3.3v13.4a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.5a6 6 0 1 0 5.2 5.9V8.7a8.8 8.8 0 0 0 5.4 1.8V7.2c-.1 0 0 0 0-.5z"/></svg></a>
         </div>
       </div>
       <div class="footer-col">
@@ -1697,13 +1666,14 @@
           <li><a onclick="goTo('home','about-section')">About</a></li>
           <li><a onclick="goTo('contact')">Contact</a></li>
           <li><a onclick="goTo('contact')">Custom Orders</a></li>
+          <li><a onclick="goTo('returns')">Return Policy</a></li>
           <li><a onclick="goTo('privacy')">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; 2026 ATL Blade Co. Atlanta, GA.</div>
-      <div class="footer-legal"><a onclick="goTo('privacy')">Privacy</a><a onclick="goTo('contact')">Contact</a></div>
+      <div class="footer-legal"><a onclick="goTo('privacy')">Privacy</a><a onclick="goTo('returns')">Return Policy</a><a onclick="goTo('contact')">Contact</a></div>
     </div>
   </footer>
 </div>
@@ -1714,7 +1684,7 @@
     <div class="section-label">The Collection</div>
     <h1 class="section-title">Seven <em>Specimens</em></h1>
     <div class="section-divider divider-center"></div>
-    <p style="font-family:var(--font-body);font-size:1rem;font-weight:300;color:var(--silver);max-width:520px;margin:0 auto;font-style:italic">Everything here is made by hand, one knife at a time.</p>
+    <p style="font-family:var(--font-body);font-size:1.15rem;font-weight:300;color:var(--silver);max-width:560px;margin:0 auto;font-style:italic;line-height:1.7">Everything here is made by hand, one knife at a time.</p>
   </div>
 
   <!-- Compliance / legal strip -->
@@ -1751,7 +1721,7 @@
     <button class="filter-btn" onclick="filterProducts('tactical',this)">Tactical</button>
   </div>
   <div class="shop-grid-section"><div class="shop-grid" id="shop-grid"></div></div>
-  <footer><div class="footer-grid" style="grid-template-columns:2fr 1fr"><div class="footer-brand"><div class="footer-brand-logo"><img src="atlbladecologo.png" alt="ATL Blade Co."><span class="footer-logo-text">ATL BLADE CO.</span></div><p>Handmade knives out of Atlanta. Run by Zian Bhutta.</p><div class="footer-social"><a href="https://www.instagram.com/atlbladeco/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">IG</a><a href="https://www.tiktok.com/@atlbladeco?_r=1&amp;_t=ZT-95P7LZQVYUv" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">TT</a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="goTo('home')">Home</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a onclick="goTo('privacy')">Privacy Policy</a></li></ul></div></div><div class="footer-bottom" style="margin-top:2rem;padding-top:1.5rem"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div></div></footer>
+  <footer><div class="footer-grid" style="grid-template-columns:2fr 1fr"><div class="footer-brand"><div class="footer-brand-logo"><img src="atlbladecologo.png" alt="ATL Blade Co."><span class="footer-logo-text">ATL BLADE CO.</span></div><p>Handmade knives out of Atlanta. Run by Zian Bhutta.</p><div class="footer-social"><a href="https://instagram.com/atlbladeco" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.07 1.2.05 1.8.25 2.2.42.6.22 1 .49 1.5.97s.75.9.97 1.5c.17.42.37 1 .42 2.2.06 1.2.07 1.6.07 4.8s0 3.6-.07 4.8c-.05 1.2-.25 1.8-.42 2.2-.22.6-.49 1-.97 1.5s-.9.75-1.5.97c-.42.17-1 .37-2.2.42-1.2.06-1.6.07-4.8.07s-3.6 0-4.8-.07c-1.2-.05-1.8-.25-2.2-.42-.6-.22-1-.49-1.5-.97s-.75-.9-.97-1.5c-.17-.42-.37-1-.42-2.2C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.8c.05-1.2.25-1.8.42-2.2.22-.6.49-1 .97-1.5s.9-.75 1.5-.97c.42-.17 1-.37 2.2-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.16 0-3.5 0-4.7.07-1.1.05-1.7.23-2.1.39-.5.2-.9.45-1.3.84-.39.4-.64.8-.84 1.3-.16.4-.34 1-.39 2.1C2.6 9.5 2.6 9.84 2.6 13s0 3.5.07 4.7c.05 1.1.23 1.7.39 2.1.2.5.45.9.84 1.3.4.39.8.64 1.3.84.4.16 1 .34 2.1.39 1.2.06 1.5.07 4.7.07s3.5 0 4.7-.07c1.1-.05 1.7-.23 2.1-.39.5-.2.9-.45 1.3-.84.39-.4.64-.8.84-1.3.16-.4.34-1 .39-2.1.06-1.2.07-1.5.07-4.7s0-3.5-.07-4.7c-.05-1.1-.23-1.7-.39-2.1-.2-.5-.45-.9-.84-1.3-.4-.39-.8-.64-1.3-.84-.4-.16-1-.34-2.1-.39C15.5 4.01 15.16 4 12 4zm0 3.05a4.95 4.95 0 1 1 0 9.9 4.95 4.95 0 0 1 0-9.9zm0 1.8a3.15 3.15 0 1 0 0 6.3 3.15 3.15 0 0 0 0-6.3zm5.16-2.06a1.16 1.16 0 1 1 0 2.33 1.16 1.16 0 0 1 0-2.33z"/></svg></a><a href="https://tiktok.com/@atlbladeco" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a5.4 5.4 0 0 1-3.4-1.2 5.4 5.4 0 0 1-2-3.5h-3.3v13.4a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.5a6 6 0 1 0 5.2 5.9V8.7a8.8 8.8 0 0 0 5.4 1.8V7.2c-.1 0 0 0 0-.5z"/></svg></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="goTo('home')">Home</a></li><li><a onclick="goTo('contact')">Contact</a></li><li><a onclick="goTo('privacy')">Privacy Policy</a></li></ul></div></div><div class="footer-bottom" style="margin-top:2rem;padding-top:1.5rem"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div></div></footer>
 </div>
 
 <!-- PRODUCT DETAIL PAGE -->
@@ -1763,15 +1733,21 @@
 <!-- CONTACT PAGE -->
 <div class="page" id="page-contact">
   <div class="contact-page"><div class="contact-inner">
-    <div class="contact-info"><div class="section-label">Get In Touch</div><h1 class="section-title">Let's <em>Talk Steel</em></h1><div class="section-divider"></div><p class="contact-body">Custom orders, wholesale, or just questions about a knife you're curious about. Email me directly or use the form.</p><p class="contact-body">If you have something specific in mind, send a quick description and I'll see what I can do.</p><div class="contact-links"><div class="contact-link-item"><span class="cl-icon">&#9993;</span><span>atlbladeco@gmail.com</span></div><div class="contact-link-item"><span class="cl-icon">&#9742;</span><span>(404) 944-1159</span></div><div class="contact-link-item"><span class="cl-icon">&#8982;</span><span>Atlanta, Georgia, USA</span></div></div><div style="margin-top:3rem;opacity:0.1"><img src="atlbladecologo.png" alt="" style="width:120px;filter:grayscale(100%)"></div></div>
-    <div class="contact-form"><div style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--white);margin-bottom:0.5rem">Send a Message</div><div style="width:40px;height:1px;background:var(--gold);margin-bottom:2rem"></div><div class="form-group"><label class="form-label" for="contact-name">Full Name</label><input class="form-input" type="text" id="contact-name" placeholder="Your name"></div><div class="form-group"><label class="form-label" for="contact-email">Email Address</label><input class="form-input" type="email" id="contact-email" placeholder="your@email.com"></div><div class="form-group"><label class="form-label" for="contact-subject">Subject</label><input class="form-input" type="text" id="contact-subject" placeholder="Custom order inquiry, etc."></div><div class="form-group"><label class="form-label" for="contact-msg">Message</label><textarea class="form-textarea" id="contact-msg" placeholder="Tell us about your needs..."></textarea></div><div class="form-group" style="display:flex;align-items:center;gap:0.75rem"><input type="checkbox" id="newsletter" style="accent-color:var(--gold);width:15px;height:15px"><label for="newsletter" style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.1em;color:var(--silver);cursor:pointer">Subscribe to our newsletter for new releases &amp; offers</label></div><button class="form-submit" onclick="submitContact()"><span>Send Message &rarr;</span></button><div class="form-msg" id="contact-msg-success">&#10022; Got it. I'll get back to you soon.</div></div>
+    <div class="contact-info"><div class="section-label">Get In Touch</div><h1 class="section-title">Let's <em>Talk Steel</em></h1><div class="section-divider"></div><p class="contact-body">Custom orders, wholesale, or just questions about a knife you're curious about. Email me directly or use the form.</p><p class="contact-body">If you have something specific in mind, send a quick description and I'll see what I can do.</p><div class="contact-links"><div class="contact-link-item"><span class="cl-icon">&#9993;</span><a href="mailto:atlbladeco@gmail.com" style="color:inherit;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">atlbladeco@gmail.com</a></div><div class="contact-link-item"><span class="cl-icon">&#9742;</span><span>(404) 944-1159</span></div><div class="contact-link-item"><span class="cl-icon">&#8982;</span><span>Atlanta, Georgia, USA</span></div></div><div style="margin-top:3rem;opacity:0.1"><img src="atlbladecologo.png" alt="" style="width:120px;filter:grayscale(100%)"></div></div>
+    <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="return submitContact(event)"><input type="hidden" name="access_key" value="5ac1e9f9-b949-4e29-a577-dc48bd9de095"><input type="hidden" name="from_name" value="ATL Blade Co. Website"><input type="hidden" name="subject" value="New contact from atlbladeco.com"><input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"><div style="font-family:var(--font-display);font-size:1.7rem;font-weight:600;color:var(--white);margin-bottom:0.5rem">Send a Message</div><div style="width:40px;height:1px;background:var(--gold);margin-bottom:2rem"></div><div class="form-group"><label class="form-label" for="contact-name">Full Name</label><input class="form-input" type="text" id="contact-name" name="name" placeholder="Your name" required></div><div class="form-group"><label class="form-label" for="contact-email">Email Address</label><input class="form-input" type="email" id="contact-email" name="email" placeholder="your@email.com" required></div><div class="form-group"><label class="form-label" for="contact-subject">Subject</label><input class="form-input" type="text" id="contact-subject" name="user_subject" placeholder="Custom order inquiry, etc."></div><div class="form-group"><label class="form-label" for="contact-msg">Message</label><textarea class="form-textarea" id="contact-msg" name="message" placeholder="Tell us about your needs..." required></textarea></div><div class="form-group" style="display:flex;align-items:center;gap:0.75rem"><input type="checkbox" id="newsletter" name="newsletter" value="yes" style="accent-color:var(--gold);width:16px;height:16px"><label for="newsletter" style="font-family:var(--font-ui);font-size:0.85rem;letter-spacing:0.1em;color:var(--silver);cursor:pointer">Subscribe to our newsletter for new releases &amp; offers</label></div><button class="form-submit" type="submit"><span>Send Message &rarr;</span></button><div class="form-msg" id="contact-msg-success">&#10022; Got it. I'll get back to you soon.</div></form>
   </div></div>
   <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('privacy')">Privacy</a></div></div></footer>
 </div>
 
+<!-- RETURNS PAGE -->
+<div class="page" id="page-returns">
+  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Customer Care</div><h1 class="section-title">Return <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">14-Day Return Window</div><div class="privacy-body"><p style="font-size:1.25rem;line-height:1.7"><strong style="color:var(--gold);font-family:var(--font-display);font-weight:600;letter-spacing:0.04em">14-Day Return Policy.</strong> If you're not satisfied with your purchase, return it within 14 days for a full refund.</p><h3>How It Works</h3><ul><li>Return any item within 14 days of delivery for a full refund</li><li>Item must be unused and in original packaging</li><li>Contact us to start a return — we'll send instructions and a return address</li><li>Refund is issued to the original payment method once the item arrives back in good condition</li></ul><h3>Start a Return</h3><p>Email <a style="color:var(--gold)" href="mailto:atlbladeco@gmail.com">atlbladeco@gmail.com</a> with your order number and a quick note on what you're returning, and we'll take it from there.</p><div style="margin-top:2.5rem"><button class="btn-primary" onclick="goTo('contact')"><span>Contact Us To Start A Return</span></button></div></div></div></div>
+  <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('contact')">Contact</a><a onclick="goTo('privacy')">Privacy</a></div></div></footer>
+</div>
+
 <!-- PRIVACY PAGE -->
 <div class="page" id="page-privacy">
-  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Legal</div><h1 class="section-title">Privacy <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">Effective Date: January 1, 2026</div><div class="privacy-body"><p>ATL Blade Co. ("we," "our," or "us") is committed to protecting the privacy and security of our customers. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p><h3>Information We Collect</h3><p>When you place an order or create an account with us, we may collect the following information:</p><ul><li>Full name and shipping/billing address</li><li>Email address and phone number</li><li>Payment method (processed securely — we do not store full card details)</li><li>Order history and product preferences</li><li>IP address and browser type for security and analytics</li></ul><h3>How We Use Your Information</h3><p>Your information is used exclusively to:</p><ul><li>Process and fulfill your orders</li><li>Communicate order status and shipping updates</li><li>Send marketing emails — only if you have opted in</li><li>Improve our website and customer experience</li><li>Comply with legal obligations</li></ul><h3>Email Marketing</h3><p>We may send promotional emails about new products, exclusive offers, and company news to customers who have subscribed. You may opt out at any time by clicking the "Unsubscribe" link in any email or by contacting us directly at atlbladeco@gmail.com.</p><h3>Data Sharing</h3><p>ATL Blade Co. does not sell, trade, or rent your personal information to third parties. We may share data only with trusted service providers strictly to fulfill your order.</p><h3>Data Security</h3><p>We implement industry-standard security measures including SSL/TLS encryption, secure storage, regular audits, and PCI-DSS compliant payment processing.</p><h3>Cookies &amp; Tracking</h3><p>Our website uses cookies to enhance your browsing experience. You may disable cookies in your browser settings. We do not use third-party advertising trackers.</p><h3>Your Rights</h3><p>You have the right to request a copy of your data, request correction or deletion, opt out of marketing, and lodge complaints with your local data protection authority.</p><h3>Contact Us</h3><ul><li>Email: atlbladeco@gmail.com</li><li>Phone: (404) 944-1159</li><li>Address: ATL Blade Co., Atlanta, Georgia, USA</li></ul></div></div></div>
+  <div class="privacy-page"><div class="privacy-inner"><div class="section-label">Legal</div><h1 class="section-title">Privacy <em>Policy</em></h1><div class="section-divider"></div><div class="privacy-effective">Effective Date: January 1, 2026</div><div class="privacy-body"><p>ATL Blade Co. ("we," "our," or "us") is committed to protecting the privacy and security of our customers. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p><h3>Information We Collect</h3><p>When you place an order or create an account with us, we may collect the following information:</p><ul><li>Full name and shipping/billing address</li><li>Email address and phone number</li><li>Payment method (processed securely — we do not store full card details)</li><li>Order history and product preferences</li><li>IP address and browser type for security and analytics</li></ul><h3>How We Use Your Information</h3><p>Your information is used exclusively to:</p><ul><li>Process and fulfill your orders</li><li>Communicate order status and shipping updates</li><li>Send marketing emails — only if you have opted in</li><li>Improve our website and customer experience</li><li>Comply with legal obligations</li></ul><h3>Email Marketing</h3><p>We may send promotional emails about new products, exclusive offers, and company news to customers who have subscribed. You may opt out at any time by clicking the "Unsubscribe" link in any email or by contacting us directly at atlbladeco@gmail.com.</p><h3>Data Sharing</h3><p>ATL Blade Co. does not sell, trade, or rent your personal information to third parties. We may share data only with trusted service providers strictly to fulfill your order.</p><h3>Data Security</h3><p>We implement industry-standard security measures including SSL/TLS encryption, secure storage, regular audits, and PCI-DSS compliant payment processing.</p><h3>Cookies &amp; Tracking</h3><p>Our website uses cookies to enhance your browsing experience. You may disable cookies in your browser settings. We do not use third-party advertising trackers.</p><h3>Your Rights</h3><p>You have the right to request a copy of your data, request correction or deletion, opt out of marketing, and lodge complaints with your local data protection authority.</p><h3>Contact Us</h3><ul><li>Email: atlbladeco@gmail.com</li><li>Phone: (404) 944-1159</li><li>Location: Atlanta, Georgia, USA</li></ul></div></div></div>
   <footer><div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1.5rem;margin:0 auto;max-width:1200px"><div class="footer-copy">&copy; 2026 ATL Blade Co.</div><div class="footer-legal"><a onclick="goTo('home')">Home</a><a onclick="goTo('shop')">Shop</a><a onclick="goTo('contact')">Contact</a></div></div></footer>
 </div>
 
@@ -2205,9 +2181,45 @@ function showToast(m){var e=document.getElementById('cartToast');document.getEle
 function closeToast(){document.getElementById('cartToast').classList.remove('show');}
 
 /* =============================================
-   CONTACT FORM
+   CONTACT FORM (Web3Forms)
 ============================================= */
-function submitContact(){var n=document.getElementById('contact-name').value;var e=document.getElementById('contact-email').value;var m=document.getElementById('contact-msg').value;if(!n||!e||!m){showToast('Please fill in all required fields.');return;}var s=document.getElementById('contact-msg-success');s.classList.add('show');gsap.fromTo(s,{opacity:0,y:10},{opacity:1,y:0,duration:0.5,ease:'power2.out'});document.getElementById('contact-name').value='';document.getElementById('contact-email').value='';document.getElementById('contact-subject').value='';document.getElementById('contact-msg').value='';}
+function submitContact(event){
+  event.preventDefault();
+  var form = event.target;
+  var name = (document.getElementById('contact-name').value || '').trim();
+  var email = (document.getElementById('contact-email').value || '').trim();
+  var msg = (document.getElementById('contact-msg').value || '').trim();
+  if(!name || !email || !msg){
+    showToast('Please fill in all required fields.');
+    return false;
+  }
+  var key = form.querySelector('input[name="access_key"]');
+  if(!key || !key.value || key.value === 'YOUR_WEB3FORMS_KEY'){
+    showToast('Contact form not configured yet. Email atlbladeco@gmail.com directly.');
+    return false;
+  }
+  var btn = form.querySelector('.form-submit');
+  if(btn){ btn.disabled = true; btn.querySelector('span').textContent = 'Sending…'; }
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(function(r){ return r.json(); }).then(function(data){
+    if(data && data.success){
+      var s = document.getElementById('contact-msg-success');
+      s.classList.add('show');
+      gsap.fromTo(s,{opacity:0,y:10},{opacity:1,y:0,duration:0.5,ease:'power2.out'});
+      form.reset();
+    } else {
+      showToast((data && data.message) ? data.message : 'Something went wrong. Try again.');
+    }
+  }).catch(function(){
+    showToast('Network error. Please try again.');
+  }).finally(function(){
+    if(btn){ btn.disabled = false; btn.querySelector('span').innerHTML = 'Send Message &rarr;'; }
+  });
+  return false;
+}
 
 /* =============================================
    NAVIGATION / PAGE ROUTING
@@ -2286,48 +2298,13 @@ function initHeroGallery(){
 
   start();
 }
-function goTo(p,st){if(p===currentPage&&!st)return;gsap.to(overlay,{opacity:1,duration:0.3,ease:'power2.in',onComplete:function(){overlay.classList.add('active');gsap.fromTo(transLogo,{opacity:0,scale:0.7,rotation:-10},{opacity:1,scale:1,rotation:0,duration:0.4,ease:'back.out(1.7)'});setTimeout(function(){navigateTo(p);gsap.to([overlay,transLogo],{opacity:0,duration:0.4,delay:0.1,ease:'power2.out',onComplete:function(){overlay.classList.remove('active');if(st){var el=document.getElementById(st);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}}});},400);}});}
+function goTo(p,st){if(p===currentPage&&!st)return;gsap.to(overlay,{opacity:1,duration:0.3,ease:'power2.in',onComplete:function(){overlay.classList.add('active');gsap.fromTo(transLogo,{opacity:0,scale:0.6,rotation:-12},{opacity:1,scale:1,rotation:0,duration:0.55,ease:'back.out(1.7)'});setTimeout(function(){navigateTo(p);gsap.to([overlay,transLogo],{opacity:0,duration:0.45,delay:0.15,ease:'power2.out',onComplete:function(){overlay.classList.remove('active');if(st){var el=document.getElementById(st);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}}});},700);}});}
 
 /* =============================================
    MOBILE NAV
 ============================================= */
 function toggleMobileNav(){var n=document.getElementById('mobileNav');if(n.style.display==='flex'){closeMobileNav();}else{n.style.display='flex';gsap.fromTo(n,{opacity:0},{opacity:1,duration:0.3});var links=n.querySelectorAll('a');gsap.fromTo(links,{y:20,opacity:0},{y:0,opacity:1,duration:0.4,stagger:0.08,ease:'power2.out',delay:0.1});}}
 function closeMobileNav(){var n=document.getElementById('mobileNav');gsap.to(n,{opacity:0,duration:0.2,onComplete:function(){n.style.display='none';}});}
-
-/* =============================================
-   CUSTOM CURSOR
-============================================= */
-(function(){
-  var dot=document.getElementById('cursorDot');
-  var ring=document.getElementById('cursorRing');
-  if(!dot||!ring||window.innerWidth<769)return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;gsap.to(dot,{x:mx,y:my,duration:0.1,ease:'power2.out'});});
-  gsap.ticker.add(function(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform='translate('+rx+'px,'+ry+'px)';});
-  document.querySelectorAll('a,button,.product-card,.catalog-card,.slide-arrow,.slide-dot,.nav-logo,.social-btn,.filter-btn').forEach(function(el){
-    el.addEventListener('mouseenter',function(){dot.classList.add('hovering');});
-    el.addEventListener('mouseleave',function(){dot.classList.remove('hovering');});
-  });
-})();
-
-/* =============================================
-   MAGNETIC BUTTONS
-============================================= */
-(function(){
-  if(window.innerWidth<769)return;
-  document.querySelectorAll('[data-magnetic]').forEach(function(wrap){
-    var btn=wrap.querySelector('button')||wrap;
-    wrap.addEventListener('mousemove',function(e){
-      var r=wrap.getBoundingClientRect();
-      var x=(e.clientX-r.left-r.width/2)*0.3;
-      var y=(e.clientY-r.top-r.height/2)*0.3;
-      gsap.to(btn,{x:x,y:y,duration:0.3,ease:'power2.out'});
-    });
-    wrap.addEventListener('mouseleave',function(){
-      gsap.to(btn,{x:0,y:0,duration:0.5,ease:'elastic.out(1,0.4)'});
-    });
-  });
-})();
 
 /* =============================================
    SPLIT TEXT UTIL (no plugin needed)
@@ -2503,19 +2480,6 @@ function initPageGSAP(){
     var cards=document.querySelectorAll('#featured-grid .product-card');
     cards.forEach(function(card,i){
       gsap.to(card,{opacity:1,y:0,duration:0.7,delay:i*0.15,ease:'power3.out',scrollTrigger:{trigger:'#featured-section',start:'top 75%',once:true}});
-    });
-
-    // 3D tilt on product cards
-    cards.forEach(function(card){
-      card.addEventListener('mousemove',function(e){
-        var r=card.getBoundingClientRect();
-        var x=(e.clientX-r.left)/r.width-0.5;
-        var y=(e.clientY-r.top)/r.height-0.5;
-        gsap.to(card,{rotateY:x*8,rotateX:-y*8,transformPerspective:800,duration:0.3,ease:'power2.out'});
-      });
-      card.addEventListener('mouseleave',function(){
-        gsap.to(card,{rotateY:0,rotateX:0,duration:0.5,ease:'elastic.out(1,0.5)'});
-      });
     });
 
     // About section
