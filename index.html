@@ -1978,7 +1978,7 @@ function renderFeaturedCard(p, c) {
       '<div class="product-name">'+escapeHtml(p.name)+'</div>' +
       '<div class="product-desc">'+escapeHtml(p.description)+'</div>' +
       '<div class="product-footer">' +
-        '<div class="product-price" style="font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;font-family:var(--font-ui);font-weight:600">Handcrafted</div>' +
+        '<div class="product-price" style="font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;font-family:var(--font-ui);font-weight:600">Prices Coming Soon</div>' +
         '<button class="btn-sm" onclick="event.stopPropagation();goTo(\'shop\')">View</button>' +
       '</div>' +
     '</div>';
@@ -2047,6 +2047,7 @@ function renderCatalogCard(p, c, index, total) {
         '<div class="catalog-subhead">Features</div>' +
         '<div class="catalog-features">'+featuresHtml+'</div>' +
       '</div>' +
+      '<div class="catalog-price-pending" style="font-family:var(--font-ui);font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:600;color:var(--gold);padding:0.75rem 0;border-top:1px solid rgba(201,168,76,0.15);border-bottom:1px solid rgba(201,168,76,0.15);text-align:center">Prices Coming Soon</div>' +
       '<div class="catalog-footer">' +
         '<button class="catalog-cta" onclick="addToCart(\''+escapeHtml(p.name).replace(/\\/g,"\\\\").replace(/'/g,"\\\'")+'\')"><span>Add to Cart</span></button>' +
         '<button class="catalog-detail" onclick="goToDetail('+p.id+')">Details &rarr;</button>' +
@@ -2163,6 +2164,7 @@ function goToDetail(id){
   document.getElementById('detail-info-panel').innerHTML =
     '<div class="detail-category">'+escapeHtml(primaryTag.charAt(0).toUpperCase()+primaryTag.slice(1))+' Knife</div>' +
     '<div class="detail-title">'+escapeHtml(p.name)+'</div>' +
+    '<div class="detail-price" style="font-family:var(--font-ui);font-size:0.85rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:600">Prices Coming Soon</div>' +
     '<p class="detail-desc">'+escapeHtml(p.description)+'</p>' +
     '<div class="detail-specs">'+sr+'</div>' +
     (ft ? '<div style="margin:1.5rem 0 0.5rem;font-family:var(--font-ui);font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:600">Features</div><ul style="list-style:none;margin:0;padding:0">'+ft+'</ul>' : '') +
