@@ -1536,9 +1536,9 @@
       <div class="hero-showcase" id="heroShowcase">
         <div class="hero-gallery" id="heroGallery">
           <div class="gallery-track">
-            <div class="gallery-slide active" data-slide="0"><img src="assets/Karambit-Knife-Powdercoated-Blade1.png" alt="Karambit knife with mosaic pin"></div>
-            <div class="gallery-slide" data-slide="1"><img src="assets/Damascus-Pakkawood-USA-Pocket-Knife1.png" alt="Damascus pakkawood USA pocket knife"></div>
-            <div class="gallery-slide" data-slide="2"><img src="assets/7%E2%80%9D-Damascus-Skinner-Knife1.png" alt="Damascus skinner with pakkawood handle"></div>
+            <div class="gallery-slide active" data-slide="0"><img src="assets/Karambit_knife/Karambit_knife.png" alt="Karambit knife with mosaic pin"></div>
+            <div class="gallery-slide" data-slide="1"><img src="assets/Damascus_Pakkawood_USA_Pocket_Knife/Damascus_Pakkawood_USA_Pocket_Knife.png" alt="Damascus pakkawood USA pocket knife"></div>
+            <div class="gallery-slide" data-slide="2"><img src="assets/Damascus_Skinner_knife/Damascus_Skinner_knife.png" alt="Damascus skinner with pakkawood handle"></div>
           </div>
           <div class="gallery-dots">
             <div class="gallery-dot active" data-dot="0" aria-label="Show image 1"></div>
@@ -1831,7 +1831,7 @@ var PRODUCTS = [
   {
     id: 1,
     name: "Damascus USA Flag Pocket Knife",
-    slugBase: "Damascus-USA-Flag-Pocket-Knife",
+    slugBase: "Damascus_USA_Pocket_Knife",
     imageCount: 3,
     tags: ["damascus","pocket"],
     badge: "Patriot",
@@ -1853,8 +1853,8 @@ var PRODUCTS = [
   {
     id: 2,
     name: "Damascus Pakkawood USA Pocket Knife",
-    slugBase: "Damascus-Pakkawood-USA-Pocket-Knife",
-    imageCount: 3,
+    slugBase: "Damascus_Pakkawood_USA_Pocket_Knife",
+    imageCount: 4,
     tags: ["damascus","pocket"],
     badge: "Premium",
     description: "A premium folding knife with Damascus steel bolsters and blade, paired with a striking USA flag-color pakkawood and white resin handle.",
@@ -1875,8 +1875,8 @@ var PRODUCTS = [
   {
     id: 3,
     name: "Damascus & Pakkawood Pocket Knife",
-    slugBase: "Damascus-&-Pakkawood-Pocket-Knife",
-    imageCount: 3,
+    slugBase: "Damascus_Pakkawood_Camel_bone_Pocket_Knife",
+    imageCount: 5,
     tags: ["damascus","pocket"],
     badge: null,
     description: "A premium folding knife with Damascus steel bolsters and blade, paired with a striking pakkawood and camel-bone handle.",
@@ -1897,8 +1897,8 @@ var PRODUCTS = [
   {
     id: 4,
     name: "SS & Bone Pocket Knife \u2014 Compact Folder",
-    slugBase: "SS-&-Bone-Pocket-Knife-Compact-Folder",
-    imageCount: 3,
+    slugBase: "SS_&_Bone_Pocket_Knife",
+    imageCount: 6,
     tags: ["pocket"],
     badge: null,
     description: "Small, durable pocket knife featuring a stainless steel blade with a bone and stainless steel handle combination.",
@@ -1918,8 +1918,8 @@ var PRODUCTS = [
   {
     id: 5,
     name: "7\u201d Damascus Skinner Knife",
-    slugBase: "7\u201d-Damascus-Skinner-Knife",
-    imageCount: 3,
+    slugBase: "Damascus_Skinner_knife",
+    imageCount: 5,
     tags: ["damascus","outdoor"],
     badge: "Hunter",
     description: "A robust skinner with a hand-forged Damascus blade and a durable pakkawood handle.",
@@ -1939,8 +1939,8 @@ var PRODUCTS = [
   {
     id: 6,
     name: "Powdercoated Tracker Knife \u2014 11\u201d",
-    slugBase: "Powdercoated-Tracker-Knife-11\u201d",
-    imageCount: 3,
+    slugBase: "Powdercoated_tracker_knife",
+    imageCount: 4,
     tags: ["outdoor","tactical"],
     badge: "Heavy-Duty",
     description: "A rugged tracker-style fixed blade built for hard outdoor use, featuring a durable powdercoated blade and a solid black resin handle.",
@@ -1960,8 +1960,8 @@ var PRODUCTS = [
   {
     id: 7,
     name: "Karambit Knife \u2014 Powdercoated Blade",
-    slugBase: "Karambit-Knife-Powdercoated-Blade",
-    imageCount: 3,
+    slugBase: "Karambit_knife",
+    imageCount: 5,
     tags: ["tactical"],
     badge: "Limited",
     description: "A bold tactical-style karambit featuring a durable powdercoated blade and a rugged black micarta handle, finished with a striking mosaic pin.",
@@ -1981,15 +1981,17 @@ var PRODUCTS = [
   }
 ];
 
+function productImage(p, idx) {
+  var i = idx || 0;
+  var suffix = i === 0 ? '' : String(i);
+  return 'assets/' + encodeURIComponent(p.slugBase) + '/' + encodeURIComponent(p.slugBase + suffix) + '.png';
+}
 function productImages(p) {
   var arr = [];
-  for (var i = 1; i <= (p.imageCount || 3); i++) {
-    arr.push('assets/' + encodeURIComponent(p.slugBase + i) + '.png');
+  for (var i = 0; i < (p.imageCount || 1); i++) {
+    arr.push(productImage(p, i));
   }
   return arr;
-}
-function productImage(p, idx) {
-  return 'assets/' + encodeURIComponent(p.slugBase + ((idx||0)+1)) + '.png';
 }
 
 /* =============================================

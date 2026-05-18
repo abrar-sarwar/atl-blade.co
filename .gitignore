@@ -1,4 +1,2 @@
-node_modules/
-.claude/settings.local.json
-.playwright-mcp/
-verify-*.png
+.DS_Store
+**/.DS_Store

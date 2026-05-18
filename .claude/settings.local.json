@@ -25,7 +25,9 @@
       "Bash(npx --yes serve . -p 5182 -l 5182)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5182/)",
       "Bash(npx --yes serve . -p 5183 -l 5183)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/)",
+      "Bash(node *)",
+      "Bash(git add *)"
     ]
   }
 }
