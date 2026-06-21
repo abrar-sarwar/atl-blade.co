@@ -34,12 +34,13 @@ export default async function StoreLayout({
       className={`store ${cinzel.variable} ${cormorant.variable} ${raleway.variable}`}
     >
       <nav className="store-nav">
-        <Link href="/shop" className="brand">
+        <Link href="/" className="brand">
           {company.toUpperCase()}
         </Link>
         <div className="links">
+          <Link href="/">Home</Link>
           <Link href="/shop">Shop</Link>
-          <a href="/legacy/index.html">Home</a>
+          <Link href="/contact">Contact</Link>
         </div>
       </nav>
 
