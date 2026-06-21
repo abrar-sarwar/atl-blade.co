@@ -3,7 +3,6 @@ import {
   Package,
   ShoppingCart,
   DollarSign,
-  AlertTriangle,
   TrendingUp,
   BarChart3,
 } from "lucide-react";

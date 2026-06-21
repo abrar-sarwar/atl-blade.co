@@ -16,8 +16,13 @@ source code.
 | **Storefront Home + Contact** | ✅ Phase 3 — DB-driven (`/`, `/contact`); static site retired |
 | **Cart + Stripe checkout + Orders** | ✅ Phase 4 — cart, hosted Checkout, webhook, Orders admin |
 | **Discounts** | ✅ Phase 5 — admin CRUD + cart promo codes (percentage/fixed, window, usage limit) |
+| **Analytics** | ✅ Phase 6 — revenue/orders by day, top sellers, inventory performance |
 | Database (Supabase/Postgres) | ✅ Schema, RLS, grants, storage bucket, seed |
-| Analytics | ⏳ Phase 6 |
+
+**The 6-phase roadmap is complete.** ATL Blade Co. can now manage products,
+inventory, categories, orders, discounts, homepage content, and site settings —
+and view analytics — entirely through `/admin`, with a database-driven
+storefront and Stripe checkout.
 
 See `docs/superpowers/specs/` and `docs/superpowers/plans/` for the full design
 and phased roadmap.
@@ -70,8 +75,7 @@ enforced at the database (defense in depth).
 ## Admin modules
 
 Dashboard · **Products** · **Categories** · **Orders** · **Discounts** ·
-**Homepage Editor** · **Settings** (all live) · Analytics. Analytics is the last
-scaffolded placeholder, built out in Phase 6 (see the roadmap spec). Product
+**Homepage Editor** · **Analytics** · **Settings** — all live. Product
 images upload to the Supabase Storage `product-images` bucket. The storefront
 (`/`, `/shop`, `/products/[slug]`, `/contact`, `/cart`→drawer) is fully
 database-driven, with a Stripe-hosted checkout and webhook-driven order
