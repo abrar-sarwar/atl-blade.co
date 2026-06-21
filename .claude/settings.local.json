@@ -90,7 +90,12 @@
       "Bash(python3 -c 'import sys,json *)",
       "Bash(git commit -q -m 'Phase 3: spec, homepage/settings data layer + actions, seed content *)",
       "Bash(git commit -q -m 'Phase 3: admin Homepage Editor + Settings pages *)",
-      "Bash(git commit -q -m 'Phase 3: port Home + Contact storefront pages, retire legacy nav *)"
+      "Bash(git commit -q -m 'Phase 3: port Home + Contact storefront pages, retire legacy nav *)",
+      "Bash(pkill -f \"next start\")",
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs kill -9)",
+      "Bash(lsof -ti:3001)",
+      "Bash(git commit -q -m 'Phase 3: tests + docs *)"
     ]
   }
 }

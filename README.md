@@ -12,8 +12,9 @@ source code.
 | **Admin dashboard** (`/admin`) | ✅ Phase 1 — auth, shell, dashboard |
 | **Products + Categories** | ✅ Phase 2 — full CRUD, image upload, search/filter/sort/archive |
 | **Storefront Shop + Product** | ✅ Phase 2 — DB-driven, pixel-faithful (`/shop`, `/products/[slug]`) |
+| **Homepage Editor + Settings** | ✅ Phase 3 — hero/gallery/featured/banners/sections + site settings |
+| **Storefront Home + Contact** | ✅ Phase 3 — DB-driven (`/`, `/contact`); static site retired |
 | Database (Supabase/Postgres) | ✅ Schema, RLS, grants, storage bucket, seed |
-| Home + Contact pages | 🚧 still the static site in `legacy/` (port in Phase 3) |
 | Cart / checkout / orders | ⏳ Phase 4 |
 
 See `docs/superpowers/specs/` and `docs/superpowers/plans/` for the full design
@@ -66,10 +67,11 @@ enforced at the database (defense in depth).
 
 ## Admin modules
 
-Dashboard · **Products** · **Categories** (all live) · Orders · Discounts ·
-Homepage Editor · Analytics · Settings. Orders/Discounts/Homepage/Analytics/
-Settings are scaffolded placeholders, built out in Phases 3–6 (see the roadmap
-spec). Product images upload to the Supabase Storage `product-images` bucket.
+Dashboard · **Products** · **Categories** · **Homepage Editor** · **Settings**
+(all live) · Orders · Discounts · Analytics. Orders/Discounts/Analytics are
+scaffolded placeholders, built out in Phases 4–6 (see the roadmap spec). Product
+images upload to the Supabase Storage `product-images` bucket. The storefront
+(`/`, `/shop`, `/products/[slug]`, `/contact`) is fully database-driven.
 
 ## Tests
 

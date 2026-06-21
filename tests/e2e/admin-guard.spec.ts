@@ -34,8 +34,7 @@ test.describe("admin route protection", () => {
 
   test("home page is publicly reachable", async ({ page }) => {
     await page.goto("/");
-    await expect(
-      page.getByRole("link", { name: /go to admin dashboard/i }),
-    ).toBeVisible();
+    // The storefront home renders (hero gold word from the seeded title).
+    await expect(page.locator(".gold-word")).toBeVisible();
   });
 });
