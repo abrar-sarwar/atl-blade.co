@@ -1,7 +1,19 @@
 import Link from "next/link";
-import { Package, ShoppingCart, DollarSign, AlertTriangle } from "lucide-react";
-import { getDashboardStats, LOW_STOCK_THRESHOLD } from "@/lib/db/dashboard";
+import {
+  Package,
+  ShoppingCart,
+  DollarSign,
+  AlertTriangle,
+  TrendingUp,
+  BarChart3,
+} from "lucide-react";
+import {
+  getDashboardStats,
+  LOW_STOCK_THRESHOLD,
+  DASHBOARD_TREND_DAYS,
+} from "@/lib/db/dashboard";
 import { StatCard } from "@/components/admin/stat-card";
+import { BarChart } from "@/components/admin/bar-chart";
 import { PaymentBadge, FulfillmentBadge } from "@/components/admin/status-badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
@@ -37,9 +49,9 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Total Products"
-          value={String(stats.totalProducts)}
-          icon={Package}
+          label="Revenue (paid)"
+          value={formatCurrency(stats.revenue)}
+          icon={DollarSign}
         />
         <StatCard
           label="Total Orders"
@@ -47,15 +59,49 @@ export default async function DashboardPage() {
           icon={ShoppingCart}
         />
         <StatCard
-          label="Revenue (paid)"
-          value={formatCurrency(stats.revenue)}
-          icon={DollarSign}
+          label="Units Sold"
+          value={String(stats.unitsSold)}
+          icon={Package}
         />
         <StatCard
-          label="Low Inventory"
-          value={String(stats.lowStock.length)}
-          icon={AlertTriangle}
-          hint={`Below ${LOW_STOCK_THRESHOLD} units`}
+          label="Avg Order Value"
+          value={formatCurrency(stats.avgOrderValue)}
+          icon={TrendingUp}
+        />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Revenue — last {DASHBOARD_TREND_DAYS} days</CardTitle>
+              <CardDescription>Paid order revenue by day.</CardDescription>
+            </div>
+            <Link
+              href="/admin/analytics"
+              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+            >
+              <BarChart3 className="size-4" /> View analytics
+            </Link>
+          </CardHeader>
+          <CardContent>
+            <BarChart
+              data={stats.revenueTrend.map((d) => ({
+                label: d.date.slice(5),
+                value: d.revenue,
+                title: `${d.date}: ${formatCurrency(d.revenue)}`,
+              }))}
+              valueFormat={(v) => formatCurrency(v)}
+              height={140}
+            />
+          </CardContent>
+        </Card>
+
+        <StatCard
+          label="Total Products"
+          value={String(stats.totalProducts)}
+          icon={Package}
+          hint={`${stats.lowStock.length} below ${LOW_STOCK_THRESHOLD} units`}
         />
       </div>
 
