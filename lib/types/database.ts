@@ -256,7 +256,7 @@ export type Database = {
           fulfillment_status?: Database["public"]["Enums"]["fulfillment_status"]
           id?: string
           notes?: string | null
-          order_number: string
+          order_number?: string
           payment_status?: Database["public"]["Enums"]["payment_status"]
           shipping_address?: Json | null
           shipping_total?: number
@@ -480,6 +480,15 @@ export type Database = {
     Functions: {
       is_admin: { Args: never; Returns: boolean }
       make_admin: { Args: { target_email: string }; Returns: undefined }
+      mark_order_paid: {
+        Args: {
+          p_order_id: string
+          p_payment_intent: string
+          p_session: string
+        }
+        Returns: undefined
+      }
+      next_order_number: { Args: never; Returns: string }
     }
     Enums: {
       discount_type: "percentage" | "fixed"

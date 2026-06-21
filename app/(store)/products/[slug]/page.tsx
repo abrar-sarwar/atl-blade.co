@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug } from "@/lib/db/products";
 import { DetailGallery } from "./_components/detail-gallery";
+import { AddToCart } from "@/components/store/cart/add-to-cart";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,19 @@ export default async function ProductDetailPage({
             ) : (
               <>${price.toFixed(0)}</>
             )}
+          </div>
+
+          <div style={{ marginTop: "1.5rem" }}>
+            <AddToCart
+              product={{
+                id: product.id,
+                slug: product.slug,
+                name: product.name,
+                image: product.images[0]?.url ?? null,
+                price,
+                salePrice,
+              }}
+            />
           </div>
 
           {specs.length > 0 ? (

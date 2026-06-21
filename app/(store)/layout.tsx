@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Cinzel, Cormorant_Garamond, Raleway } from "next/font/google";
 import { getSiteSettings } from "@/lib/db/settings";
+import { CartProvider } from "@/components/store/cart/cart-provider";
+import { CartButton } from "@/components/store/cart/cart-button";
+import { CartDrawer } from "@/components/store/cart/cart-drawer";
 import "./storefront.css";
 
 const cinzel = Cinzel({
@@ -30,21 +33,23 @@ export default async function StoreLayout({
   const company = settings?.company_name ?? "ATL Blade Co.";
 
   return (
-    <div
-      className={`store ${cinzel.variable} ${cormorant.variable} ${raleway.variable}`}
-    >
-      <nav className="store-nav">
-        <Link href="/" className="brand">
-          {company.toUpperCase()}
-        </Link>
-        <div className="links">
-          <Link href="/">Home</Link>
-          <Link href="/shop">Shop</Link>
-          <Link href="/contact">Contact</Link>
-        </div>
-      </nav>
+    <CartProvider>
+      <div
+        className={`store ${cinzel.variable} ${cormorant.variable} ${raleway.variable}`}
+      >
+        <nav className="store-nav">
+          <Link href="/" className="brand">
+            {company.toUpperCase()}
+          </Link>
+          <div className="links">
+            <Link href="/">Home</Link>
+            <Link href="/shop">Shop</Link>
+            <Link href="/contact">Contact</Link>
+            <CartButton />
+          </div>
+        </nav>
 
-      {children}
+        {children}
 
       <footer className="store-footer">
         <div className="socials">
@@ -63,6 +68,9 @@ export default async function StoreLayout({
           &copy; {company}. Handmade in Atlanta.
         </div>
       </footer>
-    </div>
+
+        <CartDrawer />
+      </div>
+    </CartProvider>
   );
 }
