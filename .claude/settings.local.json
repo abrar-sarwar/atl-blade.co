@@ -78,7 +78,8 @@
       "Bash(python3 -c \"import sys,json;[print\\(b['id'],'public='+str\\(b['public']\\)\\) for b in json.load\\(sys.stdin\\)]\")",
       "Bash(git commit -q -m 'Phase 2: add catalog design spec + product-images storage bucket *)",
       "Bash(git commit -q -m 'Phase 2: products + categories data-access layer and server actions *)",
-      "Bash(npx --yes shadcn@latest add textarea switch checkbox tabs alert-dialog --yes --overwrite)"
+      "Bash(npx --yes shadcn@latest add textarea switch checkbox tabs alert-dialog --yes --overwrite)",
+      "Bash(git commit -q -m 'Phase 2: admin Products + Categories CRUD UI *)"
     ]
   }
 }

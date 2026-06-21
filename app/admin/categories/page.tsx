@@ -1,11 +1,9 @@
-import { ComingSoon } from "@/components/admin/coming-soon";
+import { listCategories } from "@/lib/db/categories";
+import { CategoryManager } from "./_components/category-manager";
 
-export default function CategoriesPage() {
-  return (
-    <ComingSoon
-      title="Categories"
-      phase="Coming in Phase 2"
-      description="Create, edit, and delete categories and assign products to them."
-    />
-  );
+export const dynamic = "force-dynamic";
+
+export default async function CategoriesPage() {
+  const categories = await listCategories();
+  return <CategoryManager categories={categories} />;
 }
