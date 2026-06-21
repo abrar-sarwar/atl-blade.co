@@ -15,8 +15,9 @@ source code.
 | **Homepage Editor + Settings** | ✅ Phase 3 — hero/gallery/featured/banners/sections + site settings |
 | **Storefront Home + Contact** | ✅ Phase 3 — DB-driven (`/`, `/contact`); static site retired |
 | **Cart + Stripe checkout + Orders** | ✅ Phase 4 — cart, hosted Checkout, webhook, Orders admin |
+| **Discounts** | ✅ Phase 5 — admin CRUD + cart promo codes (percentage/fixed, window, usage limit) |
 | Database (Supabase/Postgres) | ✅ Schema, RLS, grants, storage bucket, seed |
-| Discounts admin · Analytics | ⏳ Phases 5–6 |
+| Analytics | ⏳ Phase 6 |
 
 See `docs/superpowers/specs/` and `docs/superpowers/plans/` for the full design
 and phased roadmap.
@@ -68,9 +69,9 @@ enforced at the database (defense in depth).
 
 ## Admin modules
 
-Dashboard · **Products** · **Categories** · **Orders** · **Homepage Editor** ·
-**Settings** (all live) · Discounts · Analytics. Discounts/Analytics are
-scaffolded placeholders, built out in Phases 5–6 (see the roadmap spec). Product
+Dashboard · **Products** · **Categories** · **Orders** · **Discounts** ·
+**Homepage Editor** · **Settings** (all live) · Analytics. Analytics is the last
+scaffolded placeholder, built out in Phase 6 (see the roadmap spec). Product
 images upload to the Supabase Storage `product-images` bucket. The storefront
 (`/`, `/shop`, `/products/[slug]`, `/contact`, `/cart`→drawer) is fully
 database-driven, with a Stripe-hosted checkout and webhook-driven order
