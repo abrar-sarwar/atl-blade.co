@@ -152,25 +152,32 @@ values
 
 -- ---- homepage settings (singleton) -----------------------------------------
 insert into public.homepage_settings
-  (id, hero_title, hero_subtitle, hero_image_url, hero_cta_text, hero_cta_link, hero_gallery, featured_product_ids, banners, sections)
+  (id, hero_eyebrow, hero_title, hero_subtitle, hero_image_url, hero_cta_text, hero_cta_link, hero_gallery, featured_product_ids, banners, sections)
 values
   (true,
-   'Handmade Blades, Forged in Atlanta',
-   'Small-batch knives built one at a time by Zian Bhutta.',
+   'Atlanta, Georgia • Est. 2026',
+   'Handmade **Knives** From Atlanta',
+   'Handmade knives out of a new shop in Atlanta. Each one comes off the bench a little different. That''s kind of the point.',
    '/products/Karambit_knife/Karambit_knife.png',
-   'Shop the Collection', '/shop',
+   'Shop Collection', '/shop',
    '["/products/Karambit_knife/Karambit_knife.png","/products/Damascus_Pakkawood_USA_Pocket_Knife/Damascus_Pakkawood_USA_Pocket_Knife.png","/products/Damascus_Skinner_knife/Damascus_Skinner_knife.png"]'::jsonb,
    array['a0000000-0000-4000-8000-000000000007','a0000000-0000-4000-8000-000000000002','a0000000-0000-4000-8000-000000000005']::uuid[],
-   '[]'::jsonb,
-   '[]'::jsonb)
+   '[{"text":"Free shipping on orders over $150","link":"/shop","active":true}]'::jsonb,
+   '[
+     {"type":"about","eyebrow":"Our Story","heading":"A new shop,\nin Atlanta","image_url":"/home/atlanta.jpg","body":"ATL Blade Co. was founded by Zian Bhutta, an Atlanta native who spent his whole life in the city before deciding it was time to actually make something for the place that raised him, instead of just being from it. The shop is new, and right now it''s just him at a small bench with a slowly growing group of people around the city who care about this kind of work.\n\nMost of the catalog is hand-forged Damascus steel, the patterned blades you''ll see on the pocket knives and the skinner, while the fixed blades and the karambit are powdercoated for hard outdoor use. Every piece comes off the bench a little different from the one before it."},
+     {"type":"quote","body":"A good knife should feel right the first time you pick it up.","attribution":"— Zian"}
+   ]'::jsonb)
 on conflict (id) do update set
+  hero_eyebrow = excluded.hero_eyebrow,
   hero_title = excluded.hero_title,
   hero_subtitle = excluded.hero_subtitle,
   hero_image_url = excluded.hero_image_url,
   hero_cta_text = excluded.hero_cta_text,
   hero_cta_link = excluded.hero_cta_link,
   hero_gallery = excluded.hero_gallery,
-  featured_product_ids = excluded.featured_product_ids;
+  featured_product_ids = excluded.featured_product_ids,
+  banners = excluded.banners,
+  sections = excluded.sections;
 
 -- ---- site settings (singleton) ---------------------------------------------
 insert into public.site_settings

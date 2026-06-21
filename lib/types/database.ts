@@ -7,12 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Added manually: the local pg-meta generated types without this marker, which
-  // supabase-js >= 2.10x requires to resolve query result types (otherwise rows
-  // collapse to `never`). Regenerating against hosted Supabase will include it.
-  __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -139,6 +133,7 @@ export type Database = {
           featured_product_ids: string[]
           hero_cta_link: string | null
           hero_cta_text: string | null
+          hero_eyebrow: string | null
           hero_gallery: Json
           hero_image_url: string | null
           hero_subtitle: string | null
@@ -152,6 +147,7 @@ export type Database = {
           featured_product_ids?: string[]
           hero_cta_link?: string | null
           hero_cta_text?: string | null
+          hero_eyebrow?: string | null
           hero_gallery?: Json
           hero_image_url?: string | null
           hero_subtitle?: string | null
@@ -165,6 +161,7 @@ export type Database = {
           featured_product_ids?: string[]
           hero_cta_link?: string | null
           hero_cta_text?: string | null
+          hero_eyebrow?: string | null
           hero_gallery?: Json
           hero_image_url?: string | null
           hero_subtitle?: string | null

@@ -146,6 +146,49 @@ export async function listStorefrontProducts(
   });
 }
 
+/** Active products by id, preserving the given order, with images (for home). */
+export async function listFeaturedProducts(
+  ids: string[],
+): Promise<StorefrontProduct[]> {
+  if (ids.length === 0) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*, product_images(url, sort_order, is_primary)")
+    .in("id", ids)
+    .eq("active", true);
+  if (error) throw error;
+
+  const mapped = (data ?? []).map((row) => {
+    const { product_images, ...product } = row;
+    const images = ((product_images ?? []) as StorefrontProduct["images"]).sort(
+      (a, b) =>
+        Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order,
+    );
+    return { ...(product as Product), images };
+  });
+
+  // Preserve the order in which ids were provided.
+  const order = new Map(ids.map((id, i) => [id, i]));
+  return mapped.sort(
+    (a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0),
+  );
+}
+
+/** Lightweight {id, name} list of active products for pickers. */
+export async function listProductOptions(): Promise<
+  { id: string; name: string }[]
+> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name")
+    .eq("active", true)
+    .order("name", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as { id: string; name: string }[];
+}
+
 /** Single product with its images, for the edit form (admin). */
 export async function getProduct(id: string): Promise<ProductWithImages | null> {
   const supabase = await createClient();
