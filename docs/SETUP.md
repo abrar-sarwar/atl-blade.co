@@ -152,6 +152,34 @@ npx supabase gen types typescript --project-id <ref> > lib/types/database.ts
 
 ---
 
+## Two-factor authentication (required for admins)
+
+Admin sign-in supports **email + password** and **Google OAuth**, and every
+admin must complete **TOTP 2FA** before reaching `/admin` (enforced at AAL2 in
+the route guard and admin API):
+
+- First login → redirected to `/auth/setup-2fa`: scan the QR with Google
+  Authenticator / Authy / 1Password, enter the 6-digit code to enroll.
+- Later logins → redirected to `/auth/2fa`: enter the current 6-digit code.
+
+Supabase manages this natively: passwords are bcrypt-hashed, TOTP secrets are
+stored encrypted in `auth.mfa_factors`, the session JWT carries the `aal` claim,
+and auth endpoints are rate-limited. Enable TOTP locally with
+`[auth.mfa.totp] enroll_enabled = true` + `verify_enabled = true` in
+`supabase/config.toml` (already set). In hosted Supabase, enable MFA under
+Authentication → settings.
+
+To create a password admin for local testing:
+
+```bash
+# create a confirmed user, then promote (see scripts in docs or run via Studio)
+curl -s -X POST "http://127.0.0.1:54421/auth/v1/admin/users" \
+  -H "apikey: $SERVICE_ROLE_KEY" -H "Authorization: Bearer $SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"a-strong-password","email_confirm":true}'
+# then in SQL: select public.make_admin('you@example.com');
+```
+
 ## Becoming an admin
 
 Authorization is driven by `public.users.role`. There are two ways in:

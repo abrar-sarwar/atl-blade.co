@@ -38,10 +38,32 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   };
 }
 
+export type AssuranceLevel = "aal1" | "aal2" | null;
+
+/**
+ * The current and next Authenticator Assurance Levels for the session.
+ * - currentLevel "aal2" → the user has completed 2FA this session.
+ * - nextLevel "aal2" while current "aal1" → 2FA is enrolled but not yet verified.
+ * - nextLevel "aal1" → no verified 2FA factor exists (must enroll).
+ */
+export async function getAssurance(): Promise<{
+  currentLevel: AssuranceLevel;
+  nextLevel: AssuranceLevel;
+}> {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  return {
+    currentLevel: (data?.currentLevel ?? null) as AssuranceLevel,
+    nextLevel: (data?.nextLevel ?? null) as AssuranceLevel,
+  };
+}
+
 /**
  * Guard for admin-only surfaces (layout, pages, server actions).
  * - Not signed in  → redirect to sign-in.
  * - Signed in, not admin → redirect to the homepage (per spec).
+ * - Admin without completed 2FA → redirect to enroll (no factor) or
+ *   challenge (factor exists, needs a code). Enforces AAL2 on all admin access.
  * Returns the admin user when access is granted.
  */
 export async function requireAdmin(): Promise<CurrentUser> {
@@ -53,5 +75,12 @@ export async function requireAdmin(): Promise<CurrentUser> {
   if (user.role !== "admin") {
     redirect("/");
   }
+
+  const { currentLevel, nextLevel } = await getAssurance();
+  if (currentLevel !== "aal2") {
+    // nextLevel aal2 = a verified factor exists → just needs to enter a code.
+    redirect(nextLevel === "aal2" ? "/auth/2fa" : "/auth/setup-2fa");
+  }
+
   return user;
 }
