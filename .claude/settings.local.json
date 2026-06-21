@@ -39,7 +39,23 @@
       "Bash(npm install *)",
       "Bash(npx --yes shadcn@latest add button card input label table badge dropdown-menu avatar separator sonner skeleton sheet dialog select tooltip --yes --overwrite)",
       "Bash(npm run *)",
-      "Bash(git commit -q -m 'Scaffold Next.js app with shadcn/ui and brand theme *)"
+      "Bash(git commit -q -m 'Scaffold Next.js app with shadcn/ui and brand theme *)",
+      "Bash(npx --yes supabase@latest init --force)",
+      "Bash(docker info *)",
+      "Bash(which psql *)",
+      "Bash(npx --yes supabase@latest start)",
+      "Bash(python3 -)",
+      "Bash(docker system *)",
+      "Bash(docker image *)",
+      "Bash(docker volume *)",
+      "Bash(npx --yes supabase@latest status)",
+      "Bash(npx --yes supabase@latest status -o env)",
+      "Bash(npx --yes supabase@latest db reset)",
+      "Bash(curl -s __TRACKED_VAR__/rest/v1/products?select=name,active -H 'apikey: __TRACKED_VAR__')",
+      "Bash(curl -s '__TRACKED_VAR__/rest/v1/products?select=name,active&order=name' -H 'apikey: __TRACKED_VAR__')",
+      "Bash(python3 -c \"import sys,json;d=json.load\\(sys.stdin\\);print\\(' orders',len\\(d\\)\\);print\\(' paid revenue', round\\(sum\\(float\\(o['total']\\) for o in d if o['payment_status']=='paid'\\),2\\)\\)\")",
+      "Bash(git check-ignore *)",
+      "Bash(git commit -q -m 'Add database layer: schema, RLS, grants, seed \\(verified on local Supabase\\) *)"
     ]
   }
 }
