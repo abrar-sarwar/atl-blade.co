@@ -3,16 +3,11 @@ import {
   Package,
   ShoppingCart,
   DollarSign,
-  TrendingUp,
+  AlertTriangle,
   BarChart3,
 } from "lucide-react";
-import {
-  getDashboardStats,
-  LOW_STOCK_THRESHOLD,
-  DASHBOARD_TREND_DAYS,
-} from "@/lib/db/dashboard";
+import { getDashboardStats, LOW_STOCK_THRESHOLD } from "@/lib/db/dashboard";
 import { StatCard } from "@/components/admin/stat-card";
-import { BarChart } from "@/components/admin/bar-chart";
 import { PaymentBadge, FulfillmentBadge } from "@/components/admin/status-badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
@@ -39,18 +34,27 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Dashboard</h2>
-        <p className="text-sm text-muted-foreground">
-          Overview of your store performance.
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight">Dashboard</h2>
+          <p className="text-sm text-muted-foreground">
+            Day-to-day overview of your store.
+          </p>
+        </div>
+        <Link
+          href="/admin/analytics"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+        >
+          <BarChart3 className="size-4" /> View full analytics
+        </Link>
       </div>
 
+      {/* Operational at-a-glance counts (Analytics has the deeper KPIs + trends). */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Revenue (paid)"
-          value={formatCurrency(stats.revenue)}
-          icon={DollarSign}
+          label="Total Products"
+          value={String(stats.totalProducts)}
+          icon={Package}
         />
         <StatCard
           label="Total Orders"
@@ -58,49 +62,15 @@ export default async function DashboardPage() {
           icon={ShoppingCart}
         />
         <StatCard
-          label="Units Sold"
-          value={String(stats.unitsSold)}
-          icon={Package}
+          label="Revenue (paid)"
+          value={formatCurrency(stats.revenue)}
+          icon={DollarSign}
         />
         <StatCard
-          label="Avg Order Value"
-          value={formatCurrency(stats.avgOrderValue)}
-          icon={TrendingUp}
-        />
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Revenue — last {DASHBOARD_TREND_DAYS} days</CardTitle>
-              <CardDescription>Paid order revenue by day.</CardDescription>
-            </div>
-            <Link
-              href="/admin/analytics"
-              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-            >
-              <BarChart3 className="size-4" /> View analytics
-            </Link>
-          </CardHeader>
-          <CardContent>
-            <BarChart
-              data={stats.revenueTrend.map((d) => ({
-                label: d.date.slice(5),
-                value: d.revenue,
-                title: `${d.date}: ${formatCurrency(d.revenue)}`,
-              }))}
-              valueFormat={(v) => formatCurrency(v)}
-              height={140}
-            />
-          </CardContent>
-        </Card>
-
-        <StatCard
-          label="Total Products"
-          value={String(stats.totalProducts)}
-          icon={Package}
-          hint={`${stats.lowStock.length} below ${LOW_STOCK_THRESHOLD} units`}
+          label="Low Inventory"
+          value={String(stats.lowStock.length)}
+          icon={AlertTriangle}
+          hint={`Below ${LOW_STOCK_THRESHOLD} units`}
         />
       </div>
 
@@ -132,7 +102,12 @@ export default async function DashboardPage() {
                   {stats.recentOrders.map((o) => (
                     <TableRow key={o.id}>
                       <TableCell className="font-medium">
-                        {o.orderNumber}
+                        <Link
+                          href={`/admin/orders/${o.id}`}
+                          className="hover:text-primary"
+                        >
+                          {o.orderNumber}
+                        </Link>
                       </TableCell>
                       <TableCell>{o.customerName}</TableCell>
                       <TableCell>
@@ -176,7 +151,7 @@ export default async function DashboardPage() {
                     className="flex items-center justify-between gap-3 text-sm"
                   >
                     <Link
-                      href="/admin/products"
+                      href={`/admin/products/${p.id}/edit`}
                       className="truncate hover:text-primary"
                     >
                       {p.name}

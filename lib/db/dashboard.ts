@@ -1,13 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { PaymentStatus, FulfillmentStatus } from "@/lib/types/db";
-import {
-  buildOrdersByDay,
-  type DayBucket,
-  type PaidItemRow,
-} from "@/lib/analytics/aggregate";
-
-export const DASHBOARD_TREND_DAYS = 7;
 
 export const LOW_STOCK_THRESHOLD = 5;
 
@@ -40,9 +33,6 @@ export type DashboardStats = {
   totalProducts: number;
   totalOrders: number;
   revenue: number;
-  unitsSold: number;
-  avgOrderValue: number;
-  revenueTrend: DayBucket[];
   recentOrders: RecentOrder[];
   lowStock: LowStockProduct[];
 };
@@ -59,7 +49,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     productCount,
     orderCount,
     paidOrders,
-    paidItems,
     recent,
     lowStockRows,
   ] = await Promise.all([
@@ -67,12 +56,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     supabase.from("orders").select("id", { count: "exact", head: true }),
     supabase
       .from("orders")
-      .select("total, payment_status, created_at")
+      .select("total, payment_status")
       .eq("payment_status", "paid"),
-    supabase
-      .from("order_items")
-      .select("quantity, orders!inner(payment_status)")
-      .eq("orders.payment_status", "paid"),
     supabase
       .from("orders")
       .select(
@@ -88,19 +73,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       .order("inventory", { ascending: true }),
   ]);
 
-  const paid = paidOrders.data ?? [];
-  const revenue = sumPaidRevenue(paid);
-  const unitsSold = ((paidItems.data ?? []) as unknown as PaidItemRow[]).reduce(
-    (s, i) => s + i.quantity,
-    0,
-  );
-  const avgOrderValue =
-    paid.length === 0 ? 0 : Math.round((revenue / paid.length) * 100) / 100;
-  const revenueTrend = buildOrdersByDay(
-    paid.map((o) => ({ total: o.total ?? 0, created_at: o.created_at })),
-    DASHBOARD_TREND_DAYS,
-    new Date().toISOString().slice(0, 10),
-  );
+  const revenue = sumPaidRevenue(paidOrders.data ?? []);
 
   const recentOrders: RecentOrder[] = (recent.data ?? []).map((o) => ({
     id: o.id,
@@ -122,9 +95,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     totalProducts: productCount.count ?? 0,
     totalOrders: orderCount.count ?? 0,
     revenue,
-    unitsSold,
-    avgOrderValue,
-    revenueTrend,
     recentOrders,
     lowStock,
   };
