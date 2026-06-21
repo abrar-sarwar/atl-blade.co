@@ -98,7 +98,8 @@
       "Bash(git commit -q -m 'Phase 3: tests + docs *)",
       "Bash(curl -s -o /dev/null -w 'rpc status=%{http_code}\\\\n' -X POST __TRACKED_VAR__/rest/v1/rpc/next_order_number -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -d '{}')",
       "Bash(curl -s -X POST __TRACKED_VAR__/rest/v1/rpc/next_order_number -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -d '{}')",
-      "Bash(git commit -q -m 'Phase 4: cart, Stripe checkout, webhook, and Orders admin *)"
+      "Bash(git commit -q -m 'Phase 4: cart, Stripe checkout, webhook, and Orders admin *)",
+      "Bash(git commit -q -m 'Phase 4: tests + docs *)"
     ]
   }
 }

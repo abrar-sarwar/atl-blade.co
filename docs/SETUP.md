@@ -168,6 +168,31 @@ Non-admins who reach `/admin` are redirected to the homepage.
 
 ---
 
+## Stripe (Phase 4 checkout)
+
+Hosted Stripe Checkout. The app creates a pending order, redirects to Stripe,
+and a webhook finalizes the order (marks paid, decrements inventory, bumps
+discount usage). Without keys the storefront still runs; checkout returns a
+"not configured" message.
+
+1. In the [Stripe dashboard](https://dashboard.stripe.com) (test mode), copy
+   the **Secret key** (`sk_test_...`) into `STRIPE_SECRET_KEY`.
+2. Forward webhooks locally with the Stripe CLI:
+   ```bash
+   stripe listen --forward-to localhost:3000/api/webhooks/stripe
+   ```
+   Copy the printed signing secret (`whsec_...`) into `STRIPE_WEBHOOK_SECRET`.
+3. Set `NEXT_PUBLIC_SITE_URL` to your origin (e.g. `http://localhost:3000`) so
+   success/cancel redirects and product image URLs resolve.
+4. Test card: `4242 4242 4242 4242`, any future expiry/CVC.
+
+In production, create a webhook endpoint in the dashboard pointing at
+`https://your-domain.com/api/webhooks/stripe` (event
+`checkout.session.completed`) and use its signing secret.
+
+The order-finalize logic (`mark_order_paid`) is idempotent — redelivered
+webhooks never double-decrement inventory.
+
 ## Common commands
 
 ```bash

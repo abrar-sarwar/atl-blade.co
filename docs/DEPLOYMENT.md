@@ -27,6 +27,13 @@ Note your production values:
    | `SUPABASE_SERVICE_ROLE_KEY` | service_role key (mark as **sensitive**) |
    | `NEXT_PUBLIC_SITE_URL` | `https://your-domain.com` |
    | `ADMIN_EMAILS` | comma-separated owner emails |
+   | `STRIPE_SECRET_KEY` | `sk_live_...` (sensitive) |
+   | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from the dashboard endpoint (sensitive) |
+
+   After deploy, add a Stripe webhook endpoint at
+   `https://your-domain.com/api/webhooks/stripe` (event
+   `checkout.session.completed`) and paste its signing secret into
+   `STRIPE_WEBHOOK_SECRET`.
 
 3. Deploy.
 
