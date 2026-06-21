@@ -65,7 +65,15 @@
       "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://localhost:3000/auth/signin)",
       "Bash(pkill -f \"next dev\")",
       "Bash(pkill -f \"next-server\")",
-      "Bash(git commit -q -m 'Add Supabase clients, Google OAuth, protected admin shell + dashboard *)"
+      "Bash(git commit -q -m 'Add Supabase clients, Google OAuth, protected admin shell + dashboard *)",
+      "Bash(npm test *)",
+      "Bash(npx playwright *)",
+      "Bash(pkill -f \"next lint\")",
+      "Bash(pkill -f \"eslint\")",
+      "Bash(npm i *)",
+      "Bash(npx eslint *)",
+      "Bash(echo \"lint exit: $?\")",
+      "Bash(git commit -q -m 'Add tests, validation schemas, lint config, and documentation *)"
     ]
   }
 }

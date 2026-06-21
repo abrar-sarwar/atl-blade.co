@@ -4,6 +4,15 @@ import type { PaymentStatus, FulfillmentStatus } from "@/lib/types/db";
 
 export const LOW_STOCK_THRESHOLD = 5;
 
+/** Sum of order totals for orders that have been paid. Pure + unit-tested. */
+export function sumPaidRevenue(
+  orders: { total: number | string | null; payment_status: string }[],
+): number {
+  return orders
+    .filter((o) => o.payment_status === "paid")
+    .reduce((sum, o) => sum + Number(o.total ?? 0), 0);
+}
+
 export type RecentOrder = {
   id: string;
   orderNumber: string;
@@ -45,7 +54,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   ] = await Promise.all([
     supabase.from("products").select("id", { count: "exact", head: true }),
     supabase.from("orders").select("id", { count: "exact", head: true }),
-    supabase.from("orders").select("total").eq("payment_status", "paid"),
+    supabase
+      .from("orders")
+      .select("total, payment_status")
+      .eq("payment_status", "paid"),
     supabase
       .from("orders")
       .select(
@@ -61,10 +73,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       .order("inventory", { ascending: true }),
   ]);
 
-  const revenue = (paidOrders.data ?? []).reduce(
-    (sum, o) => sum + Number(o.total ?? 0),
-    0,
-  );
+  const revenue = sumPaidRevenue(paidOrders.data ?? []);
 
   const recentOrders: RecentOrder[] = (recent.data ?? []).map((o) => ({
     id: o.id,
