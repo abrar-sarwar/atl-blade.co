@@ -1,11 +1,9 @@
-import { ComingSoon } from "@/components/admin/coming-soon";
+import { listDiscounts } from "@/lib/db/discounts";
+import { DiscountManager } from "./_components/discount-manager";
 
-export default function DiscountsPage() {
-  return (
-    <ComingSoon
-      title="Discounts"
-      phase="Coming in Phase 5"
-      description="Percentage and fixed discounts, coupon codes, expiry, and usage limits."
-    />
-  );
+export const dynamic = "force-dynamic";
+
+export default async function DiscountsPage() {
+  const discounts = await listDiscounts();
+  return <DiscountManager discounts={discounts} />;
 }

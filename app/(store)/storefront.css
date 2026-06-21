@@ -1143,6 +1143,58 @@
   width: 100%;
   margin-top: 0.5rem;
 }
+.cart-promo {
+  margin-bottom: 1rem;
+}
+.cart-promo-input {
+  display: flex;
+  gap: 0.5rem;
+}
+.cart-promo-input input {
+  flex: 1;
+  background: var(--black);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  color: var(--white);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 0.8rem;
+}
+.cart-promo-input input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.cart-promo-input button {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: var(--gold);
+  padding: 0 1rem;
+  cursor: pointer;
+}
+.cart-promo-input button:hover:not(:disabled) {
+  background: var(--gold);
+  color: var(--black);
+}
+.cart-promo-input button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.cart-promo-applied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--gold);
+}
+.cart-promo-applied strong {
+  font-family: var(--font-display);
+}
 
 /* ---- Contact ---- */
 .contact-wrap {
