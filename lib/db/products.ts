@@ -114,6 +114,38 @@ export async function listProducts(
   });
 }
 
+export type StorefrontProduct = Product & {
+  images: { url: string; sort_order: number; is_primary: boolean }[];
+};
+
+/**
+ * Active products for the public storefront, newest first, with images.
+ * Optionally filtered to a tag. Anon RLS already restricts to active rows.
+ */
+export async function listStorefrontProducts(
+  tag?: string,
+): Promise<StorefrontProduct[]> {
+  const supabase = await createClient();
+  let query = supabase
+    .from("products")
+    .select("*, product_images(url, sort_order, is_primary)")
+    .eq("active", true)
+    .order("created_at", { ascending: false });
+
+  if (tag) query = query.contains("tags", [tag]);
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  return (data ?? []).map((row) => {
+    const { product_images, ...product } = row;
+    const images = ((product_images ?? []) as StorefrontProduct["images"]).sort(
+      (a, b) => Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order,
+    );
+    return { ...(product as Product), images };
+  });
+}
+
 /** Single product with its images, for the edit form (admin). */
 export async function getProduct(id: string): Promise<ProductWithImages | null> {
   const supabase = await createClient();

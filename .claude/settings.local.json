@@ -79,7 +79,9 @@
       "Bash(git commit -q -m 'Phase 2: add catalog design spec + product-images storage bucket *)",
       "Bash(git commit -q -m 'Phase 2: products + categories data-access layer and server actions *)",
       "Bash(npx --yes shadcn@latest add textarea switch checkbox tabs alert-dialog --yes --overwrite)",
-      "Bash(git commit -q -m 'Phase 2: admin Products + Categories CRUD UI *)"
+      "Bash(git commit -q -m 'Phase 2: admin Products + Categories CRUD UI *)",
+      "Bash(curl -s http://localhost:3000/shop)",
+      "Bash(git commit -q -m 'Phase 2: pixel-faithful storefront port \\(Shop + Product detail\\) *)"
     ]
   }
 }
