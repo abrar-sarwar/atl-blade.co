@@ -73,7 +73,10 @@
       "Bash(npm i *)",
       "Bash(npx eslint *)",
       "Bash(echo \"lint exit: $?\")",
-      "Bash(git commit -q -m 'Add tests, validation schemas, lint config, and documentation *)"
+      "Bash(git commit -q -m 'Add tests, validation schemas, lint config, and documentation *)",
+      "Bash(curl -s http://127.0.0.1:54421/storage/v1/bucket -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
+      "Bash(python3 -c \"import sys,json;[print\\(b['id'],'public='+str\\(b['public']\\)\\) for b in json.load\\(sys.stdin\\)]\")",
+      "Bash(git commit -q -m 'Phase 2: add catalog design spec + product-images storage bucket *)"
     ]
   }
 }
