@@ -81,7 +81,11 @@
       "Bash(npx --yes shadcn@latest add textarea switch checkbox tabs alert-dialog --yes --overwrite)",
       "Bash(git commit -q -m 'Phase 2: admin Products + Categories CRUD UI *)",
       "Bash(curl -s http://localhost:3000/shop)",
-      "Bash(git commit -q -m 'Phase 2: pixel-faithful storefront port \\(Shop + Product detail\\) *)"
+      "Bash(git commit -q -m 'Phase 2: pixel-faithful storefront port \\(Shop + Product detail\\) *)",
+      "Bash(echo \"lint exit $?\")",
+      "Bash(echo \"eslint exit: $?\")",
+      "Read(//tmp/**)",
+      "Bash(git commit -q -m 'Phase 2: tests, storefront e2e, and docs *)"
     ]
   }
 }

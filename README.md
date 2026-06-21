@@ -9,9 +9,12 @@ source code.
 
 | Area | State |
 |------|-------|
-| **Admin dashboard** (`/admin`) | ✅ Phase 1 — auth, shell, dashboard live |
-| Database (Supabase/Postgres) | ✅ Full schema, RLS, seed |
-| Customer storefront | 🚧 still the static site in `legacy/` (ports in Phases 2–3) |
+| **Admin dashboard** (`/admin`) | ✅ Phase 1 — auth, shell, dashboard |
+| **Products + Categories** | ✅ Phase 2 — full CRUD, image upload, search/filter/sort/archive |
+| **Storefront Shop + Product** | ✅ Phase 2 — DB-driven, pixel-faithful (`/shop`, `/products/[slug]`) |
+| Database (Supabase/Postgres) | ✅ Schema, RLS, grants, storage bucket, seed |
+| Home + Contact pages | 🚧 still the static site in `legacy/` (port in Phase 3) |
+| Cart / checkout / orders | ⏳ Phase 4 |
 
 See `docs/superpowers/specs/` and `docs/superpowers/plans/` for the full design
 and phased roadmap.
@@ -63,9 +66,10 @@ enforced at the database (defense in depth).
 
 ## Admin modules
 
-Dashboard (live) · Products · Categories · Orders · Discounts · Homepage Editor
-· Analytics · Settings. Modules beyond the Dashboard are scaffolded as
-placeholders and built out in Phases 2–6 (see the roadmap spec).
+Dashboard · **Products** · **Categories** (all live) · Orders · Discounts ·
+Homepage Editor · Analytics · Settings. Orders/Discounts/Homepage/Analytics/
+Settings are scaffolded placeholders, built out in Phases 3–6 (see the roadmap
+spec). Product images upload to the Supabase Storage `product-images` bucket.
 
 ## Tests
 

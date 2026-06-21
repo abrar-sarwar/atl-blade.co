@@ -56,8 +56,8 @@ export function CatalogCard({ product }: { product: CatalogCardProduct }) {
 
       <div className="slideshow">
         {images.map((src, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
           <div key={i} className={`slide ${i === active ? "active" : ""}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={src} alt={`${product.name} view ${i + 1}`} loading="lazy" />
           </div>
         ))}
