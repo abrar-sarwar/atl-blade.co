@@ -6,6 +6,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Run on the Node.js runtime (stable since Next.js 15.5). The Supabase SSR
+  // client pulls in modules the Edge runtime rejects ("unsupported modules"),
+  // which fails the Vercel build; Node.js avoids that bundling entirely.
+  runtime: "nodejs",
   matcher: [
     /*
      * Run on all paths except static assets and image files so the session
