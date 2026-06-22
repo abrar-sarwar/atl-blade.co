@@ -125,7 +125,24 @@
       "Bash(gh auth *)",
       "Bash(git commit -q -m 'Add Vercel deploy checklist for go-live *)",
       "Bash(git branch *)",
-      "Bash(git commit -q -m 'Update Claude Code permission allowlist *)"
+      "Bash(git commit -q -m 'Update Claude Code permission allowlist *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} -> redirect: %{redirect_url}\\\\n\" \"https://atlbladeco.com/admin\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://atlbladeco.com/auth/signin\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://atlbladeco.com/\")",
+      "Bash(curl -sI \"https://atlbladeco.com/\")",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(echo \"exit=$?\")",
+      "Bash(git commit -q -m 'Run middleware on Node.js runtime to fix Vercel Edge build failure *)",
+      "Bash(vercel whoami *)",
+      "Bash(vercel link *)",
+      "Bash(vercel env *)",
+      "Bash(vercel ls *)",
+      "Bash(vercel inspect *)",
+      "Bash(curl -s -o /dev/null \"https://atlbladeco.com/api/health\")",
+      "Bash(curl -s -o /dev/null \"https://atlbladeco.com/\")",
+      "Bash(vercel logs *)",
+      "Bash(python3 -c ' *)",
+      "Bash(git commit -q -m 'Inline Supabase logic into middleware to fix runtime module resolution *)"
     ]
   }
 }
