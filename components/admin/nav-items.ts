@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Package,
+  Archive,
   FolderTree,
   ShoppingCart,
   Tag,
@@ -20,6 +21,7 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Products", href: "/admin/products", icon: Package },
+  { label: "Archive", href: "/admin/archive", icon: Archive },
   { label: "Categories", href: "/admin/categories", icon: FolderTree },
   { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { label: "Discounts", href: "/admin/discounts", icon: Tag },

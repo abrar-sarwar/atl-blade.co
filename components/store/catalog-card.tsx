@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export type CatalogCardProduct = {
   slug: string;
@@ -18,8 +19,14 @@ export type CatalogCardProduct = {
 };
 
 export function CatalogCard({ product }: { product: CatalogCardProduct }) {
+  const router = useRouter();
+  const href = `/products/${product.slug}`;
   const images = product.images.length > 0 ? product.images : [];
   const [active, setActive] = useState(0);
+
+  // The whole card navigates to the product. Image controls below call
+  // stopPropagation so browsing photos doesn't trigger this navigation.
+  const openProduct = () => router.push(href);
 
   // Auto-advance the slideshow, matching the legacy marquee feel.
   useEffect(() => {
@@ -37,7 +44,19 @@ export function CatalogCard({ product }: { product: CatalogCardProduct }) {
   const specs = product.specs.slice(0, 3);
 
   return (
-    <article className="catalog-card">
+    <article
+      className="catalog-card"
+      onClick={openProduct}
+      role="link"
+      tabIndex={0}
+      aria-label={`View ${product.name}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProduct();
+        }
+      }}
+    >
       {product.badge ? <span className="badge-corner">{product.badge}</span> : null}
 
       <div className="specimen-strip">
@@ -65,14 +84,20 @@ export function CatalogCard({ product }: { product: CatalogCardProduct }) {
           <>
             <button
               className="slide-arrow prev"
-              onClick={() => go(-1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                go(-1);
+              }}
               aria-label="Previous image"
             >
               ‹
             </button>
             <button
               className="slide-arrow next"
-              onClick={() => go(1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                go(1);
+              }}
               aria-label="Next image"
             >
               ›
@@ -86,7 +111,10 @@ export function CatalogCard({ product }: { product: CatalogCardProduct }) {
                 <button
                   key={i}
                   className={`slide-dot ${i === active ? "active" : ""}`}
-                  onClick={() => setActive(i)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActive(i);
+                  }}
                   aria-label={`Go to image ${i + 1}`}
                 />
               ))}

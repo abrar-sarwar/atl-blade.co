@@ -20,7 +20,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { slugify } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/db/products";
 import type { CategoryWithCount } from "@/lib/db/categories";
-import { saveProductAction } from "../actions";
+import { saveProductAction, uploadProductImageAction } from "../actions";
+import { StagedImagePicker } from "./staged-image-picker";
 
 type Props = {
   product: ProductWithImages | null;
@@ -56,6 +57,8 @@ export function ProductForm({ product, categories }: Props) {
     (product?.specs as [string, string][]) ?? [],
   );
   const [features, setFeatures] = useState<string[]>(product?.features ?? []);
+  // New products only: images are staged here and uploaded after creation.
+  const [stagedImages, setStagedImages] = useState<File[]>([]);
 
   function onNameChange(value: string) {
     setName(value);
@@ -88,18 +91,37 @@ export function ProductForm({ product, categories }: Props) {
 
     startTransition(async () => {
       const res = await saveProductAction(product?.id ?? null, payload);
-      if (res.ok) {
-        toast.success(product ? "Product saved" : "Product created");
-        setErrors({});
-        if (!product) {
-          router.push(`/admin/products/${res.data.id}/edit`);
-        } else {
-          router.refresh();
-        }
-      } else {
+      if (!res.ok) {
         setErrors(res.fieldErrors ?? {});
         toast.error(res.error);
+        return;
       }
+      setErrors({});
+
+      if (product) {
+        toast.success("Product saved");
+        router.refresh();
+        return;
+      }
+
+      // New product: upload staged images in order (first becomes primary).
+      const newId = res.data.id;
+      let failures = 0;
+      for (const file of stagedImages) {
+        const fd = new FormData();
+        fd.set("file", file);
+        const up = await uploadProductImageAction(newId, fd);
+        if (!up.ok) {
+          failures++;
+          toast.error(`${file.name}: ${up.error}`);
+        }
+      }
+      toast.success(
+        failures > 0
+          ? "Product created (some images failed)"
+          : "Product created",
+      );
+      router.push(`/admin/products/${newId}/edit`);
     });
   }
 
@@ -143,6 +165,14 @@ export function ProductForm({ product, categories }: Props) {
             </Field>
           </CardContent>
         </Card>
+
+        {!product ? (
+          <StagedImagePicker
+            files={stagedImages}
+            onChange={setStagedImages}
+            disabled={isPending}
+          />
+        ) : null}
 
         <Card>
           <CardHeader>
@@ -325,7 +355,9 @@ export function ProductForm({ product, categories }: Props) {
         </div>
         {!product ? (
           <p className="text-xs text-muted-foreground">
-            Save the product first, then add images on the edit screen.
+            {stagedImages.length > 0
+              ? `${stagedImages.length} image${stagedImages.length === 1 ? "" : "s"} will upload when you create the product.`
+              : "Add images above, or save now and add them on the edit screen."}
           </p>
         ) : null}
       </div>
